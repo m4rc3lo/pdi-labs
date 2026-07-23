@@ -6,7 +6,8 @@ reproduzíveis.
 
 O projeto está sendo construído de forma incremental para apoiar o estudo de
 representação de imagens, operações no domínio do valor, processamento espacial,
-segmentação, componentes conexos e morfologia matemática.
+segmentação, componentes conexos e morfologia matemática. O código e o sistema de
+build devem permanecer compatíveis com Windows e Linux.
 
 ## Contexto acadêmico
 
@@ -159,23 +160,26 @@ projeto.
 
 ## Requisitos de ambiente
 
-O ambiente principal de desenvolvimento e validação será:
+Os ambientes principais de desenvolvimento e validação são:
 
-- Windows 10 ou Windows 11;
-- MSYS2;
-- terminal UCRT64;
-- GCC para UCRT64;
-- CMake;
+- Windows 10 ou Windows 11 com MSYS2 UCRT64;
+- distribuições Linux com GCC ou Clang;
+- CMake 3.24 ou superior;
 - Ninja ou Make;
-- OpenCV compilado ou instalado para o ambiente UCRT64;
+- OpenCV disponível para o compilador selecionado;
 - Git;
-- Visual Studio Code;
-- extensão CMake Tools;
-- extensão C/C++;
+- Visual Studio Code, opcional;
+- extensão CMake Tools, quando o Visual Studio Code for utilizado;
+- extensão C/C++, quando o Visual Studio Code for utilizado;
 - Doxygen, para geração da documentação;
 - Graphviz, opcional para diagramas gerados pelo Doxygen.
 
-## Preparação inicial no Windows com MSYS2 UCRT64
+Todo artefato de configuração e compilação deve ser gerado dentro de `build/`,
+na raiz do projeto. Esse diretório não é versionado.
+
+## Preparação inicial dos ambientes
+
+### Windows com MSYS2 UCRT64
 
 Abra o terminal **MSYS2 UCRT64** e atualize os pacotes:
 
@@ -215,6 +219,38 @@ pkg-config --modversion opencv4
 doxygen --version
 git --version
 ```
+
+
+### Linux
+
+Em distribuições baseadas em Debian ou Ubuntu, instale as dependências
+equivalentes:
+
+```bash
+sudo apt update
+sudo apt install \
+    build-essential \
+    cmake \
+    ninja-build \
+    git \
+    libopencv-dev \
+    doxygen \
+    graphviz
+```
+
+Confirme o ambiente:
+
+```bash
+g++ --version
+cmake --version
+ninja --version
+pkg-config --modversion opencv4
+doxygen --version
+git --version
+```
+
+Em outras distribuições, utilize os pacotes equivalentes fornecidos pelo
+gerenciador do sistema.
 
 ## Uso com Visual Studio Code
 
@@ -298,26 +334,79 @@ compor a arquitetura do código novo.
 
 ## Configuração, compilação e testes
 
-Os arquivos de build serão adicionados em incrementos posteriores. A interface
-prevista para o projeto será baseada em CMake e CTest.
+O projeto usa CMake 3.24 ou superior, C++20 e compilação fora dos diretórios de
+código-fonte. Todos os artefatos devem permanecer em `build/`.
 
-Configuração prevista:
+### MSYS2 UCRT64 com presets
+
+Liste os presets disponíveis:
 
 ```bash
-cmake -S . -B build/ucrt64-debug \
+cmake --list-presets
+```
+
+Configure e compile em Debug:
+
+```bash
+cmake --preset ucrt64-debug
+cmake --build --preset ucrt64-debug
+```
+
+Execute o utilitário de informações:
+
+```bash
+./build/ucrt64-debug/pdi_info.exe
+```
+
+Configure e compile em Release:
+
+```bash
+cmake --preset ucrt64-release
+cmake --build --preset ucrt64-release
+```
+
+```bash
+./build/ucrt64-release/pdi_info.exe
+```
+
+### Linux
+
+A configuração manual mantém o mesmo layout dentro de `build/`:
+
+```bash
+cmake -S . -B build/linux-debug \
     -G Ninja \
     -DCMAKE_BUILD_TYPE=Debug \
     -DPDI_BUILD_TESTS=ON \
-    -DPDI_BUILD_DOCS=OFF
+    -DPDI_BUILD_DOCS=OFF \
+    -DPDI_BUILD_EXAMPLES=ON
 ```
-
-Compilação prevista:
 
 ```bash
-cmake --build build/ucrt64-debug
+cmake --build build/linux-debug
 ```
 
-Execução dos testes prevista:
+```bash
+./build/linux-debug/pdi_info
+```
+
+Para Release:
+
+```bash
+cmake -S . -B build/linux-release \
+    -G Ninja \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DPDI_BUILD_TESTS=ON \
+    -DPDI_BUILD_DOCS=OFF \
+    -DPDI_BUILD_EXAMPLES=ON
+```
+
+```bash
+cmake --build build/linux-release
+```
+
+A infraestrutura de CTest já é habilitada quando `PDI_BUILD_TESTS=ON`. Os testes
+automatizados serão adicionados em um incremento posterior:
 
 ```bash
 ctest \
@@ -325,21 +414,21 @@ ctest \
     --output-on-failure
 ```
 
-Configuração de versão Release prevista:
+No Linux, substitua o diretório pelo build utilizado, por exemplo:
 
 ```bash
-cmake -S . -B build/ucrt64-release \
-    -G Ninja \
-    -DCMAKE_BUILD_TYPE=Release \
-    -DPDI_BUILD_TESTS=ON
+ctest \
+    --test-dir build/linux-debug \
+    --output-on-failure
 ```
 
-```bash
-cmake --build build/ucrt64-release
-```
+As opções disponíveis são:
 
-Esses comandos representam a interface planejada. Eles passarão a funcionar
-quando os arquivos CMake forem adicionados.
+| Opção | Padrão | Finalidade |
+|---|---:|---|
+| `PDI_BUILD_TESTS` | `ON` | habilita a infraestrutura de testes |
+| `PDI_BUILD_DOCS` | `OFF` | prepara a geração da documentação |
+| `PDI_BUILD_EXAMPLES` | `ON` | compila aplicações e exemplos |
 
 ## Documentação Doxygen
 
@@ -514,6 +603,8 @@ Estado atual:
 - estrutura inicial criada;
 - convenções básicas definidas;
 - metadados legais e acadêmicos adicionados;
+- fundação de build configurada com CMake, C++20 e presets UCRT64;
+- biblioteca mínima `pdi_core` e executável `pdi_info` adicionados;
 - algoritmos dos laboratórios ainda não implementados.
 
 O projeto encontra-se em construção incremental.

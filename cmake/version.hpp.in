@@ -1,0 +1,4 @@
+#pragma once
+
+#define PDI_PROJECT_NAME "@PROJECT_NAME@"
+#define PDI_PROJECT_VERSION "@PROJECT_VERSION@"
