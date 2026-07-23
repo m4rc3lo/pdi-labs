@@ -1,0 +1,50 @@
+# Build directories
+/build/
+/out/
+/cmake-build-*/
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+CTestTestfile.cmake
+Makefile
+compile_commands.json
+
+# Local CMake configuration
+CMakeUserPresets.json
+
+# Compiled artifacts
+*.a
+*.dll
+*.dylib
+*.exe
+*.lib
+*.o
+*.obj
+*.pdb
+*.so
+
+# IDE and editor files
+.vs/
+.vscode/
+.idea/
+*.code-workspace
+
+# Operating-system metadata
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Temporary and log files
+*.log
+*.tmp
+*.temp
+*~
+.cache/
+
+# Generated documentation
+/docs/html/
+/docs/xml/
+
+# Generated laboratory outputs
+/images/output/*
+!/images/output/.gitkeep
