@@ -72,9 +72,31 @@ if(PDI_BUILD_TESTS)
 endif()
 
 if(PDI_BUILD_DOCS)
-    message(
-        STATUS
-        "PDI_BUILD_DOCS is enabled; Doxygen integration will be added in a later increment."
+    find_package(Doxygen REQUIRED)
+
+    find_program(PDI_DOT_EXECUTABLE dot)
+
+    if(PDI_DOT_EXECUTABLE)
+        set(PDI_DOXYGEN_HAVE_DOT YES)
+        message(STATUS "Graphviz dot found: ${PDI_DOT_EXECUTABLE}")
+    else()
+        set(PDI_DOXYGEN_HAVE_DOT NO)
+        message(STATUS "Graphviz dot was not found; Doxygen diagrams will be disabled.")
+    endif()
+
+    configure_file(
+        "${CMAKE_CURRENT_SOURCE_DIR}/Doxyfile"
+        "${CMAKE_CURRENT_BINARY_DIR}/Doxyfile"
+        @ONLY
+    )
+
+    add_custom_target(docs
+        COMMAND
+            "${DOXYGEN_EXECUTABLE}"
+            "${CMAKE_CURRENT_BINARY_DIR}/Doxyfile"
+        WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
+        COMMENT "Generating pdi-labs HTML documentation with Doxygen"
+        VERBATIM
     )
 endif()
 
