@@ -1,0 +1,25 @@
+cff-version: 1.2.0
+message: >-
+  Se você utilizar este software em atividade acadêmica, cite-o usando os
+  metadados deste arquivo.
+title: "pdi-labs: implementações didáticas de Processamento de Imagens"
+type: software
+authors:
+  - family-names: Lopes
+    given-names: Marcelo Dornbusch
+repository-code: "https://github.com/m4rc3lo/pdi-labs"
+url: "https://github.com/m4rc3lo/pdi-labs"
+license: Apache-2.0
+version: 0.0.1
+date-released: 2026-07-23
+abstract: >-
+  Implementações didáticas em C++ e OpenCV para laboratórios de Processamento
+  de Imagens, com documentação Doxygen, diagramas Mermaid e testes
+  reproduzíveis.
+keywords:
+  - image processing
+  - computer vision
+  - OpenCV
+  - C++
+  - education
+  - reproducible software
