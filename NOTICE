@@ -1,0 +1,19 @@
+pdi-labs
+Copyright 2026 Marcelo Dornbusch Lopes
+
+This product provides didactic implementations for Image Processing
+laboratories, with emphasis on transparent algorithms, reproducible tests,
+technical documentation, and academic use.
+
+The source code and original documentation of pdi-labs are licensed under
+the Apache License, Version 2.0, as described in the LICENSE file.
+
+This project may use or reference third-party software, including OpenCV.
+OpenCV and all other third-party libraries, tools, datasets, and assets remain
+subject to their respective licenses, copyright notices, attribution
+requirements, and terms of use. Their inclusion, use, or mention does not
+change the license of those third-party materials.
+
+Where required, additional third-party notices and attributions shall be
+recorded in this NOTICE file or in the documentation accompanying the
+relevant component.
