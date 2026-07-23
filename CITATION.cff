@@ -2,11 +2,11 @@ cff-version: 1.2.0
 message: >-
   Se você utilizar este software em atividade acadêmica, cite-o usando os
   metadados deste arquivo.
-title: "pdi-labs: implementações didáticas de Processamento de Imagens"
+title: "pdi-labs: Implementações didáticas de Processamento de Imagens"
 type: software
 authors:
-  - family-names: Lopes
-    given-names: Marcelo Dornbusch
+  - family-names: Dornbusch Lopes
+    given-names: Marcelo
 repository-code: "https://github.com/m4rc3lo/pdi-labs"
 url: "https://github.com/m4rc3lo/pdi-labs"
 license: Apache-2.0
