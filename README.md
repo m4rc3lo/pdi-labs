@@ -145,7 +145,7 @@ distinção será registrada na documentação das classes e dos métodos releva
 - OpenCV;
 - CMake;
 - CTest;
-- framework de testes C++;
+- Catch2 3;
 - Doxygen;
 - Graphviz, quando disponível;
 - Markdown;
@@ -405,8 +405,8 @@ cmake -S . -B build/linux-release \
 cmake --build build/linux-release
 ```
 
-A infraestrutura de CTest já é habilitada quando `PDI_BUILD_TESTS=ON`. Os testes
-automatizados serão adicionados em um incremento posterior:
+A infraestrutura usa Catch2 3 integrado ao CTest. Os testes são separados em
+`tests/unit/` e `tests/integration/`. Para executar todos os testes:
 
 ```bash
 ctest \
@@ -429,6 +429,61 @@ As opções disponíveis são:
 | `PDI_BUILD_TESTS` | `ON` | habilita a infraestrutura de testes |
 | `PDI_BUILD_DOCS` | `OFF` | prepara a geração da documentação |
 | `PDI_BUILD_EXAMPLES` | `ON` | compila aplicações e exemplos |
+| `PDI_FETCH_TEST_DEPENDENCIES` | `ON` | permite obter Catch2 quando ele não estiver instalado |
+
+
+### Dependência de testes e modo offline
+
+O projeto procura primeiro uma instalação compatível do Catch2 3. Quando ela não
+é encontrada e `PDI_FETCH_TEST_DEPENDENCIES=ON`, o CMake utiliza `FetchContent`
+para obter a versão fixada no projeto.
+
+Para configurar sem permitir downloads:
+
+```bash
+cmake -S . -B build/offline-debug \
+    -G Ninja \
+    -DCMAKE_BUILD_TYPE=Debug \
+    -DPDI_BUILD_TESTS=ON \
+    -DPDI_FETCH_TEST_DEPENDENCIES=OFF
+```
+
+Nesse modo, Catch2 3 precisa estar previamente instalado e visível ao CMake. Caso
+contrário, a configuração falhará com uma mensagem indicando as alternativas.
+
+Também é possível desabilitar completamente os testes:
+
+```bash
+cmake -S . -B build/no-tests \
+    -G Ninja \
+    -DPDI_BUILD_TESTS=OFF
+```
+
+### Execução seletiva
+
+Liste os testes registrados:
+
+```bash
+ctest --test-dir build/ucrt64-debug --show-only
+```
+
+Execute apenas testes unitários:
+
+```bash
+ctest \
+    --test-dir build/ucrt64-debug \
+    --tests-regex '^unit\.' \
+    --output-on-failure
+```
+
+Execute apenas testes de integração:
+
+```bash
+ctest \
+    --test-dir build/ucrt64-debug \
+    --tests-regex '^integration\.' \
+    --output-on-failure
+```
 
 ## Documentação Doxygen
 
@@ -605,6 +660,8 @@ Estado atual:
 - metadados legais e acadêmicos adicionados;
 - fundação de build configurada com CMake, C++20 e presets UCRT64;
 - biblioteca mínima `pdi_core` e executável `pdi_info` adicionados;
+- Catch2 integrado ao CTest com testes unitários e de integração;
+- helpers para comparação exata e aproximada de `cv::Mat` adicionados;
 - algoritmos dos laboratórios ainda não implementados.
 
 O projeto encontra-se em construção incremental.

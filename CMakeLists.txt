@@ -10,6 +10,11 @@ project(
 option(PDI_BUILD_TESTS "Build the automated test suite" ON)
 option(PDI_BUILD_DOCS "Build the Doxygen documentation" OFF)
 option(PDI_BUILD_EXAMPLES "Build laboratory and example applications" ON)
+option(
+    PDI_FETCH_TEST_DEPENDENCIES
+    "Allow CMake to download missing test dependencies"
+    ON
+)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -63,6 +68,7 @@ endif()
 if(PDI_BUILD_TESTS)
     include(CTest)
     enable_testing()
+    add_subdirectory(tests)
 endif()
 
 if(PDI_BUILD_DOCS)
@@ -78,3 +84,4 @@ message(STATUS "OpenCV version: ${OpenCV_VERSION}")
 message(STATUS "Build tests: ${PDI_BUILD_TESTS}")
 message(STATUS "Build documentation: ${PDI_BUILD_DOCS}")
 message(STATUS "Build examples: ${PDI_BUILD_EXAMPLES}")
+message(STATUS "Fetch test dependencies: ${PDI_FETCH_TEST_DEPENDENCIES}")

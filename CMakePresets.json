@@ -15,7 +15,8 @@
         "CMAKE_EXPORT_COMPILE_COMMANDS": true,
         "PDI_BUILD_TESTS": true,
         "PDI_BUILD_DOCS": false,
-        "PDI_BUILD_EXAMPLES": true
+        "PDI_BUILD_EXAMPLES": true,
+        "PDI_FETCH_TEST_DEPENDENCIES": true
       },
       "condition": {
         "type": "equals",
