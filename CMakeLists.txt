@@ -37,6 +37,7 @@ add_library(pdi_core
     src/core/project_info.cpp
     src/core/saturation.cpp
     src/value/channel_separator.cpp
+    src/value/grayscale_converter.cpp
     src/value/image_copy.cpp
     src/value/image_inspector.cpp
 )
@@ -80,6 +81,18 @@ if(PDI_BUILD_EXAMPLES)
     )
 
     pdi_enable_project_warnings(lab_m1_1_channels)
+
+    add_executable(lab_m1_1_grayscale
+        apps/lab_m1_1_grayscale/main.cpp
+    )
+
+    target_link_libraries(lab_m1_1_grayscale
+        PRIVATE
+            pdi::core
+            opencv_imgcodecs
+    )
+
+    pdi_enable_project_warnings(lab_m1_1_grayscale)
 endif()
 
 if(PDI_BUILD_TESTS)
