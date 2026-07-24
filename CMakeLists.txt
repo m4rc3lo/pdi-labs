@@ -24,7 +24,7 @@ list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
 include(CompilerWarnings)
 
-find_package(OpenCV REQUIRED COMPONENTS core)
+find_package(OpenCV REQUIRED COMPONENTS core imgcodecs)
 
 configure_file(
     "${CMAKE_CURRENT_SOURCE_DIR}/cmake/version.hpp.in"
@@ -36,6 +36,7 @@ add_library(pdi_core
     src/core/image_validator.cpp
     src/core/project_info.cpp
     src/core/saturation.cpp
+    src/value/channel_separator.cpp
     src/value/image_copy.cpp
     src/value/image_inspector.cpp
 )
@@ -67,6 +68,18 @@ if(PDI_BUILD_EXAMPLES)
     )
 
     pdi_enable_project_warnings(pdi_info)
+
+    add_executable(lab_m1_1_channels
+        apps/lab_m1_1_channels/main.cpp
+    )
+
+    target_link_libraries(lab_m1_1_channels
+        PRIVATE
+            pdi::core
+            opencv_imgcodecs
+    )
+
+    pdi_enable_project_warnings(lab_m1_1_channels)
 endif()
 
 if(PDI_BUILD_TESTS)
