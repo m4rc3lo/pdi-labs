@@ -685,6 +685,7 @@ Estado atual:
 - histórico anterior preservado em `legacy/`;
 - versão histórica `v0.0.1` registrada;
 - versão de fundação `v0.1.0` concluída;
+- Laboratório M1.1 concluído e preparado para a versão `v0.2.0`;
 - estrutura inicial criada;
 - convenções básicas definidas;
 - metadados legais e acadêmicos adicionados;
@@ -697,7 +698,7 @@ Estado atual:
 - percurso futuro de pixels padronizado com ponteiros de linha;
 - finais de linha LF reforçados por `.editorconfig` e `.gitattributes`;
 - leitura, persistência e exibição opcional centralizadas em `pdi::io`;
-- algoritmos dos laboratórios ainda não implementados.
+- executável integrado `lab_m1_1` disponível com modo headless e `--show`.
 
 O projeto encontra-se em construção incremental.
 

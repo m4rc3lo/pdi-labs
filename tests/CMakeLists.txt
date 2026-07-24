@@ -74,12 +74,14 @@ catch_discover_tests(
 )
 
 add_executable(pdi_integration_tests
+    integration/m1_1_pipeline_test.cpp
     integration/project_metadata_test.cpp
 )
 
 target_link_libraries(pdi_integration_tests
     PRIVATE
         pdi::core
+        pdi::io
         Catch2::Catch2WithMain
 )
 

@@ -39,6 +39,8 @@ timeline
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-07-24
+
 ### Added
 
 - Primeiro componente do Laboratório M1.1: inspeção manual de imagens `CV_8UC1` e `CV_8UC3`.
@@ -57,6 +59,8 @@ timeline
 
 - Quantização manual de imagens `CV_8UC1` para 2, 4, 8, 16 e 256 níveis,
   com reconstrução uniforme, testes de fronteira e exemplo opcionalmente gráfico.
+- Executável integrado `lab_m1_1`, relatório CSV, README específico e testes
+  de integração para o fluxo completo do laboratório.
 
 ## [0.1.0] - 2026-07-24
 
@@ -89,6 +93,7 @@ timeline
 - Renomeado o branch principal de `master` para `main`.
 - Preservado integralmente o conteúdo do projeto anterior em `legacy/`.
 
-[Unreleased]: https://github.com/m4rc3lo/pdi-labs/compare/v0.1.0...HEAD
+[Unreleased]: https://github.com/m4rc3lo/pdi-labs/compare/v0.2.0...HEAD
+[0.2.0]: https://github.com/m4rc3lo/pdi-labs/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/m4rc3lo/pdi-labs/compare/v0.0.1...v0.1.0
 [0.0.1]: https://github.com/m4rc3lo/pdi-labs/releases/tag/v0.0.1
