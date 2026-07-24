@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.24)
 
 project(
     pdi_labs
-    VERSION 0.2.0
+    VERSION 0.3.0
     DESCRIPTION "Didactic Image Processing laboratory implementations"
     LANGUAGES CXX
 )
@@ -42,6 +42,7 @@ add_library(pdi_core
     src/value/image_copy.cpp
     src/value/image_inspector.cpp
     src/labs/m1_1_pipeline.cpp
+    src/labs/m1_2_study_case.cpp
 )
 
 add_library(pdi::core ALIAS pdi_core)
@@ -142,6 +143,18 @@ if(PDI_BUILD_EXAMPLES)
     )
 
     pdi_enable_project_warnings(lab_m1_1)
+
+    add_executable(lab_m1_2
+        apps/lab_m1_2/main.cpp
+    )
+
+    target_link_libraries(lab_m1_2
+        PRIVATE
+            pdi::core
+            pdi::io
+    )
+
+    pdi_enable_project_warnings(lab_m1_2)
 endif()
 
 if(PDI_BUILD_TESTS)
