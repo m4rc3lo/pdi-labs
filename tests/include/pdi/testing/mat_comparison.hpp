@@ -1,3 +1,8 @@
+/**
+ * @file mat_comparison.hpp
+ * @brief Provides cv::Mat comparison helpers for automated tests.
+ */
+
 #pragma once
 
 #include <catch2/catch_test_macros.hpp>

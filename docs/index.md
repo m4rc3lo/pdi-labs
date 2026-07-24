@@ -11,9 +11,14 @@ A documentação combina:
 - relações entre classes e arquivos;
 - diagramas gerados pelo Graphviz, quando a ferramenta estiver disponível.
 
+Os diagramas Mermaid permanecem nos arquivos Markdown para renderização no
+GitHub e em visualizadores compatíveis. O Doxygen apresenta esses blocos como
+código, enquanto o Graphviz gera diagramas inferidos das relações do código.
+
 ## Escopo atual
 
-Nesta etapa, a documentação apresenta a infraestrutura do projeto e a classe
+Nesta etapa, a documentação apresenta a infraestrutura do projeto, a
+\ref architecture "arquitetura comum" e a classe
 \ref pdi::core::ProjectInfo como exemplo do padrão documental. Os algoritmos
 dos laboratórios serão adicionados em incrementos posteriores.
 

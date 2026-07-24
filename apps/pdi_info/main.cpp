@@ -1,3 +1,8 @@
+/**
+ * @file main.cpp
+ * @brief Prints configured project and OpenCV version information.
+ */
+
 #include "pdi/core/project_info.hpp"
 
 #include <iostream>

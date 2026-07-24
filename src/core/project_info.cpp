@@ -1,3 +1,8 @@
+/**
+ * @file project_info.cpp
+ * @brief Implements access to configured project metadata.
+ */
+
 #include "pdi/core/project_info.hpp"
 
 #include "pdi/version.hpp"

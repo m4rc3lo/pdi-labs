@@ -1,3 +1,8 @@
+/**
+ * @file project_info_test.cpp
+ * @brief Tests access to configured project metadata.
+ */
+
 #include "pdi/core/project_info.hpp"
 
 #include <catch2/catch_test_macros.hpp>

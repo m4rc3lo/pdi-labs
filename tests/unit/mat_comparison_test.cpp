@@ -1,3 +1,8 @@
+/**
+ * @file mat_comparison_test.cpp
+ * @brief Tests exact and tolerance-based cv::Mat comparisons.
+ */
+
 #include "pdi/testing/mat_comparison.hpp"
 
 #include <catch2/catch_test_macros.hpp>
@@ -28,4 +33,20 @@ TEST_CASE("Floating-point matrices can be compared with tolerance", "[unit][mat]
     );
 
     pdi::testing::require_mat_near(actual, expected, 0.011);
+}
+
+
+TEST_CASE("Three-channel matrices can be compared exactly", "[unit][mat][exact][bgr]") {
+    cv::Mat actual(1, 2, CV_8UC3);
+    cv::Mat expected(1, 2, CV_8UC3);
+
+    auto* actual_row = actual.ptr<cv::Vec3b>(0);
+    auto* expected_row = expected.ptr<cv::Vec3b>(0);
+
+    actual_row[0] = cv::Vec3b{10, 20, 30};
+    actual_row[1] = cv::Vec3b{40, 50, 60};
+    expected_row[0] = cv::Vec3b{10, 20, 30};
+    expected_row[1] = cv::Vec3b{40, 50, 60};
+
+    pdi::testing::require_mat_exact(actual, expected);
 }

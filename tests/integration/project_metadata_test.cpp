@@ -1,3 +1,8 @@
+/**
+ * @file project_metadata_test.cpp
+ * @brief Tests runtime integration of project and dependency metadata.
+ */
+
 #include "pdi/core/project_info.hpp"
 
 #include <catch2/catch_test_macros.hpp>

@@ -1,4 +1,4 @@
-# Arquitetura comum
+# Arquitetura comum {#architecture}
 
 Este documento apresenta a primeira camada compartilhada do `pdi-labs`. A
 arquitetura será ampliada gradualmente, mantendo as dependências direcionadas

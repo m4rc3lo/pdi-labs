@@ -277,6 +277,7 @@ posteriores.
 pdi-labs/
 ├── .editorconfig
 ├── .clang-format
+├── .gitattributes
 ├── .gitignore
 ├── LICENSE
 ├── NOTICE
@@ -531,7 +532,7 @@ As convenções principais são:
 - indentação com quatro espaços;
 - tabulações proibidas em arquivos novos;
 - codificação UTF-8;
-- finais de linha LF;
+- finais de linha LF, reforçados por `.gitattributes`;
 - extensões em minúsculas;
 - comentários Doxygen nas APIs públicas.
 
@@ -662,6 +663,10 @@ Estado atual:
 - biblioteca mínima `pdi_core` e executável `pdi_info` adicionados;
 - Catch2 integrado ao CTest com testes unitários e de integração;
 - helpers para comparação exata e aproximada de `cv::Mat` adicionados;
+- documentação Doxygen integrada ao CMake;
+- arquitetura comum com validação de `cv::Mat` e saturação adicionada;
+- percurso futuro de pixels padronizado com ponteiros de linha;
+- finais de linha LF reforçados por `.editorconfig` e `.gitattributes`;
 - algoritmos dos laboratórios ainda não implementados.
 
 O projeto encontra-se em construção incremental.
