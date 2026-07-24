@@ -10,8 +10,8 @@ authors:
 repository-code: "https://github.com/m4rc3lo/pdi-labs"
 url: "https://github.com/m4rc3lo/pdi-labs"
 license: Apache-2.0
-version: 0.0.1
-date-released: 2026-07-23
+version: 0.1.0
+date-released: 2026-07-24
 abstract: >-
   Implementações didáticas em C++ e OpenCV para laboratórios de Processamento
   de Imagens, com documentação Doxygen, diagramas Mermaid e testes
