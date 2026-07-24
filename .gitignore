@@ -45,6 +45,9 @@ desktop.ini
 /docs/html/
 /docs/xml/
 
-# Generated laboratory outputs
+# Versioned image policy
+# - images/synthetic/: reproducible fixtures
+# - images/input/: selected official inputs
+# - images/output/: generated laboratory outputs
 /images/output/*
 !/images/output/.gitkeep

@@ -24,7 +24,7 @@ list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
 include(CompilerWarnings)
 
-find_package(OpenCV REQUIRED COMPONENTS core imgcodecs)
+find_package(OpenCV REQUIRED COMPONENTS core imgcodecs highgui)
 
 configure_file(
     "${CMAKE_CURRENT_SOURCE_DIR}/cmake/version.hpp.in"
@@ -58,6 +58,29 @@ target_link_libraries(pdi_core
 
 pdi_enable_project_warnings(pdi_core)
 
+add_library(pdi_io
+    src/io/image_display.cpp
+    src/io/image_file_storage.cpp
+)
+
+add_library(pdi::io ALIAS pdi_io)
+
+target_include_directories(pdi_io
+    PUBLIC
+        "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
+        "$<INSTALL_INTERFACE:include>"
+)
+
+target_link_libraries(pdi_io
+    PUBLIC
+        opencv_core
+    PRIVATE
+        opencv_highgui
+        opencv_imgcodecs
+)
+
+pdi_enable_project_warnings(pdi_io)
+
 if(PDI_BUILD_EXAMPLES)
     add_executable(pdi_info
         apps/pdi_info/main.cpp
@@ -77,7 +100,7 @@ if(PDI_BUILD_EXAMPLES)
     target_link_libraries(lab_m1_1_channels
         PRIVATE
             pdi::core
-            opencv_imgcodecs
+            pdi::io
     )
 
     pdi_enable_project_warnings(lab_m1_1_channels)
@@ -89,7 +112,7 @@ if(PDI_BUILD_EXAMPLES)
     target_link_libraries(lab_m1_1_grayscale
         PRIVATE
             pdi::core
-            opencv_imgcodecs
+            pdi::io
     )
 
     pdi_enable_project_warnings(lab_m1_1_grayscale)

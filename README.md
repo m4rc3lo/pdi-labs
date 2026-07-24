@@ -648,6 +648,34 @@ legacy/
 Esse diretório mantém o registro do projeto original, mas não define as
 convenções, a arquitetura ou a qualidade esperada para o novo código.
 
+## Execução dos exemplos com exibição opcional
+
+Os executáveis persistem resultados por padrão e não exigem ambiente gráfico:
+
+```bash
+./build/ucrt64-debug/lab_m1_1_channels.exe \
+    images/input/sample.png \
+    images/output/m1_1_channels
+```
+
+Para exibir a entrada e os resultados, acrescente `--show`:
+
+```bash
+./build/ucrt64-debug/lab_m1_1_grayscale.exe \
+    images/input/sample.png \
+    images/output/m1_1_grayscale \
+    --show
+```
+
+A opção `--show` utiliza janelas do OpenCV e deve ser omitida em servidores,
+integração contínua e outros ambientes headless.
+
+A política de imagens é:
+
+- `images/synthetic/`: imagens sintéticas reproduzíveis e versionadas;
+- `images/input/`: entradas oficiais selecionadas e versionadas seletivamente;
+- `images/output/`: resultados gerados localmente e ignorados pelo Git.
+
 ## Status atual
 
 Estado atual:
@@ -668,6 +696,7 @@ Estado atual:
 - arquitetura comum com validação de `cv::Mat` e saturação adicionada;
 - percurso futuro de pixels padronizado com ponteiros de linha;
 - finais de linha LF reforçados por `.editorconfig` e `.gitattributes`;
+- leitura, persistência e exibição opcional centralizadas em `pdi::io`;
 - algoritmos dos laboratórios ainda não implementados.
 
 O projeto encontra-se em construção incremental.

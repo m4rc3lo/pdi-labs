@@ -49,6 +49,7 @@ add_executable(pdi_unit_tests
     unit/channel_separator_test.cpp
     unit/grayscale_converter_test.cpp
     unit/image_copy_test.cpp
+    unit/image_file_storage_test.cpp
     unit/image_inspector_test.cpp
     unit/image_validator_test.cpp
     unit/mat_comparison_test.cpp
@@ -59,6 +60,7 @@ add_executable(pdi_unit_tests
 target_link_libraries(pdi_unit_tests
     PRIVATE
         pdi::core
+        pdi::io
         pdi::test_helpers
         Catch2::Catch2WithMain
 )

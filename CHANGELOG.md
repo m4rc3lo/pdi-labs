@@ -48,6 +48,13 @@ timeline
 - Separação manual dos canais B, G e R, com exemplo executável e saídas identificadas.
 - Conversões manuais para níveis de cinza por média simples e média ponderada.
 
+- Infraestrutura compartilhada `pdi::io` para leitura, persistência e
+  exibição opcional de imagens.
+- Opção `--show` nos exemplos de canais e níveis de cinza, mantendo execução
+  headless por padrão.
+- Política explícita de versionamento para `images/synthetic`, `images/input`
+  e `images/output`.
+
 ## [0.1.0] - 2026-07-24
 
 ### Added

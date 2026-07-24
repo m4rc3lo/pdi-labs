@@ -118,3 +118,38 @@ dos formatos estudados e torna visível a semântica de cada canal BGR.
 Esta camada não implementa transformações de intensidade, filtros,
 segmentação ou morfologia. O OpenCV é utilizado somente para representar a
 imagem por `cv::Mat` e consultar suas propriedades estruturais.
+
+
+## Entrada, persistência e exibição
+
+O namespace `pdi::io` concentra infraestrutura compartilhada pelos
+executáveis:
+
+- `ImageFileStorage` carrega imagens coloridas em BGR e salva resultados;
+- `ImageDisplay` mostra coleções tipadas de `WindowImage`;
+- aplicações deixam de repetir wrappers locais de `cv::imread` e
+  `cv::imwrite`.
+
+```mermaid
+flowchart LR
+    App["Executável do laboratório"]
+    Core["pdi::core e pdi::value"]
+    Storage["pdi::io::ImageFileStorage"]
+    Display["pdi::io::ImageDisplay"]
+    Codecs["OpenCV imgcodecs"]
+    HighGui["OpenCV highgui"]
+
+    App --> Core
+    App --> Storage
+    App -. somente com --show .-> Display
+    Storage --> Codecs
+    Display --> HighGui
+```
+
+A biblioteca `pdi_core` permanece ligada apenas ao `opencv_core`. A biblioteca
+`pdi_io` concentra `imgcodecs` e `highgui`, evitando que a camada algorítmica
+tenha dependência pública de interface gráfica.
+
+A execução padrão é headless: processa, persiste e encerra. Janelas somente são
+abertas quando o usuário informa `--show`. Testes automatizados e integração
+contínua não chamam `ImageDisplay`.
