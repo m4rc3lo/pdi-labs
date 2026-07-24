@@ -29,6 +29,21 @@ cv::Mat ImageFileStorage::load_color(
     return image;
 }
 
+cv::Mat ImageFileStorage::load_grayscale(
+    const std::filesystem::path& input_path
+) const {
+    const cv::Mat image =
+        cv::imread(input_path.string(), cv::IMREAD_GRAYSCALE);
+
+    if (image.empty()) {
+        throw std::runtime_error(
+            "Could not read grayscale image: " + input_path.string()
+        );
+    }
+
+    return image;
+}
+
 void ImageFileStorage::save(
     const std::filesystem::path& output_path,
     const cv::Mat& image

@@ -58,6 +58,31 @@ TEST_CASE(
     std::filesystem::remove_all(test_directory);
 }
 
+
+TEST_CASE(
+    "ImageFileStorage loads a saved image as grayscale",
+    "[unit][io][storage]"
+) {
+    const std::filesystem::path test_directory = unique_test_directory();
+    const std::filesystem::path output_path =
+        test_directory / "grayscale_source.png";
+
+    cv::Mat source(1, 2, CV_8UC1);
+    auto* source_row = source.ptr<std::uint8_t>(0);
+    source_row[0] = 17;
+    source_row[1] = 231;
+
+    const pdi::io::ImageFileStorage storage;
+    storage.save(output_path, source);
+
+    const cv::Mat loaded = storage.load_grayscale(output_path);
+
+    REQUIRE(loaded.type() == CV_8UC1);
+    pdi::testing::require_mat_exact(loaded, source);
+
+    std::filesystem::remove_all(test_directory);
+}
+
 TEST_CASE(
     "ImageFileStorage reports the missing input path",
     "[unit][io][storage]"

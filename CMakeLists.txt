@@ -38,6 +38,7 @@ add_library(pdi_core
     src/core/saturation.cpp
     src/value/channel_separator.cpp
     src/value/grayscale_converter.cpp
+    src/value/grayscale_quantizer.cpp
     src/value/image_copy.cpp
     src/value/image_inspector.cpp
 )
@@ -116,6 +117,18 @@ if(PDI_BUILD_EXAMPLES)
     )
 
     pdi_enable_project_warnings(lab_m1_1_grayscale)
+
+    add_executable(lab_m1_1_quantization
+        apps/lab_m1_1_quantization/main.cpp
+    )
+
+    target_link_libraries(lab_m1_1_quantization
+        PRIVATE
+            pdi::core
+            pdi::io
+    )
+
+    pdi_enable_project_warnings(lab_m1_1_quantization)
 endif()
 
 if(PDI_BUILD_TESTS)
