@@ -39,6 +39,15 @@ timeline
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-07-24
+
+### Added
+
+- Estudo de caso preliminar do Laboratório M1.2 para simplificação de zonas
+  de iluminação com conversão ponderada e quantização.
+- Conjunto inicial de imagens sintéticas PPM, relatório CSV, documentação de
+  riscos, limitações, próximos passos e equivalências em Java e Python.
+
 ## [0.2.0] - 2026-07-24
 
 ### Added
@@ -93,7 +102,8 @@ timeline
 - Renomeado o branch principal de `master` para `main`.
 - Preservado integralmente o conteúdo do projeto anterior em `legacy/`.
 
-[Unreleased]: https://github.com/m4rc3lo/pdi-labs/compare/v0.2.0...HEAD
+[Unreleased]: https://github.com/m4rc3lo/pdi-labs/compare/v0.3.0...HEAD
+[0.3.0]: https://github.com/m4rc3lo/pdi-labs/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/m4rc3lo/pdi-labs/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/m4rc3lo/pdi-labs/compare/v0.0.1...v0.1.0
 [0.0.1]: https://github.com/m4rc3lo/pdi-labs/releases/tag/v0.0.1
