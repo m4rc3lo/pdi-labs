@@ -656,6 +656,7 @@ Estado atual:
 - branch principal migrado para `main`;
 - histórico anterior preservado em `legacy/`;
 - versão histórica `v0.0.1` registrada;
+- versão de fundação `v0.1.0` concluída;
 - estrutura inicial criada;
 - convenções básicas definidas;
 - metadados legais e acadêmicos adicionados;

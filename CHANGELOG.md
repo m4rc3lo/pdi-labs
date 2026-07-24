@@ -39,6 +39,8 @@ timeline
 
 ## [Unreleased]
 
+## [0.1.0] - 2026-07-24
+
 ### Added
 
 - Fundação inicial do novo repositório.
@@ -68,5 +70,6 @@ timeline
 - Renomeado o branch principal de `master` para `main`.
 - Preservado integralmente o conteúdo do projeto anterior em `legacy/`.
 
-[Unreleased]: https://github.com/m4rc3lo/pdi-labs/compare/v0.0.1...HEAD
+[Unreleased]: https://github.com/m4rc3lo/pdi-labs/compare/v0.1.0...HEAD
+[0.1.0]: https://github.com/m4rc3lo/pdi-labs/compare/v0.0.1...v0.1.0
 [0.0.1]: https://github.com/m4rc3lo/pdi-labs/releases/tag/v0.0.1
