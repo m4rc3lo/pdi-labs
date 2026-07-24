@@ -6,6 +6,7 @@
 #include "pdi/core/image_validator.hpp"
 
 #include <catch2/catch_test_macros.hpp>
+#include <catch2/matchers/catch_matchers_string.hpp>
 
 #include <opencv2/core.hpp>
 
