@@ -45,6 +45,7 @@ timeline
 - Registros tipados para estatísticas globais e estatísticas BGR por canal.
 - Testes unitários com imagens sintéticas pequenas e documentação conceitual do Laboratório M1.1.
 - Cópia manual profunda de imagens `CV_8UC1` e `CV_8UC3`, com validação e testes de independência.
+- Separação manual dos canais B, G e R, com exemplo executável e saídas identificadas.
 
 ## [0.1.0] - 2026-07-24
 

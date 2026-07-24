@@ -46,6 +46,7 @@ target_link_libraries(pdi_test_helpers
 )
 
 add_executable(pdi_unit_tests
+    unit/channel_separator_test.cpp
     unit/image_copy_test.cpp
     unit/image_inspector_test.cpp
     unit/image_validator_test.cpp
