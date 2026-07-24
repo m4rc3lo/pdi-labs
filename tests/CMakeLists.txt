@@ -46,6 +46,7 @@ target_link_libraries(pdi_test_helpers
 )
 
 add_executable(pdi_unit_tests
+    unit/image_inspector_test.cpp
     unit/image_validator_test.cpp
     unit/mat_comparison_test.cpp
     unit/project_info_test.cpp

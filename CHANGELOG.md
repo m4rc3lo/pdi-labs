@@ -39,6 +39,12 @@ timeline
 
 ## [Unreleased]
 
+### Added
+
+- Primeiro componente do Laboratório M1.1: inspeção manual de imagens `CV_8UC1` e `CV_8UC3`.
+- Registros tipados para estatísticas globais e estatísticas BGR por canal.
+- Testes unitários com imagens sintéticas pequenas e documentação conceitual do Laboratório M1.1.
+
 ## [0.1.0] - 2026-07-24
 
 ### Added

@@ -36,6 +36,7 @@ add_library(pdi_core
     src/core/image_validator.cpp
     src/core/project_info.cpp
     src/core/saturation.cpp
+    src/value/image_inspector.cpp
 )
 
 add_library(pdi::core ALIAS pdi_core)
