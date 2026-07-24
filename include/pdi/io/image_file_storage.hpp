@@ -33,6 +33,18 @@ public:
     ) const;
 
     /**
+     * @brief Loads an image as one-channel grayscale.
+     *
+     * @param input_path Path of the image to load.
+     * @return Non-empty image with type `CV_8UC1`.
+     *
+     * @throws std::runtime_error If the image cannot be read.
+     */
+    [[nodiscard]] cv::Mat load_grayscale(
+        const std::filesystem::path& input_path
+    ) const;
+
+    /**
      * @brief Saves an image after creating its parent directory.
      *
      * @param output_path Destination path, including file name and extension.

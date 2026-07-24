@@ -55,6 +55,9 @@ timeline
 - Política explícita de versionamento para `images/synthetic`, `images/input`
   e `images/output`.
 
+- Quantização manual de imagens `CV_8UC1` para 2, 4, 8, 16 e 256 níveis,
+  com reconstrução uniforme, testes de fronteira e exemplo opcionalmente gráfico.
+
 ## [0.1.0] - 2026-07-24
 
 ### Added
