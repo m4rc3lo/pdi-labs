@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.24)
 
 project(
     pdi_labs
-    VERSION 0.1.0
+    VERSION 0.2.0
     DESCRIPTION "Didactic Image Processing laboratory implementations"
     LANGUAGES CXX
 )
@@ -41,6 +41,7 @@ add_library(pdi_core
     src/value/grayscale_quantizer.cpp
     src/value/image_copy.cpp
     src/value/image_inspector.cpp
+    src/labs/m1_1_pipeline.cpp
 )
 
 add_library(pdi::core ALIAS pdi_core)
@@ -129,6 +130,18 @@ if(PDI_BUILD_EXAMPLES)
     )
 
     pdi_enable_project_warnings(lab_m1_1_quantization)
+
+    add_executable(lab_m1_1
+        apps/lab_m1_1/main.cpp
+    )
+
+    target_link_libraries(lab_m1_1
+        PRIVATE
+            pdi::core
+            pdi::io
+    )
+
+    pdi_enable_project_warnings(lab_m1_1)
 endif()
 
 if(PDI_BUILD_TESTS)
