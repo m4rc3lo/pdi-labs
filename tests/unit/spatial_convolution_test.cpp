@@ -15,7 +15,7 @@
 #include <cstdint>
 
 TEST_CASE(
-    "SpatialConvolution preserves the interior with an identity kernel",
+    "SpatialConvolution preserves the image with CopyBorder and identity kernel",
     "[unit][m1-3][convolution]"
 ) {
     cv::Mat input(3, 3, CV_8UC1);
@@ -35,8 +35,7 @@ TEST_CASE(
                0.0F, 0.0F, 0.0F
     );
 
-    cv::Mat expected = cv::Mat::zeros(3, 3, CV_8UC1);
-    expected.ptr<std::uint8_t>(1)[1] = 5;
+    const cv::Mat expected = input.clone();
 
     const cv::Mat result =
         pdi::spatial::SpatialConvolution{}.convolution(input, kernel);
@@ -62,7 +61,7 @@ TEST_CASE(
                0.0, 0.0, 0.0
     );
 
-    cv::Mat expected = cv::Mat::zeros(3, 3, CV_8UC1);
+    cv::Mat expected = input.clone();
     expected.ptr<std::uint8_t>(1)[1] = 1;
 
     const cv::Mat result =
@@ -78,8 +77,7 @@ TEST_CASE(
     const cv::Mat input(3, 3, CV_8UC1, cv::Scalar{90});
     const cv::Mat kernel(3, 3, CV_32FC1, cv::Scalar{1.0F});
 
-    cv::Mat expected = cv::Mat::zeros(3, 3, CV_8UC1);
-    expected.ptr<std::uint8_t>(1)[1] = 90;
+    const cv::Mat expected = input.clone();
 
     const cv::Mat result =
         pdi::spatial::SpatialConvolution{}.convolution(
@@ -92,7 +90,7 @@ TEST_CASE(
 }
 
 TEST_CASE(
-    "SpatialConvolution processes only complete neighborhoods",
+    "SpatialConvolution copies borders with CopyBorder",
     "[unit][m1-3][convolution]"
 ) {
     const cv::Mat input(5, 5, CV_8UC1, cv::Scalar{10});
@@ -110,13 +108,63 @@ TEST_CASE(
         const auto* row_ptr = result.ptr<std::uint8_t>(row);
 
         for (int col = 0; col < result.cols; ++col) {
-            const bool is_border =
-                row == 0 || row == result.rows - 1
-                || col == 0 || col == result.cols - 1;
-
-            REQUIRE(row_ptr[col] == (is_border ? 0 : 10));
+            REQUIRE(row_ptr[col] == 10);
         }
     }
+}
+
+
+TEST_CASE(
+    "SpatialConvolution replicates borders deterministically",
+    "[unit][m1-3][convolution][border]"
+) {
+    const cv::Mat input = (
+        cv::Mat_<std::uint8_t>(3, 3)
+            << 1, 2, 3,
+               4, 5, 6,
+               7, 8, 9
+    );
+    const cv::Mat kernel(3, 3, CV_32FC1, cv::Scalar{1.0F});
+
+    const cv::Mat result =
+        pdi::spatial::SpatialConvolution{}.convolution(
+            input,
+            kernel,
+            true,
+            pdi::spatial::BorderStrategy::ReplicateBorder
+        );
+
+    const cv::Mat expected = (
+        cv::Mat_<std::uint8_t>(3, 3)
+            << 2, 3, 4,
+               4, 5, 6,
+               6, 7, 8
+    );
+
+    pdi::testing::require_mat_exact(result, expected);
+}
+
+TEST_CASE(
+    "SpatialConvolution keeps original border values with CopyBorder",
+    "[unit][m1-3][convolution][border]"
+) {
+    const cv::Mat input = (
+        cv::Mat_<std::uint8_t>(3, 3)
+            << 1, 2, 3,
+               4, 5, 6,
+               7, 8, 9
+    );
+    const cv::Mat kernel(3, 3, CV_32FC1, cv::Scalar{1.0F});
+
+    const cv::Mat result =
+        pdi::spatial::SpatialConvolution{}.convolution(
+            input,
+            kernel,
+            true,
+            pdi::spatial::BorderStrategy::CopyBorder
+        );
+
+    pdi::testing::require_mat_exact(result, input);
 }
 
 TEST_CASE(

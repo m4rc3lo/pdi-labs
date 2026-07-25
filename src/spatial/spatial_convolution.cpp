@@ -10,6 +10,7 @@
 
 #include <opencv2/core.hpp>
 
+#include <algorithm>
 #include <cmath>
 #include <cstdint>
 #include <stdexcept>
@@ -68,6 +69,10 @@ void validate_kernel(const cv::Mat& kernel, const cv::Mat& input_image) {
     return kernel.ptr<double>(row)[col];
 }
 
+[[nodiscard]] int clamp_index(int value, int upper_bound) {
+    return std::clamp(value, 0, upper_bound - 1);
+}
+
 [[nodiscard]] double kernel_sum(const cv::Mat& kernel) {
     double sum = 0.0;
 
@@ -87,7 +92,8 @@ namespace pdi::spatial {
 cv::Mat SpatialConvolution::convolution(
     const cv::Mat& input_image,
     const cv::Mat& kernel,
-    bool normalize_kernel
+    bool normalize_kernel,
+    BorderStrategy border_strategy
 ) const {
     core::ImageValidator::require_not_empty(input_image);
     core::ImageValidator::require_depth_8u(input_image);
@@ -107,32 +113,55 @@ cv::Mat SpatialConvolution::convolution(
         }
     }
 
-    cv::Mat output_image = cv::Mat::zeros(
-        input_image.rows,
-        input_image.cols,
-        CV_8UC1
-    );
+    cv::Mat output_image =
+        border_strategy == BorderStrategy::CopyBorder
+            ? input_image.clone()
+            : cv::Mat::zeros(input_image.rows, input_image.cols, CV_8UC1);
 
     const int radius = kernel.rows / 2;
+    const int row_begin =
+        border_strategy == BorderStrategy::CopyBorder ? radius : 0;
+    const int row_end =
+        border_strategy == BorderStrategy::CopyBorder
+            ? input_image.rows - radius
+            : input_image.rows;
+    const int col_begin =
+        border_strategy == BorderStrategy::CopyBorder ? radius : 0;
+    const int col_end =
+        border_strategy == BorderStrategy::CopyBorder
+            ? input_image.cols - radius
+            : input_image.cols;
 
-    for (int row = radius; row < input_image.rows - radius; ++row) {
+    for (int row = row_begin; row < row_end; ++row) {
         auto* output_row = output_image.ptr<std::uint8_t>(row);
 
-        for (int col = radius; col < input_image.cols - radius; ++col) {
+        for (int col = col_begin; col < col_end; ++col) {
             double accumulated = 0.0;
 
-            for (int kernel_row = 0;
-                 kernel_row < kernel.rows;
-                 ++kernel_row) {
-                const int input_row_index = row + kernel_row - radius;
+            for (int kernel_row = 0; kernel_row < kernel.rows; ++kernel_row) {
+                int input_row_index = row + kernel_row - radius;
+
+                if (border_strategy == BorderStrategy::ReplicateBorder) {
+                    input_row_index = clamp_index(
+                        input_row_index,
+                        input_image.rows
+                    );
+                }
+
                 const auto* input_row =
                     input_image.ptr<std::uint8_t>(input_row_index);
 
                 for (int kernel_col = 0;
                      kernel_col < kernel.cols;
                      ++kernel_col) {
-                    const int input_col_index =
-                        col + kernel_col - radius;
+                    int input_col_index = col + kernel_col - radius;
+
+                    if (border_strategy == BorderStrategy::ReplicateBorder) {
+                        input_col_index = clamp_index(
+                            input_col_index,
+                            input_image.cols
+                        );
+                    }
 
                     accumulated +=
                         static_cast<double>(input_row[input_col_index])

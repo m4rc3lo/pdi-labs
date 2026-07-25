@@ -45,6 +45,8 @@ timeline
   kernels flutuantes ímpares e política inicial de vizinhança completa.
 - Documentação explícita da correlação espacial sem rotação do kernel,
   normalização opcional, complexidade e testes com matrizes pequenas.
+- Estratégias determinísticas `CopyBorder` e `ReplicateBorder`, sem uso de
+  `cv::copyMakeBorder`.
 
 ## [0.3.0] - 2026-07-24
 
