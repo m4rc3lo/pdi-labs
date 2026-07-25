@@ -43,6 +43,7 @@ add_library(pdi_core
     src/value/image_inspector.cpp
     src/labs/m1_1_pipeline.cpp
     src/labs/m1_2_study_case.cpp
+    src/spatial/spatial_convolution.cpp
 )
 
 add_library(pdi::core ALIAS pdi_core)
