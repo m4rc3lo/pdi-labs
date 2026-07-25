@@ -44,6 +44,7 @@ add_library(pdi_core
     src/labs/m1_1_pipeline.cpp
     src/labs/m1_2_study_case.cpp
     src/spatial/spatial_convolution.cpp
+    src/spatial/smoothing_filters.cpp
 )
 
 add_library(pdi::core ALIAS pdi_core)
@@ -156,6 +157,18 @@ if(PDI_BUILD_EXAMPLES)
     )
 
     pdi_enable_project_warnings(lab_m1_2)
+
+    add_executable(lab_m1_3_smoothing
+        apps/lab_m1_3_smoothing/main.cpp
+    )
+
+    target_link_libraries(lab_m1_3_smoothing
+        PRIVATE
+            pdi::core
+            pdi::io
+    )
+
+    pdi_enable_project_warnings(lab_m1_3_smoothing)
 endif()
 
 if(PDI_BUILD_TESTS)
