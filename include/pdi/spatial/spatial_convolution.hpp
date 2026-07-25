@@ -10,6 +10,17 @@
 namespace pdi::spatial {
 
 /**
+ * @brief Selects how convolution handles image boundaries.
+ */
+enum class BorderStrategy {
+    /** @brief Copies original border pixels and processes only full neighborhoods. */
+    CopyBorder,
+
+    /** @brief Replicates the nearest valid source pixel outside the image. */
+    ReplicateBorder,
+};
+
+/**
  * @brief Applies a floating-point square kernel to an 8-bit grayscale image.
  *
  * @details The public operation is named `convolution` for consistency with
@@ -21,9 +32,10 @@ namespace pdi::spatial {
  * In those cases, this implementation produces the same numeric result as the
  * mathematical definition of convolution.
  *
- * Only pixels whose complete neighborhood fits inside the image are processed.
- * Border pixels that do not have a complete neighborhood remain zero in the
- * output image.
+ * Border handling is explicit and deterministic. `CopyBorder` preserves the
+ * original border and processes only complete neighborhoods. `ReplicateBorder`
+ * clamps out-of-range coordinates to the nearest valid source coordinate and
+ * computes every output position.
  */
 class SpatialConvolution {
 public:
@@ -35,6 +47,7 @@ public:
      * with type `CV_32FC1` or `CV_64FC1`.
      * @param normalize_kernel When true, divides the accumulated response by
      * the sum of all kernel coefficients.
+     * @param border_strategy Deterministic policy for incomplete neighborhoods.
      * @return Image with type `CV_8UC1` and the same dimensions as the input.
      *
      * @throws std::invalid_argument If the input image is empty.
@@ -61,7 +74,8 @@ public:
     [[nodiscard]] cv::Mat convolution(
         const cv::Mat& input_image,
         const cv::Mat& kernel,
-        bool normalize_kernel = false
+        bool normalize_kernel = false,
+        BorderStrategy border_strategy = BorderStrategy::CopyBorder
     ) const;
 };
 
