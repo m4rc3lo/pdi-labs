@@ -56,6 +56,7 @@ add_executable(pdi_unit_tests
     unit/mat_comparison_test.cpp
     unit/project_info_test.cpp
     unit/saturation_test.cpp
+    unit/spatial_convolution_test.cpp
 )
 
 target_link_libraries(pdi_unit_tests
