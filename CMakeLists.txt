@@ -45,6 +45,7 @@ add_library(pdi_core
     src/labs/m1_2_study_case.cpp
     src/labs/m1_3_pipeline.cpp
     src/spatial/spatial_convolution.cpp
+    src/spatial/spatial_kernels.cpp
     src/spatial/smoothing_filters.cpp
     src/spatial/laplacian_enhancement.cpp
     src/spatial/sobel_operator.cpp
@@ -69,6 +70,7 @@ pdi_enable_project_warnings(pdi_core)
 add_library(pdi_io
     src/io/image_display.cpp
     src/io/image_file_storage.cpp
+    src/io/processing_data_storage.cpp
 )
 
 add_library(pdi::io ALIAS pdi_io)

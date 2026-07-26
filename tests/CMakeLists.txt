@@ -55,6 +55,7 @@ add_executable(pdi_unit_tests
     unit/image_validator_test.cpp
     unit/mat_comparison_test.cpp
     unit/project_info_test.cpp
+    unit/processing_data_storage_test.cpp
     unit/saturation_test.cpp
     unit/spatial_convolution_test.cpp
     unit/smoothing_filters_test.cpp

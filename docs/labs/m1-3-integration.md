@@ -17,6 +17,9 @@ flowchart LR
     Lap["LaplacianEnhancement"]
     Sobel["SobelOperator"]
     Files["Saídas PNG identificadas"]
+    Record["ProcessingRecord"]
+    Data["ProcessingDataStorage"]
+    YAML["YAML opcional"]
     GUI["Janelas opcionais"]
 
     CLI --> IO
@@ -25,6 +28,7 @@ flowchart LR
     Pipeline --> Lap
     Pipeline --> Sobel
     Pipeline --> IO
+    Pipeline --> Record --> Data --> YAML
     IO --> Files
     IO --> GUI
 ```
@@ -37,6 +41,7 @@ lab_m1_3 <entrada> <diretório-saída>
     [--border <copy|replicate>]
     [--factor <valor>]
     [--show]
+    [--save-data]
 ```
 
 `--operation` é obrigatório.
@@ -47,6 +52,8 @@ lab_m1_3 <entrada> <diretório-saída>
 não Laplacianas, o valor é aceito, mas não altera o resultado.
 
 `--show` abre janelas apenas quando solicitado.
+
+`--save-data` salva um YAML adicional sem alterar os PNGs nem exigir GUI.
 
 ## Saídas
 
@@ -77,3 +84,13 @@ conteúdo externo ou licenças de terceiros.
 O patch atualiza o projeto para `0.4.0` e registra o fechamento do Laboratório
 M1.3. Nenhuma tag Git é criada automaticamente. A tag deve ser criada somente
 depois da validação completa em `main`.
+
+
+## Dados numéricos
+
+A suavização registra o kernel e sua soma. O Laplaciano registra kernel,
+resposta bruta e realce antes da saturação. O Sobel registra kernels, gradientes
+assinados e as duas magnitudes.
+
+Os YAMLs são destinados a pequenas imagens, verificações numéricas e
+rastreabilidade. PNG representa visualização; YAML preserva o dado numérico.

@@ -57,6 +57,10 @@ timeline
   aproximada e euclidiana, visualizações e testes numéricos.
 - Executável integrado `lab_m1_3`, seleção de operação e borda, parâmetros,
   imagens sintéticas, saídas identificadas e testes de integração.
+- Persistência genérica em YAML com `ProcessingRecord` e
+  `ProcessingDataStorage`.
+- Opção `--save-data` para parâmetros, kernels e matrizes numéricas do M1.3,
+  com testes de round-trip e preparação para experimentos em lote.
 
 ## [0.3.0] - 2026-07-24
 

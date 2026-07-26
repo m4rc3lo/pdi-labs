@@ -5,7 +5,9 @@
 
 #include "pdi/io/image_display.hpp"
 #include "pdi/io/image_file_storage.hpp"
+#include "pdi/io/processing_data_storage.hpp"
 #include "pdi/labs/m1_3_pipeline.hpp"
+#include "pdi/version.hpp"
 
 #include <filesystem>
 #include <iostream>
@@ -22,6 +24,7 @@ struct Options {
     pdi::spatial::BorderStrategy border_strategy;
     double enhancement_factor;
     bool show_images;
+    bool save_data;
 };
 
 [[nodiscard]] pdi::labs::M13Operation parse_operation(
@@ -68,7 +71,7 @@ struct Options {
             "Usage: lab_m1_3 <input-image> <output-directory> "
             "--operation <mean3|weighted3|mean5|laplacian4|"
             "laplacian8|sobel> [--border <copy|replicate>] "
-            "[--factor <value>] [--show]"
+            "[--factor <value>] [--show] [--save-data]"
         );
     }
 
@@ -80,6 +83,7 @@ struct Options {
             pdi::spatial::BorderStrategy::ReplicateBorder,
         .enhancement_factor = 1.0,
         .show_images = false,
+        .save_data = false,
     };
 
     bool operation_defined = false;
@@ -111,6 +115,8 @@ struct Options {
             options.enhancement_factor = std::stod(argv[++index]);
         } else if (argument == "--show") {
             options.show_images = true;
+        } else if (argument == "--save-data") {
+            options.save_data = true;
         } else {
             throw std::invalid_argument(
                 "Unsupported argument: " + argument
@@ -133,7 +139,7 @@ int main(int argc, char* argv[]) {
         const pdi::io::ImageFileStorage storage;
         const cv::Mat input = storage.load_grayscale(options.input_path);
 
-        const auto outputs = pdi::labs::M13Pipeline{}.run(
+        const auto result = pdi::labs::M13Pipeline{}.run(
             input,
             {
                 .operation = options.operation,
@@ -146,12 +152,32 @@ int main(int argc, char* argv[]) {
             {"Input grayscale", input},
         };
 
-        for (const auto& output : outputs) {
+        for (const auto& output : result.visual_outputs) {
             const auto output_path =
                 options.output_directory / (output.name + ".png");
             storage.save(output_path, output.image);
             windows.push_back({output.name, output.image});
             std::cout << "Saved: " << output_path.string() << '\n';
+        }
+
+        if (options.save_data) {
+            const auto data_path =
+                options.output_directory / result.data_file_name;
+
+            pdi::io::ProcessingDataStorage{}.save_yaml(
+                data_path,
+                {
+                    .format_version = "1",
+                    .project_version = PDI_PROJECT_VERSION,
+                    .laboratory = "M1.3",
+                    .operation = result.operation_name,
+                    .input_path = options.input_path.string(),
+                    .parameters = result.parameters,
+                    .numeric_artifacts = result.numeric_artifacts,
+                }
+            );
+
+            std::cout << "Saved: " << data_path.string() << '\n';
         }
 
         if (options.show_images) {

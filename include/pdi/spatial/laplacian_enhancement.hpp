@@ -29,6 +29,9 @@ struct LaplacianEnhancementResult {
     /** @brief Signed `CV_64FC1` Laplacian response. */
     cv::Mat raw_response;
 
+    /** @brief Unsaturated enhanced response with type `CV_64FC1`. */
+    cv::Mat enhanced_raw;
+
     /** @brief Min-max normalized `CV_8UC1` view of the raw response. */
     cv::Mat response_visualization;
 
@@ -51,7 +54,7 @@ public:
      * @return Raw response, visualization and enhanced image.
      *
      * @details Enhancement uses
-     * `enhanced = input + enhancement_factor * raw_response`.
+     * `enhanced_raw = input + enhancement_factor * raw_response`.
      * The signed response remains in `CV_64FC1` until the final visual output.
      * Only the enhanced image is rounded and saturated to `[0, 255]`.
      */
