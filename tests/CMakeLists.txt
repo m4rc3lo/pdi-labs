@@ -53,6 +53,7 @@ add_executable(pdi_unit_tests
     unit/image_file_storage_test.cpp
     unit/image_inspector_test.cpp
     unit/image_validator_test.cpp
+    unit/manual_threshold_test.cpp
     unit/mat_comparison_test.cpp
     unit/project_info_test.cpp
     unit/processing_data_storage_test.cpp

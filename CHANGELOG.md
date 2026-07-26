@@ -39,6 +39,11 @@ timeline
 
 ## [Unreleased]
 
+### Added
+
+- Limiarização manual global e seleção inclusiva por intervalo para
+  imagens `CV_8UC1`, com testes de fronteira e documentação do M2.1.
+
 ## [0.4.0] - 2026-07-25
 
 ### Added
