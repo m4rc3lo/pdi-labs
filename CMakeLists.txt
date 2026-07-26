@@ -42,6 +42,20 @@ configure_file(
     @ONLY
 )
 
+add_library(pdi_windowing
+    src/windowing/window_lifecycle.cpp
+)
+
+add_library(pdi::windowing ALIAS pdi_windowing)
+
+target_include_directories(pdi_windowing
+    PUBLIC
+        "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
+        "$<INSTALL_INTERFACE:include>"
+)
+
+pdi_enable_project_warnings(pdi_windowing)
+
 add_library(pdi_core
     src/core/image_validator.cpp
     src/core/project_info.cpp
@@ -99,6 +113,7 @@ target_link_libraries(pdi_io
     PUBLIC
         opencv_core
     PRIVATE
+        pdi::windowing
         opencv_highgui
         opencv_imgcodecs
 )
@@ -110,6 +125,7 @@ if(PDI_BUILD_INTERACTIVE_UI)
         src/ui/interactive_state.cpp
         src/ui/interactive_window.cpp
         src/ui/keyboard_event.cpp
+        src/ui/keyboard_event_dispatcher.cpp
         src/ui/mouse_event.cpp
         src/ui/qt_controls.cpp
         src/ui/ui_capabilities.cpp
@@ -125,6 +141,7 @@ if(PDI_BUILD_INTERACTIVE_UI)
 
     target_link_libraries(pdi_ui
         PUBLIC
+            pdi::windowing
             opencv_core
         PRIVATE
             opencv_highgui
@@ -305,6 +322,12 @@ if(PDI_BUILD_INTERACTIVE_UI AND PDI_BUILD_INTERACTIVE_TESTS)
     )
     target_link_libraries(pdi_ui_test_qt_controls PRIVATE pdi::ui)
     pdi_enable_project_warnings(pdi_ui_test_qt_controls)
+
+    add_executable(pdi_ui_test_window_close
+        apps/ui_diagnostics/window_close/main.cpp
+    )
+    target_link_libraries(pdi_ui_test_window_close PRIVATE pdi::ui)
+    pdi_enable_project_warnings(pdi_ui_test_window_close)
 elseif(PDI_BUILD_INTERACTIVE_TESTS)
     message(
         WARNING

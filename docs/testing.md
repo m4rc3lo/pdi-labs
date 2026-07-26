@@ -19,10 +19,14 @@ ctest \
     --output-on-failure
 ```
 
-Esses testes validam estado, limites, teclado, mouse e capacidades sem criar
-janelas.
+Esses testes validam estado, limites, teclado, mouse, capacidades e a política
+universal de fechamento sem criar janelas. Também verificam que o fechamento
+ocorre antes do callback e que a ausência de callback não impede a saída.
 
 ## Diagnósticos manuais
 
 Os executáveis `pdi_ui_test_*` devem ser iniciados manualmente. Eles não são
 registrados no CTest e podem exigir um desktop local e um backend HighGUI.
+
+Use `pdi_ui_test_window_close` para verificar `Esc`, `q`, `Q` e o botão `X`.
+O processo deve terminar sem `Ctrl+C` ou reinicialização do terminal.

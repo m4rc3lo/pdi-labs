@@ -52,12 +52,36 @@ Botões, checkboxes e radio buttons dependem das extensões Qt acessíveis por
 - os controles Qt são omitidos;
 - nenhuma dependência direta de Qt é adicionada ao projeto.
 
-## Laço de eventos
+## Ciclo de vida e laço de eventos
 
-`InteractiveWindow::run` chama `cv::waitKey` periodicamente. Essa chamada é
-necessária para processar eventos e manter a janela responsiva. Os callbacks são
-executados no mesmo fluxo que processa o laço de eventos; objetos capturados
-devem permanecer válidos até o encerramento.
+`ImageDisplay` e `InteractiveWindow` evitam `cv::waitKey(0)` como mecanismo
+único de espera. As duas abstrações processam eventos periodicamente e
+consultam `cv::WND_PROP_VISIBLE` para reconhecer o fechamento pelo botão `X`.
+Valores menores que `1.0`, valores negativos e exceções ao consultar uma janela
+já destruída são interpretados como encerramento normal.
+
+```mermaid
+stateDiagram-v2
+    [*] --> Created
+    Created --> Visible
+    Visible --> Closing: Esc / q / Q
+    Visible --> Closing: X
+    Visible --> Visible: eventos e atualização
+    Closing --> Destroyed
+    Destroyed --> [*]
+```
+
+A política universal de saída reconhece `Esc`, `q` e `Q` antes do callback da
+aplicação. Assim, a janela interativa encerra mesmo sem callback registrado, mas
+o callback ainda recebe o evento quando existe.
+
+`cv::waitKey` recebe teclado da janela HighGUI em foco. Pressionar `Esc` no
+terminal não equivale a pressionar `Esc` na janela.
+
+`InteractiveWindow` não chama novamente `cv::imshow` depois que a janela é
+fechada, evitando recriação acidental. Os callbacks são executados no mesmo
+fluxo que processa o laço; objetos capturados devem permanecer válidos até o
+encerramento.
 
 ## Build
 
@@ -96,6 +120,7 @@ pdi_ui_test_trackbar
 pdi_ui_test_mouse
 pdi_ui_test_keyboard
 pdi_ui_test_qt_controls
+pdi_ui_test_window_close
 ```
 
 são diagnósticos manuais e não são registrados no CTest.
@@ -116,8 +141,9 @@ Controles:
 M      alterna global/intervalo
 R      redefine parâmetros
 S      salva o estado atual
-Q/Esc  encerra
-mouse  inspeciona intensidade
+Q/q/Esc encerra
+X       encerra o laço
+mouse   inspeciona intensidade
 ```
 
 O YAML é salvo pela aplicação, não por `pdi::ui`, e registra os parâmetros
@@ -128,3 +154,21 @@ finais selecionados.
 Interfaces HighGUI podem não funcionar em CI, sessões remotas sem display,
 containers headless ou instalações do OpenCV sem backend gráfico. Esses
 ambientes continuam compatíveis com o build e os testes padrão.
+
+
+## Fechamento estático e interativo
+
+```text
+--show
+Esc, q ou Q -> encerra
+X           -> fecha uma janela
+último X    -> encerra o processo
+
+--interactive
+Esc, q ou Q -> encerra
+X           -> encerra o laço
+```
+
+Quando controles Qt são usados, a aplicação realiza limpeza global ao final
+para remover também o painel de controles. Uma instância isolada de
+`InteractiveWindow` destrói apenas sua própria janela.

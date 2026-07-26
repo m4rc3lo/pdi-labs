@@ -29,3 +29,15 @@ cmake --build build/ucrt64-debug-ui
 O OpenCV precisa possuir um backend HighGUI para abrir janelas. Qt não é uma
 dependência direta: botões e checkboxes são ativados apenas quando o backend
 reporta suporte.
+
+
+## Diagnóstico do ciclo de vida das janelas
+
+Com os dois recursos interativos habilitados:
+
+```bash
+./build/ucrt64-debug-ui/pdi_ui_test_window_close.exe
+```
+
+Feche por `Esc`, `q`, `Q` ou pelo botão `X`. As teclas devem ser pressionadas
+com a janela HighGUI em foco. O backend Qt é opcional.

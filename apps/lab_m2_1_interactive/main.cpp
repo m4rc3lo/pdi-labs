@@ -416,6 +416,7 @@ int main(int argc, char* argv[]) {
 
         refresh();
         window.run();
+        pdi::ui::InteractiveWindow::destroy_all_windows();
         save_current(options, mode, state, output);
         return 0;
     } catch (const std::exception& exception) {

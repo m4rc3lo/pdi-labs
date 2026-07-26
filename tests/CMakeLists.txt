@@ -58,6 +58,7 @@ add_executable(pdi_unit_tests
     unit/mat_comparison_test.cpp
     unit/project_info_test.cpp
     unit/processing_data_storage_test.cpp
+    unit/window_lifecycle_test.cpp
     unit/saturation_test.cpp
     unit/spatial_convolution_test.cpp
     unit/smoothing_filters_test.cpp
@@ -69,6 +70,7 @@ target_link_libraries(pdi_unit_tests
     PRIVATE
         pdi::core
         pdi::io
+        pdi::windowing
         pdi::test_helpers
         Catch2::Catch2WithMain
 )

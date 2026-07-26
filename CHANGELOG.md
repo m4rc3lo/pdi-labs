@@ -53,6 +53,9 @@ timeline
 - Exemplos explícitos baseados em OpenCV para HSV, Otsu, limiarização
   adaptativa, transformada de distância e Watershed, com parâmetros,
   visualizações intermediárias e artefatos numéricos para YAML.
+- Correção do ciclo de vida das janelas estáticas e interativas, com
+  fechamento universal por `Esc`, `q`, `Q` e `X`, prevenção de recriação de
+  janelas fechadas, testes sem GUI e diagnóstico manual dedicado.
 
 ## [0.4.0] - 2026-07-25
 
