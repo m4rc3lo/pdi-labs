@@ -48,6 +48,8 @@ timeline
 - Opções `PDI_BUILD_INTERACTIVE_UI` e `PDI_BUILD_INTERACTIVE_TESTS`,
   demonstração interativa do M2.1 e diagnósticos manuais fora do CTest
   padrão.
+- Operações manuais de inversão, interseção, união e diferença de máscaras,
+  além da aplicação de máscaras a imagens `CV_8UC1` e `CV_8UC3`.
 
 ## [0.4.0] - 2026-07-25
 

@@ -60,6 +60,7 @@ add_library(pdi_core
     src/spatial/laplacian_enhancement.cpp
     src/spatial/sobel_operator.cpp
     src/segmentation/manual_threshold.cpp
+    src/segmentation/mask_operations.cpp
 )
 
 add_library(pdi::core ALIAS pdi_core)
