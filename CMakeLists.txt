@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.24)
 
 project(
     pdi_labs
-    VERSION 0.3.0
+    VERSION 0.4.0
     DESCRIPTION "Didactic Image Processing laboratory implementations"
     LANGUAGES CXX
 )
@@ -43,6 +43,7 @@ add_library(pdi_core
     src/value/image_inspector.cpp
     src/labs/m1_1_pipeline.cpp
     src/labs/m1_2_study_case.cpp
+    src/labs/m1_3_pipeline.cpp
     src/spatial/spatial_convolution.cpp
     src/spatial/smoothing_filters.cpp
     src/spatial/laplacian_enhancement.cpp
@@ -195,6 +196,18 @@ if(PDI_BUILD_EXAMPLES)
     )
 
     pdi_enable_project_warnings(lab_m1_3_sobel)
+
+    add_executable(lab_m1_3
+        apps/lab_m1_3/main.cpp
+    )
+
+    target_link_libraries(lab_m1_3
+        PRIVATE
+            pdi::core
+            pdi::io
+    )
+
+    pdi_enable_project_warnings(lab_m1_3)
 endif()
 
 if(PDI_BUILD_TESTS)

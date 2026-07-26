@@ -39,6 +39,8 @@ timeline
 
 ## [Unreleased]
 
+## [0.4.0] - 2026-07-25
+
 ### Added
 
 - Núcleo genérico `SpatialConvolution::convolution` para imagens `CV_8UC1`,
@@ -53,6 +55,8 @@ timeline
   fator configurável e visualização normalizada da resposta bruta.
 - Operador Sobel manual com gradientes assinados `Gx` e `Gy`, magnitudes
   aproximada e euclidiana, visualizações e testes numéricos.
+- Executável integrado `lab_m1_3`, seleção de operação e borda, parâmetros,
+  imagens sintéticas, saídas identificadas e testes de integração.
 
 ## [0.3.0] - 2026-07-24
 
@@ -117,7 +121,8 @@ timeline
 - Renomeado o branch principal de `master` para `main`.
 - Preservado integralmente o conteúdo do projeto anterior em `legacy/`.
 
-[Unreleased]: https://github.com/m4rc3lo/pdi-labs/compare/v0.3.0...HEAD
+[Unreleased]: https://github.com/m4rc3lo/pdi-labs/compare/v0.4.0...HEAD
+[0.4.0]: https://github.com/m4rc3lo/pdi-labs/compare/v0.3.0...v0.4.0
 [0.3.0]: https://github.com/m4rc3lo/pdi-labs/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/m4rc3lo/pdi-labs/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/m4rc3lo/pdi-labs/compare/v0.0.1...v0.1.0
