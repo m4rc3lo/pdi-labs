@@ -747,3 +747,22 @@ O projeto encontra-se em construção incremental.
 | `v0.8.0` | comparação entre C++, Java e Python |
 | `v0.9.0` | integração, automação e revisão técnica |
 | `v1.0.0` | primeira versão estável para uso na disciplina |
+
+## Laboratório M2.1 integrado
+
+O executável `lab_m2_1` reúne limiarização manual, máscaras e exemplos de
+segmentação baseados em OpenCV:
+
+```bash
+./build/ucrt64-debug/lab_m2_1.exe \
+    images/input/example.png \
+    images/output/m2_1 \
+    otsu \
+    --show \
+    --save-data
+```
+
+O modo padrão é headless. `--show` habilita visualização estática e
+`--interactive` habilita controles responsivos somente em builds configurados
+com `PDI_BUILD_INTERACTIVE_UI=ON`. Consulte `docs/labs/m2-1.md` para operações,
+parâmetros, exemplos e artefatos gerados.

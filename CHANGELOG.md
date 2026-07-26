@@ -39,23 +39,22 @@ timeline
 
 ## [Unreleased]
 
+## [0.5.0] - 2026-07-26
+
 ### Added
 
-- Limiarização manual global e seleção inclusiva por intervalo para
-  imagens `CV_8UC1`, com testes de fronteira e documentação do M2.1.
-- Camada opcional `pdi::ui` para janelas responsivas, trackbars, mouse,
-  teclado e controles Qt com fallback seguro.
-- Opções `PDI_BUILD_INTERACTIVE_UI` e `PDI_BUILD_INTERACTIVE_TESTS`,
-  demonstração interativa do M2.1 e diagnósticos manuais fora do CTest
-  padrão.
-- Operações manuais de inversão, interseção, união e diferença de máscaras,
-  além da aplicação de máscaras a imagens `CV_8UC1` e `CV_8UC3`.
-- Exemplos explícitos baseados em OpenCV para HSV, Otsu, limiarização
-  adaptativa, transformada de distância e Watershed, com parâmetros,
-  visualizações intermediárias e artefatos numéricos para YAML.
-- Correção do ciclo de vida das janelas estáticas e interativas, com
-  fechamento universal por `Esc`, `q`, `Q` e `X`, prevenção de recriação de
-  janelas fechadas, testes sem GUI e diagnóstico manual dedicado.
+- Executável integrado `lab_m2_1` para limiarização manual, operações com
+  máscaras, HSV, Otsu, limiarização adaptativa, transformada de distância e
+  Watershed.
+- Pipeline `M21Pipeline`, com separação entre saídas visuais, parâmetros e
+  artefatos numéricos persistidos em YAML.
+- Suporte opcional a `--show`, `--interactive` e `--save-data` no fechamento
+  do Laboratório M2.1.
+- Testes de integração e documentação consolidada do Laboratório M2.1.
+
+### Changed
+
+- Versão do projeto preparada para `v0.5.0`.
 
 ## [0.4.0] - 2026-07-25
 
