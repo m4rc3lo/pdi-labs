@@ -71,6 +71,27 @@ public:
      * the time complexity is `O(M N K^2)`. The output matrix requires
      * `O(M N)` additional space.
      */
+
+    /**
+     * @brief Applies the kernel and preserves the signed floating-point response.
+     *
+     * @param input_image Source image with type `CV_8UC1`.
+     * @param kernel Square, odd-sized, single-channel floating-point kernel.
+     * @param normalize_kernel Whether to divide by the kernel coefficient sum.
+     * @param border_strategy Border handling strategy.
+     * @return Signed response with type `CV_64FC1`.
+     *
+     * @details This method does not saturate or convert the accumulated values
+     * to `uchar`. Negative responses and values above 255 remain available for
+     * subsequent numerical processing.
+     */
+    [[nodiscard]] cv::Mat convolution_raw(
+        const cv::Mat& input_image,
+        const cv::Mat& kernel,
+        bool normalize_kernel = false,
+        BorderStrategy border_strategy = BorderStrategy::CopyBorder
+    ) const;
+
     [[nodiscard]] cv::Mat convolution(
         const cv::Mat& input_image,
         const cv::Mat& kernel,
