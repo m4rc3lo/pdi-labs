@@ -154,6 +154,8 @@ distinção será registrada na documentação das classes e dos métodos releva
 - GitHub;
 - MSYS2 UCRT64;
 - Visual Studio Code.
+- HighGUI opcional para interfaces responsivas;
+- controles Qt opcionais quando o backend do OpenCV oferecer suporte.
 
 Algumas dependências e targets ainda serão adicionados durante a evolução do
 projeto.
@@ -176,6 +178,29 @@ Os ambientes principais de desenvolvimento e validação são:
 
 Todo artefato de configuração e compilação deve ser gerado dentro de `build/`,
 na raiz do projeto. Esse diretório não é versionado.
+
+## Interface interativa opcional
+
+O build padrão permanece headless. `--show` representa visualização estática,
+enquanto `--interactive` ativa controles responsivos nos executáveis que
+oferecem essa integração.
+
+```bash
+cmake -S . -B build/ucrt64-debug-ui \
+    -G Ninja \
+    -DCMAKE_BUILD_TYPE=Debug \
+    -DPDI_BUILD_INTERACTIVE_UI=ON \
+    -DPDI_BUILD_INTERACTIVE_TESTS=ON
+cmake --build build/ucrt64-debug-ui
+```
+
+Trackbars, mouse e teclado usam HighGUI. Botões, checkboxes e radio buttons
+são adicionados somente quando o backend Qt estiver disponível. A ausência de
+Qt não impede compilação, testes headless ou uso dos demais controles.
+
+Os executáveis `pdi_ui_test_*` são diagnósticos manuais e não integram o CTest
+padrão. A arquitetura e as limitações estão descritas em
+`docs/architecture/interactive-ui.md`.
 
 ## Preparação inicial dos ambientes
 

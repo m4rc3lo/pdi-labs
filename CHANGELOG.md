@@ -43,6 +43,11 @@ timeline
 
 - Limiarização manual global e seleção inclusiva por intervalo para
   imagens `CV_8UC1`, com testes de fronteira e documentação do M2.1.
+- Camada opcional `pdi::ui` para janelas responsivas, trackbars, mouse,
+  teclado e controles Qt com fallback seguro.
+- Opções `PDI_BUILD_INTERACTIVE_UI` e `PDI_BUILD_INTERACTIVE_TESTS`,
+  demonstração interativa do M2.1 e diagnósticos manuais fora do CTest
+  padrão.
 
 ## [0.4.0] - 2026-07-25
 

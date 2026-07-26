@@ -98,3 +98,22 @@ catch_discover_tests(
     pdi_integration_tests
     TEST_PREFIX "integration."
 )
+
+if(TARGET pdi_ui)
+    add_executable(pdi_ui_unit_tests
+        unit/interactive_ui_test.cpp
+    )
+
+    target_link_libraries(pdi_ui_unit_tests
+        PRIVATE
+            pdi::ui
+            Catch2::Catch2WithMain
+    )
+
+    pdi_enable_project_warnings(pdi_ui_unit_tests)
+
+    catch_discover_tests(
+        pdi_ui_unit_tests
+        TEST_PREFIX "ui.unit."
+    )
+endif()
