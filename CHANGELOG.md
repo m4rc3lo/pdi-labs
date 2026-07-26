@@ -47,6 +47,8 @@ timeline
   normalização opcional, complexidade e testes com matrizes pequenas.
 - Estratégias determinísticas `CopyBorder` e `ReplicateBorder`, sem uso de
   `cv::copyMakeBorder`.
+- Filtros de média `3 x 3`, média ponderada `3 x 3` e média `5 x 5`,
+  implementados sobre `SpatialConvolution`, com exemplo e testes.
 
 ## [0.3.0] - 2026-07-24
 
