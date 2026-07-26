@@ -89,7 +89,7 @@ void validate_kernel(const cv::Mat& kernel, const cv::Mat& input_image) {
 
 namespace pdi::spatial {
 
-cv::Mat SpatialConvolution::convolution(
+cv::Mat SpatialConvolution::convolution_raw(
     const cv::Mat& input_image,
     const cv::Mat& kernel,
     bool normalize_kernel,
@@ -113,10 +113,16 @@ cv::Mat SpatialConvolution::convolution(
         }
     }
 
-    cv::Mat output_image =
-        border_strategy == BorderStrategy::CopyBorder
-            ? input_image.clone()
-            : cv::Mat::zeros(input_image.rows, input_image.cols, CV_8UC1);
+    cv::Mat output_image(input_image.rows, input_image.cols, CV_64FC1);
+
+    for (int row = 0; row < input_image.rows; ++row) {
+        const auto* input_row = input_image.ptr<std::uint8_t>(row);
+        auto* output_row = output_image.ptr<double>(row);
+
+        for (int col = 0; col < input_image.cols; ++col) {
+            output_row[col] = static_cast<double>(input_row[col]);
+        }
+    }
 
     const int radius = kernel.rows / 2;
     const int row_begin =
@@ -133,7 +139,7 @@ cv::Mat SpatialConvolution::convolution(
             : input_image.cols;
 
     for (int row = row_begin; row < row_end; ++row) {
-        auto* output_row = output_image.ptr<std::uint8_t>(row);
+        auto* output_row = output_image.ptr<double>(row);
 
         for (int col = col_begin; col < col_end; ++col) {
             double accumulated = 0.0;
@@ -169,9 +175,34 @@ cv::Mat SpatialConvolution::convolution(
                 }
             }
 
-            output_row[col] = core::saturate_to_byte(
-                accumulated / normalization_divisor
-            );
+            output_row[col] = accumulated / normalization_divisor;
+        }
+    }
+
+    return output_image;
+}
+
+cv::Mat SpatialConvolution::convolution(
+    const cv::Mat& input_image,
+    const cv::Mat& kernel,
+    bool normalize_kernel,
+    BorderStrategy border_strategy
+) const {
+    const cv::Mat raw_response = convolution_raw(
+        input_image,
+        kernel,
+        normalize_kernel,
+        border_strategy
+    );
+
+    cv::Mat output_image(raw_response.rows, raw_response.cols, CV_8UC1);
+
+    for (int row = 0; row < raw_response.rows; ++row) {
+        const auto* raw_row = raw_response.ptr<double>(row);
+        auto* output_row = output_image.ptr<std::uint8_t>(row);
+
+        for (int col = 0; col < raw_response.cols; ++col) {
+            output_row[col] = core::saturate_to_byte(raw_row[col]);
         }
     }
 
