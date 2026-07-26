@@ -71,5 +71,6 @@ int main() {
 
     window.set_image(image);
     window.run();
+    pdi::ui::InteractiveWindow::destroy_all_windows();
     return 0;
 }

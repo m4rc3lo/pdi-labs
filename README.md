@@ -198,9 +198,14 @@ Trackbars, mouse e teclado usam HighGUI. Botões, checkboxes e radio buttons
 são adicionados somente quando o backend Qt estiver disponível. A ausência de
 Qt não impede compilação, testes headless ou uso dos demais controles.
 
+As janelas estáticas e interativas encerram por `Esc`, `q`, `Q` ou pelo botão
+`X`. A tecla deve ser pressionada quando uma janela HighGUI possui foco; o
+terminal não encaminha essas teclas para `cv::waitKey`.
+
 Os executáveis `pdi_ui_test_*` são diagnósticos manuais e não integram o CTest
-padrão. A arquitetura e as limitações estão descritas em
-`docs/architecture/interactive-ui.md`.
+padrão. O diagnóstico `pdi_ui_test_window_close` verifica especificamente o
+fechamento por teclado e pelo botão `X`. A arquitetura e as limitações estão
+descritas em `docs/architecture/interactive-ui.md`.
 
 ## Preparação inicial dos ambientes
 
