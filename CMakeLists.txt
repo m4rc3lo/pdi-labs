@@ -49,6 +49,7 @@ add_library(pdi_core
     src/spatial/smoothing_filters.cpp
     src/spatial/laplacian_enhancement.cpp
     src/spatial/sobel_operator.cpp
+    src/segmentation/manual_threshold.cpp
 )
 
 add_library(pdi::core ALIAS pdi_core)
