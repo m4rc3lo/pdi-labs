@@ -6,6 +6,7 @@
 #include "pdi/spatial/sobel_operator.hpp"
 
 #include "pdi/core/saturation.hpp"
+#include "pdi/spatial/spatial_kernels.hpp"
 
 #include <opencv2/core.hpp>
 
@@ -14,24 +15,6 @@
 #include <cstdint>
 
 namespace {
-
-[[nodiscard]] cv::Mat sobel_kernel_x() {
-    return (
-        cv::Mat_<double>(3, 3)
-            << -1.0, 0.0, 1.0,
-               -2.0, 0.0, 2.0,
-               -1.0, 0.0, 1.0
-    );
-}
-
-[[nodiscard]] cv::Mat sobel_kernel_y() {
-    return (
-        cv::Mat_<double>(3, 3)
-            << -1.0, -2.0, -1.0,
-                0.0,  0.0,  0.0,
-                1.0,  2.0,  1.0
-    );
-}
 
 [[nodiscard]] cv::Mat normalize_for_visualization(const cv::Mat& input) {
     double minimum = input.ptr<double>(0)[0];
@@ -85,13 +68,13 @@ SobelResult SobelOperator::apply(
 
     const cv::Mat gradient_x = convolution.convolution_raw(
         input_image,
-        sobel_kernel_x(),
+        SpatialKernels::sobel_x(),
         false,
         border_strategy
     );
     const cv::Mat gradient_y = convolution.convolution_raw(
         input_image,
-        sobel_kernel_y(),
+        SpatialKernels::sobel_y(),
         false,
         border_strategy
     );

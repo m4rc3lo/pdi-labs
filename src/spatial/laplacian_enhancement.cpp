@@ -6,6 +6,7 @@
 #include "pdi/spatial/laplacian_enhancement.hpp"
 
 #include "pdi/core/saturation.hpp"
+#include "pdi/spatial/spatial_kernels.hpp"
 
 #include <opencv2/core.hpp>
 
@@ -13,26 +14,6 @@
 #include <cstdint>
 
 namespace {
-
-[[nodiscard]] cv::Mat laplacian_kernel(
-    pdi::spatial::LaplacianKernel kernel
-) {
-    if (kernel == pdi::spatial::LaplacianKernel::FourNeighbor) {
-        return (
-            cv::Mat_<double>(3, 3)
-                << 0.0, -1.0, 0.0,
-                   -1.0, 4.0, -1.0,
-                   0.0, -1.0, 0.0
-        );
-    }
-
-    return (
-        cv::Mat_<double>(3, 3)
-            << -1.0, -1.0, -1.0,
-               -1.0, 8.0, -1.0,
-               -1.0, -1.0, -1.0
-    );
-}
 
 [[nodiscard]] cv::Mat normalize_for_visualization(
     const cv::Mat& raw_response
@@ -88,28 +69,34 @@ LaplacianEnhancementResult LaplacianEnhancement::apply(
     const cv::Mat raw_response =
         SpatialConvolution{}.convolution_raw(
             input_image,
-            laplacian_kernel(kernel),
+            kernel == LaplacianKernel::FourNeighbor
+                ? SpatialKernels::laplacian_4()
+                : SpatialKernels::laplacian_8(),
             false,
             border_strategy
         );
 
+    cv::Mat enhanced_raw(input_image.rows, input_image.cols, CV_64FC1);
     cv::Mat enhanced_image(input_image.rows, input_image.cols, CV_8UC1);
 
     for (int row = 0; row < input_image.rows; ++row) {
         const auto* input_row = input_image.ptr<std::uint8_t>(row);
         const auto* response_row = raw_response.ptr<double>(row);
+        auto* enhanced_raw_row = enhanced_raw.ptr<double>(row);
         auto* output_row = enhanced_image.ptr<std::uint8_t>(row);
 
         for (int col = 0; col < input_image.cols; ++col) {
             const double enhanced =
                 static_cast<double>(input_row[col])
                 + enhancement_factor * response_row[col];
+            enhanced_raw_row[col] = enhanced;
             output_row[col] = core::saturate_to_byte(enhanced);
         }
     }
 
     return {
         .raw_response = raw_response,
+        .enhanced_raw = enhanced_raw,
         .response_visualization =
             normalize_for_visualization(raw_response),
         .enhanced_image = enhanced_image,

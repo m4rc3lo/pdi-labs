@@ -5,6 +5,7 @@
 
 #pragma once
 
+#include "pdi/io/processing_record.hpp"
 #include "pdi/spatial/spatial_convolution.hpp"
 
 #include <opencv2/core/mat.hpp>
@@ -36,11 +37,22 @@ struct M13Parameters {
 };
 
 /**
- * @brief Identifies one generated image.
+ * @brief Identifies one generated visual image.
  */
 struct M13Output {
     std::string name;
     cv::Mat image;
+};
+
+/**
+ * @brief Separates visual outputs from traceability data.
+ */
+struct M13PipelineResult {
+    std::string operation_name;
+    std::string data_file_name;
+    std::vector<M13Output> visual_outputs;
+    std::vector<io::NamedValue> parameters;
+    std::vector<io::NamedMatrix> numeric_artifacts;
 };
 
 /**
@@ -53,9 +65,9 @@ public:
      *
      * @param input_image Source image with type `CV_8UC1`.
      * @param parameters Operation, border strategy and numeric parameters.
-     * @return Identified visual outputs ready for persistence or display.
+     * @return Visual outputs, parameters and numeric artifacts.
      */
-    [[nodiscard]] std::vector<M13Output> run(
+    [[nodiscard]] M13PipelineResult run(
         const cv::Mat& input_image,
         const M13Parameters& parameters
     ) const;
