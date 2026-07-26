@@ -51,3 +51,6 @@ desktop.ini
 # - images/output/: generated laboratory outputs
 /images/output/*
 !/images/output/.gitkeep
+
+# Windows shortcuts
+*.lnk
