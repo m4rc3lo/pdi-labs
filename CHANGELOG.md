@@ -50,6 +50,9 @@ timeline
   padrão.
 - Operações manuais de inversão, interseção, união e diferença de máscaras,
   além da aplicação de máscaras a imagens `CV_8UC1` e `CV_8UC3`.
+- Exemplos explícitos baseados em OpenCV para HSV, Otsu, limiarização
+  adaptativa, transformada de distância e Watershed, com parâmetros,
+  visualizações intermediárias e artefatos numéricos para YAML.
 
 ## [0.4.0] - 2026-07-25
 

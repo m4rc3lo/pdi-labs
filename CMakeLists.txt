@@ -34,7 +34,7 @@ list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
 include(CompilerWarnings)
 
-find_package(OpenCV REQUIRED COMPONENTS core imgcodecs highgui)
+find_package(OpenCV REQUIRED COMPONENTS core imgcodecs highgui imgproc)
 
 configure_file(
     "${CMAKE_CURRENT_SOURCE_DIR}/cmake/version.hpp.in"
@@ -61,6 +61,7 @@ add_library(pdi_core
     src/spatial/sobel_operator.cpp
     src/segmentation/manual_threshold.cpp
     src/segmentation/mask_operations.cpp
+    src/segmentation/library_segmentation_pipeline.cpp
 )
 
 add_library(pdi::core ALIAS pdi_core)
@@ -75,6 +76,7 @@ target_include_directories(pdi_core
 target_link_libraries(pdi_core
     PUBLIC
         opencv_core
+        opencv_imgproc
 )
 
 pdi_enable_project_warnings(pdi_core)
@@ -250,6 +252,18 @@ if(PDI_BUILD_EXAMPLES)
     )
 
     pdi_enable_project_warnings(lab_m1_3)
+
+    add_executable(lab_m2_1_library
+        apps/lab_m2_1_library/main.cpp
+    )
+
+    target_link_libraries(lab_m2_1_library
+        PRIVATE
+            pdi::core
+            pdi::io
+    )
+
+    pdi_enable_project_warnings(lab_m2_1_library)
 
     if(PDI_BUILD_INTERACTIVE_UI)
         add_executable(lab_m2_1_interactive
