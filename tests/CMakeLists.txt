@@ -59,6 +59,7 @@ add_executable(pdi_unit_tests
     unit/spatial_convolution_test.cpp
     unit/smoothing_filters_test.cpp
     unit/laplacian_enhancement_test.cpp
+    unit/sobel_operator_test.cpp
 )
 
 target_link_libraries(pdi_unit_tests
