@@ -11,6 +11,16 @@ option(PDI_BUILD_TESTS "Build the automated test suite" ON)
 option(PDI_BUILD_DOCS "Build the Doxygen documentation" OFF)
 option(PDI_BUILD_EXAMPLES "Build laboratory and example applications" ON)
 option(
+    PDI_BUILD_INTERACTIVE_UI
+    "Build optional HighGUI interactive components"
+    OFF
+)
+option(
+    PDI_BUILD_INTERACTIVE_TESTS
+    "Build manual interactive HighGUI diagnostics"
+    OFF
+)
+option(
     PDI_FETCH_TEST_DEPENDENCIES
     "Allow CMake to download missing test dependencies"
     ON
@@ -91,6 +101,34 @@ target_link_libraries(pdi_io
 )
 
 pdi_enable_project_warnings(pdi_io)
+
+if(PDI_BUILD_INTERACTIVE_UI)
+    add_library(pdi_ui
+        src/ui/interactive_state.cpp
+        src/ui/interactive_window.cpp
+        src/ui/keyboard_event.cpp
+        src/ui/mouse_event.cpp
+        src/ui/qt_controls.cpp
+        src/ui/ui_capabilities.cpp
+    )
+
+    add_library(pdi::ui ALIAS pdi_ui)
+
+    target_include_directories(pdi_ui
+        PUBLIC
+            "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
+            "$<INSTALL_INTERFACE:include>"
+    )
+
+    target_link_libraries(pdi_ui
+        PUBLIC
+            opencv_core
+        PRIVATE
+            opencv_highgui
+    )
+
+    pdi_enable_project_warnings(pdi_ui)
+endif()
 
 if(PDI_BUILD_EXAMPLES)
     add_executable(pdi_info
@@ -211,6 +249,53 @@ if(PDI_BUILD_EXAMPLES)
     )
 
     pdi_enable_project_warnings(lab_m1_3)
+
+    if(PDI_BUILD_INTERACTIVE_UI)
+        add_executable(lab_m2_1_interactive
+            apps/lab_m2_1_interactive/main.cpp
+        )
+
+        target_link_libraries(lab_m2_1_interactive
+            PRIVATE
+                pdi::core
+                pdi::io
+                pdi::ui
+        )
+
+        pdi_enable_project_warnings(lab_m2_1_interactive)
+    endif()
+endif()
+
+if(PDI_BUILD_INTERACTIVE_UI AND PDI_BUILD_INTERACTIVE_TESTS)
+    add_executable(pdi_ui_test_trackbar
+        apps/ui_diagnostics/trackbar/main.cpp
+    )
+    target_link_libraries(pdi_ui_test_trackbar PRIVATE pdi::ui)
+    pdi_enable_project_warnings(pdi_ui_test_trackbar)
+
+    add_executable(pdi_ui_test_mouse
+        apps/ui_diagnostics/mouse/main.cpp
+    )
+    target_link_libraries(pdi_ui_test_mouse PRIVATE pdi::ui)
+    pdi_enable_project_warnings(pdi_ui_test_mouse)
+
+    add_executable(pdi_ui_test_keyboard
+        apps/ui_diagnostics/keyboard/main.cpp
+    )
+    target_link_libraries(pdi_ui_test_keyboard PRIVATE pdi::ui)
+    pdi_enable_project_warnings(pdi_ui_test_keyboard)
+
+    add_executable(pdi_ui_test_qt_controls
+        apps/ui_diagnostics/qt_controls/main.cpp
+    )
+    target_link_libraries(pdi_ui_test_qt_controls PRIVATE pdi::ui)
+    pdi_enable_project_warnings(pdi_ui_test_qt_controls)
+elseif(PDI_BUILD_INTERACTIVE_TESTS)
+    message(
+        WARNING
+        "PDI_BUILD_INTERACTIVE_TESTS is ignored because "
+        "PDI_BUILD_INTERACTIVE_UI is OFF."
+    )
 endif()
 
 if(PDI_BUILD_TESTS)
@@ -254,4 +339,6 @@ message(STATUS "OpenCV version: ${OpenCV_VERSION}")
 message(STATUS "Build tests: ${PDI_BUILD_TESTS}")
 message(STATUS "Build documentation: ${PDI_BUILD_DOCS}")
 message(STATUS "Build examples: ${PDI_BUILD_EXAMPLES}")
+message(STATUS "Build interactive UI: ${PDI_BUILD_INTERACTIVE_UI}")
+message(STATUS "Build interactive diagnostics: ${PDI_BUILD_INTERACTIVE_TESTS}")
 message(STATUS "Fetch test dependencies: ${PDI_FETCH_TEST_DEPENDENCIES}")
