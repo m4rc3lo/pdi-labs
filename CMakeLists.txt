@@ -46,6 +46,7 @@ add_library(pdi_core
     src/spatial/spatial_convolution.cpp
     src/spatial/smoothing_filters.cpp
     src/spatial/laplacian_enhancement.cpp
+    src/spatial/sobel_operator.cpp
 )
 
 add_library(pdi::core ALIAS pdi_core)
@@ -182,6 +183,18 @@ if(PDI_BUILD_EXAMPLES)
     )
 
     pdi_enable_project_warnings(lab_m1_3_laplacian)
+
+    add_executable(lab_m1_3_sobel
+        apps/lab_m1_3_sobel/main.cpp
+    )
+
+    target_link_libraries(lab_m1_3_sobel
+        PRIVATE
+            pdi::core
+            pdi::io
+    )
+
+    pdi_enable_project_warnings(lab_m1_3_sobel)
 endif()
 
 if(PDI_BUILD_TESTS)

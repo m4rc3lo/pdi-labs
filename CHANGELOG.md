@@ -51,6 +51,8 @@ timeline
   implementados sobre `SpatialConvolution`, com exemplo e testes.
 - Resposta Laplaciana assinada, kernels de quatro e oito vizinhos, realce com
   fator configurável e visualização normalizada da resposta bruta.
+- Operador Sobel manual com gradientes assinados `Gx` e `Gy`, magnitudes
+  aproximada e euclidiana, visualizações e testes numéricos.
 
 ## [0.3.0] - 2026-07-24
 
