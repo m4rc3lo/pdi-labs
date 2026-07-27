@@ -127,6 +127,15 @@ flowchart LR
 | M2.2 | M2 | Componentes conexos | BFS ou DFS, conectividade 4 e 8, rotulação, área, caixa delimitadora e centroide |
 | M2.3 | M2 | Morfologia matemática | erosão, dilatação, abertura, fechamento e sequências morfológicas justificadas |
 
+## Rotulação manual de componentes conexos
+
+O Laboratório M2.2 inicia com `ConnectedComponentLabeler`, que realiza BFS
+explícita sobre imagens binárias `CV_8UC1`. A saída é uma matriz `CV_32SC1`,
+com zero reservado ao fundo e rótulos positivos consecutivos para os objetos.
+A conectividade 4 ou 8 é escolhida por enumeração desacoplada da interface.
+Consulte `docs/labs/m2-2.md` para diferenças entre conectividades, seleção de
+componentes e análise de complexidade.
+
 ## Convenção: convolução e correlação espacial
 
 Neste projeto, o termo **convolução** é utilizado por convenção didática e de
