@@ -50,6 +50,7 @@ add_executable(pdi_unit_tests
     unit/component_feature_extractor_test.cpp
     unit/component_features_csv_storage_test.cpp
     unit/connected_component_labeler_test.cpp
+    unit/label_visualizer_test.cpp
     unit/grayscale_converter_test.cpp
     unit/grayscale_quantizer_test.cpp
     unit/image_copy_test.cpp

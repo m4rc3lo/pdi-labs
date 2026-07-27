@@ -76,6 +76,7 @@ add_library(pdi_core
     src/spatial/sobel_operator.cpp
     src/segmentation/component_feature_extractor.cpp
     src/segmentation/connected_component_labeler.cpp
+    src/segmentation/label_visualizer.cpp
     src/segmentation/manual_threshold.cpp
     src/segmentation/mask_operations.cpp
     src/segmentation/library_segmentation_pipeline.cpp
@@ -320,6 +321,18 @@ if(PDI_BUILD_EXAMPLES)
 
         pdi_enable_project_warnings(lab_m2_1_interactive)
     endif()
+
+    add_executable(lab_m2_2
+        apps/lab_m2_2/main.cpp
+    )
+
+    target_link_libraries(lab_m2_2
+        PRIVATE
+            pdi::core
+            pdi::io
+    )
+
+    pdi_enable_project_warnings(lab_m2_2)
 endif()
 
 if(PDI_BUILD_INTERACTIVE_UI AND PDI_BUILD_INTERACTIVE_TESTS)

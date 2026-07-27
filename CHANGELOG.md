@@ -47,6 +47,10 @@ timeline
   e documentação de conectividade e complexidade para o Laboratório M2.2.
 - Extração manual de área, caixa delimitadora e centroide por componente,
   exportação CSV e rastreabilidade complementar por `ProcessingRecord`.
+- Visualização colorida determinística de rótulos em `labels.png`,
+  geração de `components.csv`, persistência opcional da matriz de rótulos e
+  parâmetros em YAML e comparação opcional com OpenCV para validação
+  estrutural.
 
 ## [0.5.0] - 2026-07-26
 
