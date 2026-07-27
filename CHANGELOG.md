@@ -39,6 +39,8 @@ timeline
 
 ## [Unreleased]
 
+## [0.6.0] - 2026-07-27
+
 ### Added
 
 - Rotulação manual de componentes conexos com BFS explícita, conectividade 4
@@ -51,6 +53,13 @@ timeline
   geração de `components.csv`, persistência opcional da matriz de rótulos e
   parâmetros em YAML e comparação opcional com OpenCV para validação
   estrutural.
+- Executável final `lab_m2_2` com `--show`, `--interactive`, `--save-data`,
+  conectividade configurável, inspeção por mouse e testes de integração.
+- Degradação segura sem Qt ou sem infraestrutura interativa compilada.
+
+### Changed
+
+- Versão do projeto preparada para `v0.6.0`.
 
 ## [0.5.0] - 2026-07-26
 
@@ -155,7 +164,9 @@ timeline
 - Renomeado o branch principal de `master` para `main`.
 - Preservado integralmente o conteúdo do projeto anterior em `legacy/`.
 
-[Unreleased]: https://github.com/m4rc3lo/pdi-labs/compare/v0.4.0...HEAD
+[Unreleased]: https://github.com/m4rc3lo/pdi-labs/compare/v0.6.0...HEAD
+[0.6.0]: https://github.com/m4rc3lo/pdi-labs/compare/v0.5.0...v0.6.0
+[0.5.0]: https://github.com/m4rc3lo/pdi-labs/compare/v0.4.0...v0.5.0
 [0.4.0]: https://github.com/m4rc3lo/pdi-labs/compare/v0.3.0...v0.4.0
 [0.3.0]: https://github.com/m4rc3lo/pdi-labs/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/m4rc3lo/pdi-labs/compare/v0.1.0...v0.2.0
