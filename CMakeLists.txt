@@ -74,6 +74,7 @@ add_library(pdi_core
     src/spatial/smoothing_filters.cpp
     src/spatial/laplacian_enhancement.cpp
     src/spatial/sobel_operator.cpp
+    src/segmentation/component_feature_extractor.cpp
     src/segmentation/connected_component_labeler.cpp
     src/segmentation/manual_threshold.cpp
     src/segmentation/mask_operations.cpp
@@ -98,6 +99,7 @@ target_link_libraries(pdi_core
 pdi_enable_project_warnings(pdi_core)
 
 add_library(pdi_io
+    src/io/component_features_csv_storage.cpp
     src/io/image_display.cpp
     src/io/image_file_storage.cpp
     src/io/processing_data_storage.cpp
