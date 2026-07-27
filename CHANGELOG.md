@@ -39,6 +39,13 @@ timeline
 
 ## [Unreleased]
 
+### Added
+
+- Rotulação manual de componentes conexos com BFS explícita, conectividade 4
+  e 8, matriz de rótulos `CV_32SC1` e fundo reservado ao rótulo zero.
+- Seleção desacoplada de componente por rótulo, testes com imagens sintéticas
+  e documentação de conectividade e complexidade para o Laboratório M2.2.
+
 ## [0.5.0] - 2026-07-26
 
 ### Added

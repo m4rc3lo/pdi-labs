@@ -74,6 +74,7 @@ add_library(pdi_core
     src/spatial/smoothing_filters.cpp
     src/spatial/laplacian_enhancement.cpp
     src/spatial/sobel_operator.cpp
+    src/segmentation/connected_component_labeler.cpp
     src/segmentation/manual_threshold.cpp
     src/segmentation/mask_operations.cpp
     src/segmentation/library_segmentation_pipeline.cpp
