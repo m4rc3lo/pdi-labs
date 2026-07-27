@@ -45,6 +45,8 @@ timeline
   e 8, matriz de rótulos `CV_32SC1` e fundo reservado ao rótulo zero.
 - Seleção desacoplada de componente por rótulo, testes com imagens sintéticas
   e documentação de conectividade e complexidade para o Laboratório M2.2.
+- Extração manual de área, caixa delimitadora e centroide por componente,
+  exportação CSV e rastreabilidade complementar por `ProcessingRecord`.
 
 ## [0.5.0] - 2026-07-26
 
