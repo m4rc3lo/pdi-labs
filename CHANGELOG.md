@@ -39,6 +39,8 @@ timeline
 
 ## [Unreleased]
 
+## [0.7.0] - 2026-07-28
+
 ### Added
 
 - Erosão e dilatação binárias manuais para imagens `CV_8UC1`, elementos
@@ -49,6 +51,14 @@ timeline
 - Pipeline morfológico configurável com métricas de área e componentes,
   rastreamento de componentes removidos, matrizes intermediárias em YAML,
   presets justificados e validação opcional com OpenCV.
+- Executável integrado `lab_m2_3`, seleção de sequência e elemento
+  estruturante, relatórios quantitativos, imagens intermediárias, execução
+  opcionalmente gráfica e persistência completa em `ProcessingRecord`.
+- Testes de integração e documentação de fechamento do Laboratório M2.3.
+
+### Changed
+
+- Versão do projeto preparada para `v0.7.0`.
 
 ## [0.6.0] - 2026-07-27
 
