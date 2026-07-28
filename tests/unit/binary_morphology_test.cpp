@@ -110,3 +110,107 @@ TEST_CASE(
         std::invalid_argument
     );
 }
+
+TEST_CASE(
+    "BinaryMorphology opening removes isolated foreground noise",
+    "[unit][morphology][opening]"
+) {
+    const cv::Mat input = (
+        cv::Mat_<std::uint8_t>(7, 7)
+        << 0, 0, 0, 0, 0, 0, 0,
+           0, 255, 255, 255, 0, 0, 0,
+           0, 255, 255, 255, 0, 255, 0,
+           0, 255, 255, 255, 0, 0, 0,
+           0, 0, 0, 0, 0, 0, 0,
+           0, 0, 0, 0, 0, 0, 0,
+           0, 0, 0, 0, 0, 0, 0
+    );
+
+    const cv::Mat expected = (
+        cv::Mat_<std::uint8_t>(7, 7)
+        << 0, 0, 0, 0, 0, 0, 0,
+           0, 255, 255, 255, 0, 0, 0,
+           0, 255, 255, 255, 0, 0, 0,
+           0, 255, 255, 255, 0, 0, 0,
+           0, 0, 0, 0, 0, 0, 0,
+           0, 0, 0, 0, 0, 0, 0,
+           0, 0, 0, 0, 0, 0, 0
+    );
+
+    const cv::Mat actual = pdi::morphology::BinaryMorphology{}.open(
+        input,
+        pdi::morphology::BinaryStructuringElement::square_3x3()
+    );
+
+    pdi::testing::require_mat_exact(actual, expected);
+}
+
+TEST_CASE(
+    "BinaryMorphology closing fills one-pixel hole",
+    "[unit][morphology][closing]"
+) {
+    const cv::Mat input = (
+        cv::Mat_<std::uint8_t>(7, 7)
+        << 0, 0, 0, 0, 0, 0, 0,
+           0, 255, 255, 255, 255, 255, 0,
+           0, 255, 255, 255, 255, 255, 0,
+           0, 255, 255, 0, 255, 255, 0,
+           0, 255, 255, 255, 255, 255, 0,
+           0, 255, 255, 255, 255, 255, 0,
+           0, 0, 0, 0, 0, 0, 0
+    );
+
+    const cv::Mat expected = (
+        cv::Mat_<std::uint8_t>(7, 7)
+        << 0, 0, 0, 0, 0, 0, 0,
+           0, 255, 255, 255, 255, 255, 0,
+           0, 255, 255, 255, 255, 255, 0,
+           0, 255, 255, 255, 255, 255, 0,
+           0, 255, 255, 255, 255, 255, 0,
+           0, 255, 255, 255, 255, 255, 0,
+           0, 0, 0, 0, 0, 0, 0
+    );
+
+    const cv::Mat actual = pdi::morphology::BinaryMorphology{}.close(
+        input,
+        pdi::morphology::BinaryStructuringElement::square_3x3()
+    );
+
+    pdi::testing::require_mat_exact(actual, expected);
+}
+
+TEST_CASE(
+    "BinaryMorphology compositions match explicit operation order",
+    "[unit][morphology][composition]"
+) {
+    const cv::Mat input = (
+        cv::Mat_<std::uint8_t>(5, 5)
+        << 0, 0, 0, 0, 0,
+           0, 255, 255, 255, 0,
+           0, 255, 0, 255, 0,
+           0, 255, 255, 255, 0,
+           0, 0, 0, 0, 0
+    );
+
+    const auto element =
+        pdi::morphology::BinaryStructuringElement::cross_3x3();
+    const pdi::morphology::BinaryMorphology morphology;
+
+    const cv::Mat opening_expected = morphology.dilate(
+        morphology.erode(input, element),
+        element
+    );
+    const cv::Mat closing_expected = morphology.erode(
+        morphology.dilate(input, element),
+        element
+    );
+
+    pdi::testing::require_mat_exact(
+        morphology.open(input, element),
+        opening_expected
+    );
+    pdi::testing::require_mat_exact(
+        morphology.close(input, element),
+        closing_expected
+    );
+}

@@ -33,6 +33,22 @@ public:
         MorphologyBorderStrategy border_strategy =
             MorphologyBorderStrategy::OutsideBackground
     ) const;
+
+    /** @brief Applies erosion followed by dilation. */
+    [[nodiscard]] cv::Mat open(
+        const cv::Mat& binary_image,
+        const BinaryStructuringElement& element,
+        MorphologyBorderStrategy border_strategy =
+            MorphologyBorderStrategy::OutsideBackground
+    ) const;
+
+    /** @brief Applies dilation followed by erosion. */
+    [[nodiscard]] cv::Mat close(
+        const cv::Mat& binary_image,
+        const BinaryStructuringElement& element,
+        MorphologyBorderStrategy border_strategy =
+            MorphologyBorderStrategy::OutsideBackground
+    ) const;
 };
 
 } // namespace pdi::morphology

@@ -253,4 +253,41 @@ cv::Mat BinaryMorphology::dilate(
     return output;
 }
 
+
+cv::Mat BinaryMorphology::open(
+    const cv::Mat& binary_image,
+    const BinaryStructuringElement& element,
+    const MorphologyBorderStrategy border_strategy
+) const {
+    const cv::Mat eroded = erode(
+        binary_image,
+        element,
+        border_strategy
+    );
+
+    return dilate(
+        eroded,
+        element,
+        border_strategy
+    );
+}
+
+cv::Mat BinaryMorphology::close(
+    const cv::Mat& binary_image,
+    const BinaryStructuringElement& element,
+    const MorphologyBorderStrategy border_strategy
+) const {
+    const cv::Mat dilated = dilate(
+        binary_image,
+        element,
+        border_strategy
+    );
+
+    return erode(
+        dilated,
+        element,
+        border_strategy
+    );
+}
+
 } // namespace pdi::morphology
