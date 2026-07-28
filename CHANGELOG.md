@@ -46,6 +46,9 @@ timeline
   exatos e documentação inicial do Laboratório M2.3.
 - Abertura e fechamento por composição das implementações manuais existentes,
   com testes de ordem operacional e exemplos visuais.
+- Pipeline morfológico configurável com métricas de área e componentes,
+  rastreamento de componentes removidos, matrizes intermediárias em YAML,
+  presets justificados e validação opcional com OpenCV.
 
 ## [0.6.0] - 2026-07-27
 

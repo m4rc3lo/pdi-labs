@@ -81,6 +81,7 @@ add_library(pdi_core
     src/segmentation/mask_operations.cpp
     src/segmentation/library_segmentation_pipeline.cpp
     src/morphology/binary_morphology.cpp
+    src/morphology/morphological_pipeline.cpp
 )
 
 add_library(pdi::core ALIAS pdi_core)
