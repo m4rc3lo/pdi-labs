@@ -133,6 +133,9 @@ void run_interactive_session(
 ) {
     InteractiveState state{
         .binary_image = binary_image.clone(),
+        .labels = {},
+        .colored_labels = {},
+        .features = {},
         .connectivity = initial_connectivity,
     };
 

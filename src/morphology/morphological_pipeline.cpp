@@ -292,6 +292,8 @@ pdi::io::ProcessingRecord MorphologicalPipeline::make_processing_record(
         .laboratory = "M2.3",
         .operation = "morphological_pipeline",
         .input_path = input_path,
+        .parameters = {},
+        .numeric_artifacts = {},
     };
 
     record.parameters = {
