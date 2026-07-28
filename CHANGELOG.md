@@ -39,6 +39,16 @@ timeline
 
 ## [Unreleased]
 
+### Added
+
+- Coleção de imagens realistas geradas por IA organizada por laboratório para
+  demonstrações didáticas futuras.
+
+### Changed
+
+- Imagens de entrada reorganizadas por origem em fotografias próprias, imagens
+  realistas geradas por IA e materiais de terceiros provenientes do OpenCV.
+
 ## [0.7.0] - 2026-07-28
 
 ### Added
