@@ -39,6 +39,12 @@ timeline
 
 ## [Unreleased]
 
+### Added
+
+- Erosão e dilatação binárias manuais para imagens `CV_8UC1`, elementos
+  estruturantes `3 x 3`, estratégia de borda externa como fundo, testes
+  exatos e documentação inicial do Laboratório M2.3.
+
 ## [0.6.0] - 2026-07-27
 
 ### Added

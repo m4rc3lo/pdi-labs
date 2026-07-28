@@ -46,6 +46,7 @@ target_link_libraries(pdi_test_helpers
 )
 
 add_executable(pdi_unit_tests
+    unit/binary_morphology_test.cpp
     unit/channel_separator_test.cpp
     unit/component_feature_extractor_test.cpp
     unit/component_features_csv_storage_test.cpp
