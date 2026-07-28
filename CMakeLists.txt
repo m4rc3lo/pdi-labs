@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.24)
 
 project(
     pdi_labs
-    VERSION 0.6.0
+    VERSION 0.7.0
     DESCRIPTION "Didactic Image Processing laboratory implementations"
     LANGUAGES CXX
 )
@@ -343,6 +343,26 @@ if(PDI_BUILD_EXAMPLES)
     endif()
 
     pdi_enable_project_warnings(lab_m2_2)
+
+    add_executable(lab_m2_3
+        apps/lab_m2_3/main.cpp
+    )
+
+    target_link_libraries(lab_m2_3
+        PRIVATE
+            pdi::core
+            pdi::io
+    )
+
+    if(PDI_BUILD_INTERACTIVE_UI)
+        target_link_libraries(lab_m2_3 PRIVATE pdi::ui)
+        target_compile_definitions(
+            lab_m2_3
+            PRIVATE PDI_HAS_INTERACTIVE_UI=1
+        )
+    endif()
+
+    pdi_enable_project_warnings(lab_m2_3)
 endif()
 
 if(PDI_BUILD_INTERACTIVE_UI AND PDI_BUILD_INTERACTIVE_TESTS)
