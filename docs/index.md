@@ -1,7 +1,10 @@
 # pdi-labs {#mainpage}
 
-`pdi-labs` reúne implementações didáticas em C++ e OpenCV para os
-laboratórios da disciplina de Processamento de Imagens.
+`pdi-labs` versão **0.7.0** reúne implementações didáticas em C++ e OpenCV
+para os laboratórios da disciplina de Processamento de Imagens.
+
+O código-fonte, o histórico e os artefatos documentais são mantidos no
+[repositório pdi-labs no GitHub](https://github.com/m4rc3lo/pdi-labs).
 
 A documentação combina:
 
@@ -97,6 +100,11 @@ A página inicial será gerada em:
 ```text
 build/<configuração>/docs/html/index.html
 ```
+
+No GitHub Actions, o workflow de Pages usa `build/pages-docs/` e publica
+exatamente `build/pages-docs/docs/html/`, garantindo que `index.html` esteja na
+raiz do artefato. A URL pública será registrada somente depois que o GitHub
+Pages estiver habilitado e a primeira implantação tiver sido concluída.
 
 A geração exige Doxygen. Graphviz é opcional: quando `dot` não estiver
 disponível, a documentação HTML ainda será gerada, mas sem os diagramas de
