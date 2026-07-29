@@ -550,8 +550,11 @@ ctest \
 
 ## Documentação Doxygen
 
-A documentação da API pública será escrita com os principais recursos do
-Doxygen:
+A documentação da API pública é gerada localmente pelo Doxygen e publicada no
+GitHub Pages por um workflow do próprio repositório. O HTML gerado permanece
+dentro de `build/` e não é versionado.
+
+A documentação utiliza os principais recursos do Doxygen:
 
 - `@file`;
 - `@brief`;
@@ -567,19 +570,54 @@ Doxygen:
 - `@code`;
 - `@endcode`.
 
-A geração planejada será:
+A geração local recomendada é:
 
 ```bash
 cmake -S . -B build/ucrt64-docs \
     -G Ninja \
-    -DPDI_BUILD_DOCS=ON
+    -DPDI_BUILD_DOCS=ON \
+    -DPDI_BUILD_TESTS=OFF \
+    -DPDI_BUILD_EXAMPLES=OFF \
+    -DPDI_BUILD_INTERACTIVE_UI=OFF \
+    -DPDI_BUILD_INTERACTIVE_TESTS=OFF
 ```
 
 ```bash
 cmake --build build/ucrt64-docs --target docs
 ```
 
-A documentação narrativa dos laboratórios será mantida em `docs/labs/`.
+A página inicial local é gerada em:
+
+```text
+build/ucrt64-docs/docs/html/index.html
+```
+
+A documentação narrativa dos laboratórios é mantida em `docs/labs/`.
+
+### Publicação no GitHub Pages
+
+O arquivo `.github/workflows/pages.yml` executa em cada `push` para `main` e
+também pode ser iniciado manualmente pela aba **Actions**. O workflow usa
+Ubuntu, instala Doxygen, Graphviz e as dependências de configuração, gera o
+target `docs` em `build/pages-docs/` e envia diretamente
+`build/pages-docs/docs/html/`, diretório cuja raiz contém `index.html`.
+
+Após integrar o workflow ao `main`, habilite a publicação uma única vez:
+
+1. abra **Settings** no repositório;
+2. selecione **Pages** na seção **Code and automation**;
+3. em **Build and deployment**, escolha **GitHub Actions** como fonte;
+4. abra **Actions** e acompanhe o workflow **Publicar documentação Doxygen**;
+5. depois da primeira publicação bem-sucedida, consulte o endereço apresentado
+   na etapa de implantação ou na tela **Settings > Pages**.
+
+O endereço público não é registrado antecipadamente nesta documentação. Ele só
+deve ser adicionado depois que o GitHub Pages estiver habilitado e a primeira
+implantação tiver produzido uma URL válida. O workflow não cria releases, tags
+ou commits com HTML gerado.
+
+Consulte [docs/building.md](docs/building.md) para a explicação detalhada do
+build local, do artefato e da implantação.
 
 ## Convenções de código
 

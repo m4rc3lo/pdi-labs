@@ -1,0 +1,75 @@
+name: Publicar documentação Doxygen
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: github-pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    name: Gerar documentação
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Obter repositório
+        uses: actions/checkout@v6
+
+      - name: Instalar dependências
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes --no-install-recommends \
+            cmake \
+            ninja-build \
+            libopencv-dev \
+            doxygen \
+            graphviz
+
+      - name: Configurar GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Configurar documentação com CMake
+        run: |
+          cmake \
+            -S . \
+            -B build/pages-docs \
+            -G Ninja \
+            -DPDI_BUILD_DOCS=ON \
+            -DPDI_BUILD_TESTS=OFF \
+            -DPDI_BUILD_EXAMPLES=OFF \
+            -DPDI_BUILD_INTERACTIVE_UI=OFF \
+            -DPDI_BUILD_INTERACTIVE_TESTS=OFF
+
+      - name: Gerar documentação Doxygen
+        run: cmake --build build/pages-docs --target docs
+
+      - name: Validar raiz do site
+        run: test -f build/pages-docs/docs/html/index.html
+
+      - name: Enviar artefato do GitHub Pages
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: build/pages-docs/docs/html
+
+  deploy:
+    name: Publicar GitHub Pages
+    runs-on: ubuntu-latest
+    needs: build
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Publicar documentação
+        id: deployment
+        uses: actions/deploy-pages@v4

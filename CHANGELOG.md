@@ -41,6 +41,11 @@ timeline
 
 ### Added
 
+- Workflow do GitHub Actions para gerar a documentação Doxygen em Ubuntu e
+  publicá-la diretamente no GitHub Pages, com permissões mínimas, validação da
+  raiz do artefato e implantação pelo ambiente `github-pages`.
+- Instruções detalhadas de habilitação, execução e diagnóstico da publicação da
+  documentação no GitHub Pages.
 - Galerias com resultados processados curados dos seis laboratórios, incluindo
   comandos reais, parâmetros, métricas resumidas e casos favoráveis ou
   desafiadores selecionados manualmente.
