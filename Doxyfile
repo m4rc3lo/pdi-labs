@@ -114,7 +114,9 @@ EXCLUDE_SYMBOLS         =
 EXAMPLE_PATH            =
 EXAMPLE_PATTERNS        = *
 EXAMPLE_RECURSIVE       = NO
-IMAGE_PATH              = "@CMAKE_CURRENT_SOURCE_DIR@/docs/images"
+IMAGE_PATH              = \
+    "@CMAKE_CURRENT_SOURCE_DIR@/docs/images" \
+    "@CMAKE_CURRENT_SOURCE_DIR@/images/input"
 INPUT_FILTER            =
 FILTER_PATTERNS         =
 FILTER_SOURCE_FILES     = NO

@@ -43,6 +43,29 @@ O repositório deverá permitir que o estudante:
    testável;
 7. discuta adaptações equivalentes em C++, Java e Python.
 
+## Política pública de imagens
+
+O repositório distingue explicitamente as seguintes categorias editoriais:
+
+1. imagem sintética computacional;
+2. fotografia própria;
+3. imagem realista gerada por IA;
+4. imagem de terceiro;
+5. imagem derivada ou resultado curado.
+
+As imagens realistas geradas por IA têm aparência fotográfica, mas **não** são
+fotografias. Fotografias originalmente em preto e branco continuam sendo
+classificadas como fotografias próprias, e não como resultados derivados.
+
+As entradas oficiais ficam organizadas por origem em `images/input/`, enquanto
+`images/output/` permanece não versionado. Resultados selecionados manualmente
+para a documentação deverão ser versionados em `docs/images/results/` como
+resultados curados.
+
+Consulte também: [catálogo de imagens](docs/image-catalog.md),
+[diretrizes de imagens](docs/image-guidelines.md) e [atribuições e licenças de
+imagens](docs/image-attributions.md).
+
 ## Implementações de referência
 
 O código deste repositório é uma implementação de referência para estudo,

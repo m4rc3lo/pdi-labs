@@ -43,11 +43,17 @@ timeline
 
 - Coleção de imagens realistas geradas por IA organizada por laboratório para
   demonstrações didáticas futuras.
+- Política pública de imagens com catálogo, diretrizes editoriais e registro
+  de atribuições para fotografias próprias, imagens realistas geradas por IA e
+  imagens redistribuídas da documentação do OpenCV.
 
 ### Changed
 
 - Imagens de entrada reorganizadas por origem em fotografias próprias, imagens
   realistas geradas por IA e materiais de terceiros provenientes do OpenCV.
+- Organização documental do projeto para explicitar categorias editoriais,
+  resultados curados e restrições sobre URLs privadas, arquivos ZIP e
+  duplicação desnecessária de originais.
 
 ## [0.7.0] - 2026-07-28
 
