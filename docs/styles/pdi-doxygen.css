@@ -1,0 +1,149 @@
+/**
+ * Visual identity and responsive image gallery for pdi-labs Doxygen pages.
+ * This stylesheet extends, rather than replaces, the default Doxygen CSS.
+ */
+
+:root {
+    --pdi_primary: #0786b4;
+    --pdi_primary_dark: #045c7d;
+    --pdi_primary_darker: #03445d;
+    --pdi_primary_light: #dff3fa;
+    --pdi_surface: #ffffff;
+    --pdi_surface_muted: #f4f8fa;
+    --pdi_border: #bfd3dc;
+    --pdi_text: #17252d;
+    --pdi_focus: #f59e0b;
+}
+
+body,
+table,
+div,
+p,
+dl {
+    color: var(--pdi_text);
+    font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+code,
+pre,
+.fragment,
+.line,
+.ttc {
+    font-family: "Cascadia Code", Consolas, "Liberation Mono", monospace;
+}
+
+a {
+    color: var(--pdi_primary_dark);
+}
+
+a:hover {
+    color: var(--pdi_primary_darker);
+}
+
+#titlearea {
+    border-bottom: 4px solid var(--pdi_primary);
+}
+
+#projectname,
+h1,
+h2,
+h3,
+h4,
+.groupheader {
+    color: var(--pdi_primary_dark);
+}
+
+.memtitle,
+table.doxtable th {
+    background-color: var(--pdi_primary_light);
+    color: var(--pdi_primary_darker);
+}
+
+.pdi_gallery_grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1rem;
+    margin: 1rem 0 1.5rem;
+}
+
+.pdi_gallery_card {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 0.75rem;
+    overflow: hidden;
+    background: var(--pdi_surface);
+    border: 1px solid var(--pdi_border);
+    border-radius: 0.65rem;
+    box-shadow: 0 2px 8px rgba(3, 68, 93, 0.08);
+}
+
+.pdi_gallery_link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 220px;
+    background: var(--pdi_surface_muted);
+    border: 2px solid transparent;
+    border-radius: 0.45rem;
+}
+
+.pdi_gallery_link:hover {
+    border-color: var(--pdi_primary);
+}
+
+.pdi_gallery_link:focus-visible {
+    outline: 3px solid var(--pdi_focus);
+    outline-offset: 3px;
+    border-color: var(--pdi_primary_dark);
+}
+
+.pdi_gallery_link img {
+    display: block;
+    width: 100%;
+    max-width: 520px;
+    height: 300px;
+    object-fit: contain;
+    background: var(--pdi_surface_muted);
+}
+
+.pdi_gallery_caption {
+    margin-top: 0.75rem;
+    line-height: 1.45;
+}
+
+.pdi_gallery_hint {
+    padding: 0.75rem 1rem;
+    background: var(--pdi_primary_light);
+    border-left: 4px solid var(--pdi_primary);
+    border-radius: 0.25rem;
+}
+
+@media (max-width: 640px) {
+    .pdi_gallery_grid {
+        grid-template-columns: 1fr;
+    }
+
+    .pdi_gallery_card {
+        padding: 0.5rem;
+    }
+
+    .pdi_gallery_link {
+        min-height: 180px;
+    }
+
+    .pdi_gallery_link img {
+        height: 240px;
+    }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    .pdi_gallery_card,
+    .pdi_gallery_link {
+        transition: border-color 120ms ease, box-shadow 120ms ease;
+    }
+
+    .pdi_gallery_card:hover {
+        box-shadow: 0 5px 16px rgba(3, 68, 93, 0.14);
+    }
+}

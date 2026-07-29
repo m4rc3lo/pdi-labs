@@ -432,6 +432,10 @@ if(PDI_BUILD_DOCS)
         COMMAND
             "${DOXYGEN_EXECUTABLE}"
             "${CMAKE_CURRENT_BINARY_DIR}/Doxyfile"
+        COMMAND
+            "${CMAKE_COMMAND}" -E copy_directory
+            "${CMAKE_CURRENT_SOURCE_DIR}/images/input"
+            "${CMAKE_CURRENT_BINARY_DIR}/docs/images/input"
         WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
         COMMENT "Generating pdi-labs HTML documentation with Doxygen"
         VERBATIM

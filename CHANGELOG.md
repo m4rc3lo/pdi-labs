@@ -46,6 +46,8 @@ timeline
 - Política pública de imagens com catálogo, diretrizes editoriais e registro
   de atribuições para fotografias próprias, imagens realistas geradas por IA e
   imagens redistribuídas da documentação do OpenCV.
+- Galeria responsiva para Doxygen com miniaturas clicáveis, estilo visual
+  próprio e exemplo completo no Laboratório M1.1.
 
 ### Changed
 
@@ -187,6 +189,9 @@ timeline
 
 ### Changed
 
+- Galerias ajustadas para caminhos relativos da saída Doxygen/GitHub Pages,
+  sem conflito de classes nas tags de imagem, e diagramas Mermaid padronizados
+  com a paleta institucional registrada no próprio código.
 - Padronizado o percurso futuro de imagens com ponteiros de linha.
 - Definido acesso direto a imagens de um e três canais, sem laço adicional de
   canais.

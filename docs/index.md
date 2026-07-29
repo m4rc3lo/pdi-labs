@@ -52,6 +52,21 @@ Páginas relacionadas:
 - [Diretrizes de imagens](image-guidelines.md)
 - [Atribuições e licenças de imagens](image-attributions.md)
 
+A [galeria de entradas](image-catalog.md) usa miniaturas clicáveis e caminhos
+otimizados para a saída Doxygen/GitHub Pages. Os diagramas Mermaid registram a
+paleta institucional no próprio código para renderizadores compatíveis.
+
+## Galeria de imagens
+
+A [galeria de imagens](image-catalog.md) reúne entradas oficiais organizadas
+por laboratório, origem e nível de dificuldade. As miniaturas possuem tamanho
+visual padronizado, preservam a proporção original e abrem o arquivo completo
+quando selecionadas.
+
+A apresentação usa somente HTML e CSS locais, sem JavaScript, lightbox ou
+bibliotecas externas. Consulte as [diretrizes de imagens](image-guidelines.md)
+para repetir o padrão nas páginas dos laboratórios.
+
 ## Geração da documentação
 
 No MSYS2 UCRT64:

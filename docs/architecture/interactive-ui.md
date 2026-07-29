@@ -15,6 +15,22 @@ sem opção       -> processa, salva e encerra
 ## Arquitetura
 
 ```mermaid
+---
+config:
+  theme: base
+  themeVariables:
+    primaryColor: '#dff3fa'
+    primaryTextColor: '#17252d'
+    primaryBorderColor: '#0786b4'
+    lineColor: '#045c7d'
+    secondaryColor: '#eef9fc'
+    secondaryTextColor: '#17252d'
+    secondaryBorderColor: '#0786b4'
+    tertiaryColor: '#ffffff'
+    tertiaryTextColor: '#17252d'
+    tertiaryBorderColor: '#78bfd8'
+    fontFamily: 'Segoe UI, Roboto, Helvetica, Arial, sans-serif'
+---
 flowchart LR
     App["Aplicação"]
     State["InteractiveState"]
@@ -34,6 +50,9 @@ flowchart LR
     Result --> Window
     Result --> IO
     App --> Record --> IO --> YAML
+    classDef default fill:#dff3fa,stroke:#0786b4,color:#17252d,stroke-width:1.5px;
+    linkStyle default stroke:#045c7d,stroke-width:1.5px;
+
 ```
 
 `pdi::ui` coordena interação. O algoritmo recebe parâmetros e produz resultados.

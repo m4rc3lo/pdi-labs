@@ -9,6 +9,22 @@ padrão e reutiliza `pdi::io` para leitura, persistência e exibição opcional.
 ## Arquitetura
 
 ```mermaid
+---
+config:
+  theme: base
+  themeVariables:
+    primaryColor: '#dff3fa'
+    primaryTextColor: '#17252d'
+    primaryBorderColor: '#0786b4'
+    lineColor: '#045c7d'
+    secondaryColor: '#eef9fc'
+    secondaryTextColor: '#17252d'
+    secondaryBorderColor: '#0786b4'
+    tertiaryColor: '#ffffff'
+    tertiaryTextColor: '#17252d'
+    tertiaryBorderColor: '#78bfd8'
+    fontFamily: 'Segoe UI, Roboto, Helvetica, Arial, sans-serif'
+---
 flowchart LR
     CLI["CLI lab_m1_3"]
     IO["pdi::io"]
@@ -31,6 +47,9 @@ flowchart LR
     Pipeline --> Record --> Data --> YAML
     IO --> Files
     IO --> GUI
+    classDef default fill:#dff3fa,stroke:#0786b4,color:#17252d,stroke-width:1.5px;
+    linkStyle default stroke:#045c7d,stroke-width:1.5px;
+
 ```
 
 ## Interface

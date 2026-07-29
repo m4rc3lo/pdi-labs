@@ -124,3 +124,84 @@ As páginas Markdown de documentação podem usar miniaturas clicáveis, sem
 JavaScript e sem conteúdo em base64. Os arquivos devem ser acessíveis por links
 relativos válidos e compatíveis com a renderização do GitHub e com a geração da
 documentação HTML.
+## Como repetir o padrão de galeria
+
+Uma página de laboratório deve usar uma grade contendo um ou mais cartões. Cada
+cartão deve possuir um link para o arquivo original, uma miniatura com texto
+alternativo e uma legenda interpretativa.
+
+```html
+<div class="pdi_gallery_grid">
+<div class="pdi_gallery_card">
+<a class="pdi_gallery_link" href="../../images/input/ai_realistic/m1_1/m1_1_a_rgb_quantizacao.png">
+<img class="pdi_gallery_image"
+     src="../../images/input/ai_realistic/m1_1/m1_1_a_rgb_quantizacao.png"
+     alt="Entrada A do Laboratório M1.1 para canais e quantização."
+     loading="lazy">
+</a>
+<div class="pdi_gallery_caption"><strong>Caso A.</strong> Entrada favorável para o objetivo descrito.</div>
+</div>
+</div>
+```
+
+Regras para reutilização:
+
+- ajustar o caminho relativo conforme a localização do Markdown;
+- manter `pdi_gallery_grid`, `pdi_gallery_card` e `pdi_gallery_image`;
+- escrever um `alt` específico;
+- usar a legenda para explicar finalidade e dificuldade;
+- não definir largura e altura diretamente no HTML;
+- não criar cópia adicional da imagem apenas para a miniatura.
+## Caminhos na documentação HTML
+
+A galeria pública prioriza a saída HTML do Doxygen e sua futura publicação no
+GitHub Pages. O Doxygen achata as páginas Markdown em `docs/html/` e copia as
+imagens de entrada para `docs/images/input/`. Por isso, páginas de laboratório
+devem usar caminhos iniciados por `../images/input/` no HTML da galeria.
+
+A classe visual deve ser aplicada ao link, e não diretamente à tag `img`:
+
+```html
+<div class="pdi_gallery_card">
+<a class="pdi_gallery_link" href="../images/input/caminho/arquivo.png">
+<img src="../images/input/caminho/arquivo.png"
+     alt="Descrição objetiva da imagem."
+     loading="lazy">
+</a>
+<div class="pdi_gallery_caption">Legenda contextual.</div>
+</div>
+```
+
+Essa estrutura evita conflito com classes adicionadas automaticamente pelo
+Doxygen às imagens e mantém o clique para abrir o arquivo original.
+
+## Paleta para diagramas Mermaid
+
+Os diagramas Mermaid devem registrar a identidade visual no próprio bloco.
+Use o tema `base`, as variáveis institucionais e estilos explícitos para nós e
+arestas. Isso permite que renderizadores compatíveis, como o GitHub e uma
+futura etapa com Mermaid CLI, apliquem a mesma paleta.
+
+```mermaid
+---
+config:
+  theme: base
+  themeVariables:
+    primaryColor: '#dff3fa'
+    primaryTextColor: '#17252d'
+    primaryBorderColor: '#0786b4'
+    lineColor: '#045c7d'
+    secondaryColor: '#eef9fc'
+    tertiaryColor: '#ffffff'
+    fontFamily: 'Segoe UI, Roboto, Helvetica, Arial, sans-serif'
+---
+flowchart LR
+    Entrada["Entrada"] --> Processo["Processamento"] --> Saida["Saída"]
+
+    classDef default fill:#dff3fa,stroke:#0786b4,color:#17252d,stroke-width:1.5px;
+    linkStyle default stroke:#045c7d,stroke-width:1.5px;
+```
+
+O Doxygen ainda apresenta blocos Mermaid como código nesta etapa. A paleta fica
+registrada para quem os renderizar; a conversão automática para SVG será
+tratada em incremento posterior.
