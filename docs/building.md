@@ -109,10 +109,15 @@ O job `build`:
 1. obtém o repositório com `actions/checkout`;
 2. instala CMake, Ninja, OpenCV, Doxygen e Graphviz;
 3. configura os metadados do Pages com `actions/configure-pages`;
-4. configura o CMake em `build/pages-docs/`;
-5. gera somente o target `docs`;
-6. verifica a existência de `build/pages-docs/docs/html/index.html`;
-7. envia `build/pages-docs/docs/html/` com
+4. executa `scripts/prepare_doxygen_sources.py` e cria
+   `build/pages-source/docs/`;
+5. confirma que `docs/` ainda contém Mermaid e que a cópia temporária não
+   contém blocos Mermaid;
+6. configura o CMake em `build/pages-docs/`, apontando
+   `PDI_DOCUMENTATION_SOURCE_DIR` para a cópia temporária;
+7. gera somente o target `docs`;
+8. verifica `index.html`, imagens publicáveis e caminhos relativos;
+9. envia `build/pages-docs/docs/html/` com
    `actions/upload-pages-artifact`.
 
 As opções utilizadas são:
@@ -123,7 +128,55 @@ PDI_BUILD_TESTS=OFF
 PDI_BUILD_EXAMPLES=OFF
 PDI_BUILD_INTERACTIVE_UI=OFF
 PDI_BUILD_INTERACTIVE_TESTS=OFF
+PDI_DOCUMENTATION_SOURCE_DIR=<repositório>/build/pages-source/docs
 ```
+
+### Duas representações documentais
+
+`docs/` é a fonte canônica. Seus blocos Mermaid continuam versionados e são
+renderizados diretamente pelo GitHub e por visualizadores Markdown
+compatíveis. O site Doxygen usa uma representação derivada e efêmera dentro de
+`build/`:
+
+```text
+docs/                         fonte canônica com Mermaid
+build/pages-source/docs/      cópia temporária sem Mermaid cru
+build/pages-docs/docs/html/   site estático publicável
+```
+
+O script substitui cada bloco Mermaid por uma nota que aponta para o documento
+original no GitHub e troca somente os prefixos de galeria necessários ao
+artefato HTML. Nenhum arquivo da fonte canônica é reescrito. A variável CMake
+`PDI_DOCUMENTATION_SOURCE_DIR` permite escolher explicitamente qual conjunto de
+Markdown será processado pelo Doxygen; quando ela não é informada, o build local
+continua usando `docs/`.
+
+Para reproduzir localmente a variante do Pages:
+
+```bash
+python3 scripts/prepare_doxygen_sources.py \
+    --source docs \
+    --destination build/pages-source/docs \
+    --repository-docs-url \
+    https://github.com/m4rc3lo/pdi-labs/blob/main/docs
+```
+
+```bash
+cmake -S . -B build/pages-docs \
+    -G Ninja \
+    -DPDI_BUILD_DOCS=ON \
+    -DPDI_BUILD_TESTS=OFF \
+    -DPDI_BUILD_EXAMPLES=OFF \
+    -DPDI_BUILD_INTERACTIVE_UI=OFF \
+    -DPDI_BUILD_INTERACTIVE_TESTS=OFF \
+    -DPDI_DOCUMENTATION_SOURCE_DIR="$PWD/build/pages-source/docs"
+cmake --build build/pages-docs --target docs
+```
+
+As imagens são copiadas tanto para a estrutura histórica usada pelo build local
+quanto para `docs/html/images/`, que pertence à raiz do artefato publicado. A
+cópia temporária usa caminhos `images/input/...` e `images/results/...`, sem
+subir para fora de `/pdi-labs/`.
 
 ### Implantação
 
@@ -157,9 +210,8 @@ Depois que o workflow estiver no `main` remoto:
    terminaram com sucesso;
 9. consulte a URL fornecida pelo job de implantação ou por **Settings > Pages**.
 
-A URL pública não deve ser presumida nem registrada antes da primeira
-implantação bem-sucedida. Depois que ela existir, poderá ser adicionada ao
-`README.md` e à página inicial em um incremento documental separado.
+A implantação validada está disponível em
+[https://m4rc3lo.github.io/pdi-labs/](https://m4rc3lo.github.io/pdi-labs/).
 
 ## Diagnóstico do workflow
 

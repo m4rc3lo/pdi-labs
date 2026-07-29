@@ -598,9 +598,16 @@ A documentação narrativa dos laboratórios é mantida em `docs/labs/`.
 
 O arquivo `.github/workflows/pages.yml` executa em cada `push` para `main` e
 também pode ser iniciado manualmente pela aba **Actions**. O workflow usa
-Ubuntu, instala Doxygen, Graphviz e as dependências de configuração, gera o
+Ubuntu, instala Doxygen, Graphviz e as dependências de configuração, prepara
+uma cópia temporária dos documentos em `build/pages-source/docs/`, gera o
 target `docs` em `build/pages-docs/` e envia diretamente
 `build/pages-docs/docs/html/`, diretório cuja raiz contém `index.html`.
+
+Os arquivos canônicos em `docs/` permanecem inalterados e conservam os
+Diagramas Mermaid renderizados pelo GitHub. Apenas a cópia temporária destinada
+ao Doxygen substitui cada bloco Mermaid por uma nota com link para o documento
+original. O mesmo preparo adapta os caminhos das galerias para que imagens de
+entrada e resultados curados fiquem dentro da raiz HTML publicada.
 
 Após integrar o workflow ao `main`, habilite a publicação uma única vez:
 
@@ -611,10 +618,9 @@ Após integrar o workflow ao `main`, habilite a publicação uma única vez:
 5. depois da primeira publicação bem-sucedida, consulte o endereço apresentado
    na etapa de implantação ou na tela **Settings > Pages**.
 
-O endereço público não é registrado antecipadamente nesta documentação. Ele só
-deve ser adicionado depois que o GitHub Pages estiver habilitado e a primeira
-implantação tiver produzido uma URL válida. O workflow não cria releases, tags
-ou commits com HTML gerado.
+A documentação publicada está disponível em
+[https://m4rc3lo.github.io/pdi-labs/](https://m4rc3lo.github.io/pdi-labs/).
+O workflow não cria releases, tags ou commits com HTML gerado.
 
 Consulte [docs/building.md](docs/building.md) para a explicação detalhada do
 build local, do artefato e da implantação.

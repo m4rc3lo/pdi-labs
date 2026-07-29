@@ -41,6 +41,11 @@ timeline
 
 ### Added
 
+- Preparador de fontes Doxygen que preserva Mermaid em `docs/`, cria uma cópia
+  temporária específica para o GitHub Pages e liga cada diagrama omitido ao
+  documento Markdown original.
+- Configuração `PDI_DOCUMENTATION_SOURCE_DIR` para selecionar a fonte narrativa
+  processada pelo Doxygen sem alterar a documentação canônica.
 - Workflow do GitHub Actions para gerar a documentação Doxygen em Ubuntu e
   publicá-la diretamente no GitHub Pages, com permissões mínimas, validação da
   raiz do artefato e implantação pelo ambiente `github-pages`.
@@ -59,6 +64,10 @@ timeline
 
 ### Changed
 
+- Recursos de imagem copiados para dentro da raiz HTML publicada, com caminhos
+  de galeria adaptados somente na representação temporária usada pelo Pages.
+- Publicação Doxygen separada da fonte Markdown canônica para evitar Mermaid
+  cru no site sem remover os diagramas que o GitHub já renderiza corretamente.
 - Imagens de entrada reorganizadas por origem em fotografias próprias, imagens
   realistas geradas por IA e materiais de terceiros provenientes do OpenCV.
 - Organização documental do projeto para explicitar categorias editoriais,

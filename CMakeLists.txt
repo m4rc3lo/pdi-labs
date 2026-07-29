@@ -412,6 +412,26 @@ endif()
 if(PDI_BUILD_DOCS)
     find_package(Doxygen REQUIRED)
 
+    set(
+        PDI_DOCUMENTATION_SOURCE_DIR
+        "${CMAKE_CURRENT_SOURCE_DIR}/docs"
+        CACHE PATH
+        "Markdown source directory used by Doxygen"
+    )
+    get_filename_component(
+        PDI_DOCUMENTATION_SOURCE_DIR
+        "${PDI_DOCUMENTATION_SOURCE_DIR}"
+        ABSOLUTE
+    )
+
+    if(NOT EXISTS "${PDI_DOCUMENTATION_SOURCE_DIR}/index.md")
+        message(
+            FATAL_ERROR
+            "PDI_DOCUMENTATION_SOURCE_DIR must contain index.md: "
+            "${PDI_DOCUMENTATION_SOURCE_DIR}"
+        )
+    endif()
+
     find_program(PDI_DOT_EXECUTABLE dot)
 
     if(PDI_DOT_EXECUTABLE)
@@ -438,8 +458,16 @@ if(PDI_BUILD_DOCS)
             "${CMAKE_CURRENT_BINARY_DIR}/docs/images/input"
         COMMAND
             "${CMAKE_COMMAND}" -E copy_directory
-            "${CMAKE_CURRENT_SOURCE_DIR}/docs/images/results"
+            "${PDI_DOCUMENTATION_SOURCE_DIR}/images/results"
             "${CMAKE_CURRENT_BINARY_DIR}/docs/images/results"
+        COMMAND
+            "${CMAKE_COMMAND}" -E copy_directory
+            "${CMAKE_CURRENT_SOURCE_DIR}/images/input"
+            "${CMAKE_CURRENT_BINARY_DIR}/docs/html/images/input"
+        COMMAND
+            "${CMAKE_COMMAND}" -E copy_directory
+            "${PDI_DOCUMENTATION_SOURCE_DIR}/images/results"
+            "${CMAKE_CURRENT_BINARY_DIR}/docs/html/images/results"
         WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
         COMMENT "Generating pdi-labs HTML documentation with Doxygen"
         VERBATIM
@@ -451,6 +479,9 @@ message(STATUS "C++ standard: ${CMAKE_CXX_STANDARD}")
 message(STATUS "OpenCV version: ${OpenCV_VERSION}")
 message(STATUS "Build tests: ${PDI_BUILD_TESTS}")
 message(STATUS "Build documentation: ${PDI_BUILD_DOCS}")
+if(PDI_BUILD_DOCS)
+    message(STATUS "Documentation source: ${PDI_DOCUMENTATION_SOURCE_DIR}")
+endif()
 message(STATUS "Build examples: ${PDI_BUILD_EXAMPLES}")
 message(STATUS "Build interactive UI: ${PDI_BUILD_INTERACTIVE_UI}")
 message(STATUS "Build interactive diagnostics: ${PDI_BUILD_INTERACTIVE_TESTS}")

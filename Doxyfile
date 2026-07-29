@@ -93,7 +93,7 @@ WARN_FORMAT            = "$file:$line: $text"
 WARN_LOGFILE            = "@CMAKE_CURRENT_BINARY_DIR@/doxygen-warnings.log"
 
 INPUT                   = \
-    "@CMAKE_CURRENT_SOURCE_DIR@/docs" \
+    "@PDI_DOCUMENTATION_SOURCE_DIR@" \
     "@CMAKE_CURRENT_SOURCE_DIR@/include" \
     "@CMAKE_CURRENT_SOURCE_DIR@/src" \
     "@CMAKE_CURRENT_SOURCE_DIR@/apps"
@@ -108,20 +108,19 @@ FILE_PATTERNS           = *.h \
 RECURSIVE               = YES
 EXCLUDE                 =
 EXCLUDE_SYMLINKS        = NO
-EXCLUDE_PATTERNS        = */legacy/* \
-                          */build/*
+EXCLUDE_PATTERNS        = */legacy/*
 EXCLUDE_SYMBOLS         =
 EXAMPLE_PATH            =
 EXAMPLE_PATTERNS        = *
 EXAMPLE_RECURSIVE       = NO
 IMAGE_PATH              = \
-    "@CMAKE_CURRENT_SOURCE_DIR@/docs/images" \
+    "@PDI_DOCUMENTATION_SOURCE_DIR@/images" \
     "@CMAKE_CURRENT_SOURCE_DIR@/images/input"
 INPUT_FILTER            =
 FILTER_PATTERNS         =
 FILTER_SOURCE_FILES     = NO
 FILTER_SOURCE_PATTERNS  =
-USE_MDFILE_AS_MAINPAGE  = "@CMAKE_CURRENT_SOURCE_DIR@/docs/index.md"
+USE_MDFILE_AS_MAINPAGE  = "@PDI_DOCUMENTATION_SOURCE_DIR@/index.md"
 
 SOURCE_BROWSER          = YES
 INLINE_SOURCES          = NO
