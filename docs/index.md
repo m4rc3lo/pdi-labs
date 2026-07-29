@@ -4,7 +4,9 @@
 para os laboratórios da disciplina de Processamento de Imagens.
 
 O código-fonte, o histórico e os artefatos documentais são mantidos no
-[repositório pdi-labs no GitHub](https://github.com/m4rc3lo/pdi-labs).
+[repositório pdi-labs no GitHub](https://github.com/m4rc3lo/pdi-labs). A versão
+HTML publicada está disponível no
+[GitHub Pages do projeto](https://m4rc3lo.github.io/pdi-labs/).
 
 A documentação combina:
 
@@ -14,9 +16,11 @@ A documentação combina:
 - relações entre classes e arquivos;
 - diagramas gerados pelo Graphviz, quando a ferramenta estiver disponível.
 
-Os diagramas Mermaid permanecem nos arquivos Markdown para renderização no
-GitHub e em visualizadores compatíveis. O Doxygen apresenta esses blocos como
-código, enquanto o Graphviz gera diagramas inferidos das relações do código.
+Os diagramas Mermaid permanecem nos arquivos Markdown canônicos para
+renderização no GitHub e em visualizadores compatíveis. Na publicação do
+GitHub Pages, uma cópia temporária substitui cada bloco Mermaid por um link para
+o documento original, evitando código cru no Doxygen. O Graphviz continua
+gerando diagramas inferidos das relações do código.
 
 ## Escopo atual
 

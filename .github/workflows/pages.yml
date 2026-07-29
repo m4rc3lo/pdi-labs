@@ -37,6 +37,26 @@ jobs:
       - name: Configurar GitHub Pages
         uses: actions/configure-pages@v5
 
+      - name: Preparar fonte Doxygen para o Pages
+        run: |
+          python3 scripts/prepare_doxygen_sources.py \
+            --source docs \
+            --destination build/pages-source/docs \
+            --repository-docs-url \
+            https://github.com/m4rc3lo/pdi-labs/blob/main/docs
+
+          test -n "$(grep -RIl '```mermaid' docs)"
+
+          if grep -RIn '```mermaid' build/pages-source/docs; then
+            echo "Bloco Mermaid permaneceu na fonte temporária."
+            exit 1
+          fi
+
+          if grep -RInE '(src|href)="\.\./images/' build/pages-source/docs; then
+            echo "Caminho de imagem antigo permaneceu na fonte temporária."
+            exit 1
+          fi
+
       - name: Configurar documentação com CMake
         run: |
           cmake \
@@ -47,13 +67,33 @@ jobs:
             -DPDI_BUILD_TESTS=OFF \
             -DPDI_BUILD_EXAMPLES=OFF \
             -DPDI_BUILD_INTERACTIVE_UI=OFF \
-            -DPDI_BUILD_INTERACTIVE_TESTS=OFF
+            -DPDI_BUILD_INTERACTIVE_TESTS=OFF \
+            -DPDI_DOCUMENTATION_SOURCE_DIR="$GITHUB_WORKSPACE/build/pages-source/docs"
 
       - name: Gerar documentação Doxygen
         run: cmake --build build/pages-docs --target docs
 
-      - name: Validar raiz do site
-        run: test -f build/pages-docs/docs/html/index.html
+      - name: Validar raiz e recursos do site
+        run: |
+          test -f build/pages-docs/docs/html/index.html
+          test -f \
+            build/pages-docs/docs/html/images/input/ai_realistic/m1_1/m1_1_a_rgb_quantizacao.png
+          test -f \
+            build/pages-docs/docs/html/images/results/m1_1/favoravel_channel_blue.png
+
+          if grep -RInE \
+            'language-mermaid|class="mermaid"|```mermaid' \
+            build/pages-docs/docs/html; then
+            echo "Mermaid não processado apareceu no HTML."
+            exit 1
+          fi
+
+          if grep -RInE \
+            '(src|href)="(\.\./|/)images/' \
+            build/pages-docs/docs/html; then
+            echo "Caminho de imagem incompatível com o Pages."
+            exit 1
+          fi
 
       - name: Enviar artefato do GitHub Pages
         uses: actions/upload-pages-artifact@v4
