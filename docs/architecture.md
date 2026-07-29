@@ -7,6 +7,22 @@ das aplicações para as APIs públicas e destas para suas implementações.
 ## Visão inicial
 
 ```mermaid
+---
+config:
+  theme: base
+  themeVariables:
+    primaryColor: '#dff3fa'
+    primaryTextColor: '#17252d'
+    primaryBorderColor: '#0786b4'
+    lineColor: '#045c7d'
+    secondaryColor: '#eef9fc'
+    secondaryTextColor: '#17252d'
+    secondaryBorderColor: '#0786b4'
+    tertiaryColor: '#ffffff'
+    tertiaryTextColor: '#17252d'
+    tertiaryBorderColor: '#78bfd8'
+    fontFamily: 'Segoe UI, Roboto, Helvetica, Arial, sans-serif'
+---
 flowchart TB
     Apps["apps/<br/>executáveis dos laboratórios"]
     PublicApi["include/pdi/<br/>API pública"]
@@ -25,6 +41,9 @@ flowchart TB
     Validator --> OpenCv
     Sources -. implementa .-> Validator
     Sources -. implementa .-> Saturation
+    classDef default fill:#dff3fa,stroke:#0786b4,color:#17252d,stroke-width:1.5px;
+    linkStyle default stroke:#045c7d,stroke-width:1.5px;
+
 ```
 
 ## Namespaces
@@ -131,6 +150,22 @@ executáveis:
   `cv::imwrite`.
 
 ```mermaid
+---
+config:
+  theme: base
+  themeVariables:
+    primaryColor: '#dff3fa'
+    primaryTextColor: '#17252d'
+    primaryBorderColor: '#0786b4'
+    lineColor: '#045c7d'
+    secondaryColor: '#eef9fc'
+    secondaryTextColor: '#17252d'
+    secondaryBorderColor: '#0786b4'
+    tertiaryColor: '#ffffff'
+    tertiaryTextColor: '#17252d'
+    tertiaryBorderColor: '#78bfd8'
+    fontFamily: 'Segoe UI, Roboto, Helvetica, Arial, sans-serif'
+---
 flowchart LR
     App["Executável do laboratório"]
     Core["pdi::core e pdi::value"]
@@ -144,6 +179,9 @@ flowchart LR
     App -. somente com --show .-> Display
     Storage --> Codecs
     Display --> HighGui
+    classDef default fill:#dff3fa,stroke:#0786b4,color:#17252d,stroke-width:1.5px;
+    linkStyle default stroke:#045c7d,stroke-width:1.5px;
+
 ```
 
 A biblioteca `pdi_core` permanece ligada apenas ao `opencv_core`. A biblioteca

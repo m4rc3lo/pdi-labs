@@ -19,11 +19,69 @@ curados publicados.
 - **Desafiadora**: caso com ruído, sombra, textura, sobreposição ou maior
   ambiguidade.
 
+## Galeria rápida por laboratório
+
+<div class="pdi_gallery_hint">
+Clique em qualquer miniatura para abrir o arquivo original em sua resolução
+natural. As imagens são exibidas integralmente, sem corte ou deformação.
+</div>
+
+<div class="pdi_gallery_grid">
+<div class="pdi_gallery_card">
+<a class="pdi_gallery_link" href="../images/input/ai_realistic/m1_1/m1_1_a_rgb_quantizacao.png"><img src="../images/input/ai_realistic/m1_1/m1_1_a_rgb_quantizacao.png" alt="Caso A do M1.1 com objetos coloridos para canais, cinza e quantização." loading="lazy"></a>
+<div class="pdi_gallery_caption"><strong>M1.1 — Caso A</strong><br>Entrada favorável para canais, escala de cinza e quantização.</div>
+</div>
+<div class="pdi_gallery_card">
+<a class="pdi_gallery_link" href="../images/input/ai_realistic/m1_1/m1_1_b_rgb_quantizacao.png"><img src="../images/input/ai_realistic/m1_1/m1_1_b_rgb_quantizacao.png" alt="Caso B do M1.1 com cena mais complexa para quantização." loading="lazy"></a>
+<div class="pdi_gallery_caption"><strong>M1.1 — Caso B</strong><br>Entrada desafiadora para perda tonal e preservação de detalhes.</div>
+</div>
+<div class="pdi_gallery_card">
+<a class="pdi_gallery_link" href="../images/input/ai_realistic/m1_2/m1_2_a_dominio_valor.png"><img src="../images/input/ai_realistic/m1_2/m1_2_a_dominio_valor.png" alt="Caso A do M1.2 para operações no domínio do valor." loading="lazy"></a>
+<div class="pdi_gallery_caption"><strong>M1.2 — Caso A</strong><br>Entrada favorável para estudo preliminar no domínio do valor.</div>
+</div>
+<div class="pdi_gallery_card">
+<a class="pdi_gallery_link" href="../images/input/ai_realistic/m1_2/m1_2_b_dominio_valor.png"><img src="../images/input/ai_realistic/m1_2/m1_2_b_dominio_valor.png" alt="Caso B do M1.2 com maior complexidade tonal." loading="lazy"></a>
+<div class="pdi_gallery_caption"><strong>M1.2 — Caso B</strong><br>Entrada desafiadora com regiões tonalmente próximas.</div>
+</div>
+<div class="pdi_gallery_card">
+<a class="pdi_gallery_link" href="../images/input/ai_realistic/m1_3/m1_3_a_espacial_bordas.png"><img src="../images/input/ai_realistic/m1_3/m1_3_a_espacial_bordas.png" alt="Caso A do M1.3 com estruturas adequadas para filtros e bordas." loading="lazy"></a>
+<div class="pdi_gallery_caption"><strong>M1.3 — Caso A</strong><br>Entrada favorável para suavização, realce e bordas.</div>
+</div>
+<div class="pdi_gallery_card">
+<a class="pdi_gallery_link" href="../images/input/ai_realistic/m1_3/m1_3_b_espacial_bordas.png"><img src="../images/input/ai_realistic/m1_3/m1_3_b_espacial_bordas.png" alt="Caso B do M1.3 com texturas e bordas mais complexas." loading="lazy"></a>
+<div class="pdi_gallery_caption"><strong>M1.3 — Caso B</strong><br>Entrada desafiadora para distinguir textura, ruído e borda.</div>
+</div>
+<div class="pdi_gallery_card">
+<a class="pdi_gallery_link" href="../images/input/ai_realistic/m2_1/m2_1_a_segmentacao.png"><img src="../images/input/ai_realistic/m2_1/m2_1_a_segmentacao.png" alt="Caso A do M2.1 com objetos relativamente separados." loading="lazy"></a>
+<div class="pdi_gallery_caption"><strong>M2.1 — Caso A</strong><br>Entrada favorável para limiarização e máscaras.</div>
+</div>
+<div class="pdi_gallery_card">
+<a class="pdi_gallery_link" href="../images/input/ai_realistic/m2_1/m2_1_b_segmentacao.png"><img src="../images/input/ai_realistic/m2_1/m2_1_b_segmentacao.png" alt="Caso B do M2.1 com sombras, reflexos e proximidade entre objetos." loading="lazy"></a>
+<div class="pdi_gallery_caption"><strong>M2.1 — Caso B</strong><br>Entrada desafiadora para segmentação global.</div>
+</div>
+<div class="pdi_gallery_card">
+<a class="pdi_gallery_link" href="../images/input/ai_realistic/m2_2/m2_2_a_componentes_conexos.png"><img src="../images/input/ai_realistic/m2_2/m2_2_a_componentes_conexos.png" alt="Caso A do M2.2 com componentes relativamente separados." loading="lazy"></a>
+<div class="pdi_gallery_caption"><strong>M2.2 — Caso A</strong><br>Entrada favorável para rotulação e características geométricas.</div>
+</div>
+<div class="pdi_gallery_card">
+<a class="pdi_gallery_link" href="../images/input/ai_realistic/m2_2/m2_2_b_componentes_conexos.png"><img src="../images/input/ai_realistic/m2_2/m2_2_b_componentes_conexos.png" alt="Caso B do M2.2 com agrupamentos e componentes próximos." loading="lazy"></a>
+<div class="pdi_gallery_caption"><strong>M2.2 — Caso B</strong><br>Entrada desafiadora para separação de componentes.</div>
+</div>
+<div class="pdi_gallery_card">
+<a class="pdi_gallery_link" href="../images/input/ai_realistic/m2_3/m2_3_a_morfologia.png"><img src="../images/input/ai_realistic/m2_3/m2_3_a_morfologia.png" alt="Caso A do M2.3 com estruturas adequadas para morfologia." loading="lazy"></a>
+<div class="pdi_gallery_caption"><strong>M2.3 — Caso A</strong><br>Entrada favorável para limpeza e fechamento morfológico.</div>
+</div>
+<div class="pdi_gallery_card">
+<a class="pdi_gallery_link" href="../images/input/ai_realistic/m2_3/m2_3_b_morfologia.png"><img src="../images/input/ai_realistic/m2_3/m2_3_b_morfologia.png" alt="Caso B do M2.3 com ruído, buracos e objetos próximos." loading="lazy"></a>
+<div class="pdi_gallery_caption"><strong>M2.3 — Caso B</strong><br>Entrada desafiadora para justificar sequências morfológicas.</div>
+</div>
+</div>
+
 ## Fotografias próprias (`images/input/own/`)
 
 ### `foto_borboleta_flor_01.jpg`
 
-<a href="../images/input/own/foto_borboleta_flor_01.jpg"><img src="../images/input/own/foto_borboleta_flor_01.jpg" alt="Fotografia própria de borboleta sobre flor vermelha." width="320"></a>
+<a class="pdi_gallery_link" href="../images/input/own/foto_borboleta_flor_01.jpg"><img src="../images/input/own/foto_borboleta_flor_01.jpg" alt="Fotografia própria de borboleta sobre flor vermelha." width="320"></a>
 
 - **Categoria**: fotografia própria.
 - **Tipo editorial**: entrada.
@@ -36,7 +94,7 @@ curados publicados.
 
 ### `foto_broto_planta_01.jpg`
 
-<a href="../images/input/own/foto_broto_planta_01.jpg"><img src="../images/input/own/foto_broto_planta_01.jpg" alt="Fotografia própria de broto de planta com tons de verde." width="320"></a>
+<a class="pdi_gallery_link" href="../images/input/own/foto_broto_planta_01.jpg"><img src="../images/input/own/foto_broto_planta_01.jpg" alt="Fotografia própria de broto de planta com tons de verde." width="320"></a>
 
 - **Categoria**: fotografia própria.
 - **Tipo editorial**: entrada.
@@ -49,7 +107,7 @@ curados publicados.
 
 ### `foto_cachorro_bola_01.jpg`
 
-<a href="../images/input/own/foto_cachorro_bola_01.jpg"><img src="../images/input/own/foto_cachorro_bola_01.jpg" alt="Fotografia própria de cachorro com bola colorida." width="320"></a>
+<a class="pdi_gallery_link" href="../images/input/own/foto_cachorro_bola_01.jpg"><img src="../images/input/own/foto_cachorro_bola_01.jpg" alt="Fotografia própria de cachorro com bola colorida." width="320"></a>
 
 - **Categoria**: fotografia própria.
 - **Tipo editorial**: entrada.
@@ -63,7 +121,7 @@ curados publicados.
 
 ### `foto_mosca_orquidea_01.jpg`
 
-<a href="../images/input/own/foto_mosca_orquidea_01.jpg"><img src="../images/input/own/foto_mosca_orquidea_01.jpg" alt="Fotografia própria de mosca pousada em orquídea." width="320"></a>
+<a class="pdi_gallery_link" href="../images/input/own/foto_mosca_orquidea_01.jpg"><img src="../images/input/own/foto_mosca_orquidea_01.jpg" alt="Fotografia própria de mosca pousada em orquídea." width="320"></a>
 
 - **Categoria**: fotografia própria.
 - **Tipo editorial**: entrada.
@@ -76,7 +134,7 @@ curados publicados.
 
 ### `foto_passaro_comedouro_01.png`
 
-<a href="../images/input/own/foto_passaro_comedouro_01.png"><img src="../images/input/own/foto_passaro_comedouro_01.png" alt="Fotografia própria colorida de pássaro em comedouro." width="320"></a>
+<a class="pdi_gallery_link" href="../images/input/own/foto_passaro_comedouro_01.png"><img src="../images/input/own/foto_passaro_comedouro_01.png" alt="Fotografia própria colorida de pássaro em comedouro." width="320"></a>
 
 - **Categoria**: fotografia própria.
 - **Tipo editorial**: entrada.
@@ -89,7 +147,7 @@ curados publicados.
 
 ### `foto_passaro_comedouro_pb_01.png`
 
-<a href="../images/input/own/foto_passaro_comedouro_pb_01.png"><img src="../images/input/own/foto_passaro_comedouro_pb_01.png" alt="Fotografia própria originalmente em preto e branco de pássaro em comedouro." width="320"></a>
+<a class="pdi_gallery_link" href="../images/input/own/foto_passaro_comedouro_pb_01.png"><img src="../images/input/own/foto_passaro_comedouro_pb_01.png" alt="Fotografia própria originalmente em preto e branco de pássaro em comedouro." width="320"></a>
 
 - **Categoria**: fotografia própria.
 - **Tipo editorial**: entrada.
@@ -103,7 +161,7 @@ curados publicados.
 
 ### `foto_passaro_fibra_01.jpg`
 
-<a href="../images/input/own/foto_passaro_fibra_01.jpg"><img src="../images/input/own/foto_passaro_fibra_01.jpg" alt="Fotografia própria de pássaro pousado em fibra vegetal." width="320"></a>
+<a class="pdi_gallery_link" href="../images/input/own/foto_passaro_fibra_01.jpg"><img src="../images/input/own/foto_passaro_fibra_01.jpg" alt="Fotografia própria de pássaro pousado em fibra vegetal." width="320"></a>
 
 - **Categoria**: fotografia própria.
 - **Tipo editorial**: entrada.
@@ -116,7 +174,7 @@ curados publicados.
 
 ### `foto_pimenteira_frutos_01.png`
 
-<a href="../images/input/own/foto_pimenteira_frutos_01.png"><img src="../images/input/own/foto_pimenteira_frutos_01.png" alt="Fotografia própria de pimenteira com frutos vermelhos." width="320"></a>
+<a class="pdi_gallery_link" href="../images/input/own/foto_pimenteira_frutos_01.png"><img src="../images/input/own/foto_pimenteira_frutos_01.png" alt="Fotografia própria de pimenteira com frutos vermelhos." width="320"></a>
 
 - **Categoria**: fotografia própria.
 - **Tipo editorial**: entrada.
@@ -131,7 +189,7 @@ curados publicados.
 
 ### `opencv_adaptive_threshold_sudoku.jpg`
 
-<a href="../images/input/third_party/opencv/opencv_adaptive_threshold_sudoku.jpg"><img src="../images/input/third_party/opencv/opencv_adaptive_threshold_sudoku.jpg" alt="Imagem de terceiro do OpenCV mostrando uma grade de sudoku." width="320"></a>
+<a class="pdi_gallery_link" href="../images/input/third_party/opencv/opencv_adaptive_threshold_sudoku.jpg"><img src="../images/input/third_party/opencv/opencv_adaptive_threshold_sudoku.jpg" alt="Imagem de terceiro do OpenCV mostrando uma grade de sudoku." width="320"></a>
 
 - **Categoria**: imagem de terceiro.
 - **Tipo editorial**: entrada.
@@ -145,7 +203,7 @@ curados publicados.
 
 ### `opencv_morphology_j_binary.png`
 
-<a href="../images/input/third_party/opencv/opencv_morphology_j_binary.png"><img src="../images/input/third_party/opencv/opencv_morphology_j_binary.png" alt="Imagem binária de terceiro do OpenCV com a letra J." width="320"></a>
+<a class="pdi_gallery_link" href="../images/input/third_party/opencv/opencv_morphology_j_binary.png"><img src="../images/input/third_party/opencv/opencv_morphology_j_binary.png" alt="Imagem binária de terceiro do OpenCV com a letra J." width="320"></a>
 
 - **Categoria**: imagem de terceiro.
 - **Tipo editorial**: entrada.
@@ -166,7 +224,7 @@ imagens deste conjunto possuem dimensão `1200 × 896` pixels.
 
 #### `m1_1_a_rgb_quantizacao.png`
 
-<a href="../images/input/ai_realistic/m1_1/m1_1_a_rgb_quantizacao.png"><img src="../images/input/ai_realistic/m1_1/m1_1_a_rgb_quantizacao.png" alt="Imagem realista gerada por IA, caso A do laboratório M1.1." width="320"></a>
+<a class="pdi_gallery_link" href="../images/input/ai_realistic/m1_1/m1_1_a_rgb_quantizacao.png"><img src="../images/input/ai_realistic/m1_1/m1_1_a_rgb_quantizacao.png" alt="Imagem realista gerada por IA, caso A do laboratório M1.1." width="320"></a>
 
 - **Categoria**: imagem realista gerada por IA.
 - **Tipo editorial**: entrada.
@@ -178,7 +236,7 @@ imagens deste conjunto possuem dimensão `1200 × 896` pixels.
 
 #### `m1_1_b_rgb_quantizacao.png`
 
-<a href="../images/input/ai_realistic/m1_1/m1_1_b_rgb_quantizacao.png"><img src="../images/input/ai_realistic/m1_1/m1_1_b_rgb_quantizacao.png" alt="Imagem realista gerada por IA, caso B do laboratório M1.1." width="320"></a>
+<a class="pdi_gallery_link" href="../images/input/ai_realistic/m1_1/m1_1_b_rgb_quantizacao.png"><img src="../images/input/ai_realistic/m1_1/m1_1_b_rgb_quantizacao.png" alt="Imagem realista gerada por IA, caso B do laboratório M1.1." width="320"></a>
 
 - **Categoria**: imagem realista gerada por IA.
 - **Tipo editorial**: entrada.
@@ -192,7 +250,7 @@ imagens deste conjunto possuem dimensão `1200 × 896` pixels.
 
 #### `m1_2_a_dominio_valor.png`
 
-<a href="../images/input/ai_realistic/m1_2/m1_2_a_dominio_valor.png"><img src="../images/input/ai_realistic/m1_2/m1_2_a_dominio_valor.png" alt="Imagem realista gerada por IA, caso A do laboratório M1.2." width="320"></a>
+<a class="pdi_gallery_link" href="../images/input/ai_realistic/m1_2/m1_2_a_dominio_valor.png"><img src="../images/input/ai_realistic/m1_2/m1_2_a_dominio_valor.png" alt="Imagem realista gerada por IA, caso A do laboratório M1.2." width="320"></a>
 
 - **Categoria**: imagem realista gerada por IA.
 - **Tipo editorial**: entrada.
@@ -204,7 +262,7 @@ imagens deste conjunto possuem dimensão `1200 × 896` pixels.
 
 #### `m1_2_b_dominio_valor.png`
 
-<a href="../images/input/ai_realistic/m1_2/m1_2_b_dominio_valor.png"><img src="../images/input/ai_realistic/m1_2/m1_2_b_dominio_valor.png" alt="Imagem realista gerada por IA, caso B do laboratório M1.2." width="320"></a>
+<a class="pdi_gallery_link" href="../images/input/ai_realistic/m1_2/m1_2_b_dominio_valor.png"><img src="../images/input/ai_realistic/m1_2/m1_2_b_dominio_valor.png" alt="Imagem realista gerada por IA, caso B do laboratório M1.2." width="320"></a>
 
 - **Categoria**: imagem realista gerada por IA.
 - **Tipo editorial**: entrada.
@@ -218,7 +276,7 @@ imagens deste conjunto possuem dimensão `1200 × 896` pixels.
 
 #### `m1_3_a_espacial_bordas.png`
 
-<a href="../images/input/ai_realistic/m1_3/m1_3_a_espacial_bordas.png"><img src="../images/input/ai_realistic/m1_3/m1_3_a_espacial_bordas.png" alt="Imagem realista gerada por IA, caso A do laboratório M1.3." width="320"></a>
+<a class="pdi_gallery_link" href="../images/input/ai_realistic/m1_3/m1_3_a_espacial_bordas.png"><img src="../images/input/ai_realistic/m1_3/m1_3_a_espacial_bordas.png" alt="Imagem realista gerada por IA, caso A do laboratório M1.3." width="320"></a>
 
 - **Categoria**: imagem realista gerada por IA.
 - **Tipo editorial**: entrada.
@@ -230,7 +288,7 @@ imagens deste conjunto possuem dimensão `1200 × 896` pixels.
 
 #### `m1_3_b_espacial_bordas.png`
 
-<a href="../images/input/ai_realistic/m1_3/m1_3_b_espacial_bordas.png"><img src="../images/input/ai_realistic/m1_3/m1_3_b_espacial_bordas.png" alt="Imagem realista gerada por IA, caso B do laboratório M1.3." width="320"></a>
+<a class="pdi_gallery_link" href="../images/input/ai_realistic/m1_3/m1_3_b_espacial_bordas.png"><img src="../images/input/ai_realistic/m1_3/m1_3_b_espacial_bordas.png" alt="Imagem realista gerada por IA, caso B do laboratório M1.3." width="320"></a>
 
 - **Categoria**: imagem realista gerada por IA.
 - **Tipo editorial**: entrada.
@@ -244,7 +302,7 @@ imagens deste conjunto possuem dimensão `1200 × 896` pixels.
 
 #### `m2_1_a_segmentacao.png`
 
-<a href="../images/input/ai_realistic/m2_1/m2_1_a_segmentacao.png"><img src="../images/input/ai_realistic/m2_1/m2_1_a_segmentacao.png" alt="Imagem realista gerada por IA, caso A do laboratório M2.1." width="320"></a>
+<a class="pdi_gallery_link" href="../images/input/ai_realistic/m2_1/m2_1_a_segmentacao.png"><img src="../images/input/ai_realistic/m2_1/m2_1_a_segmentacao.png" alt="Imagem realista gerada por IA, caso A do laboratório M2.1." width="320"></a>
 
 - **Categoria**: imagem realista gerada por IA.
 - **Tipo editorial**: entrada.
@@ -256,7 +314,7 @@ imagens deste conjunto possuem dimensão `1200 × 896` pixels.
 
 #### `m2_1_b_segmentacao.png`
 
-<a href="../images/input/ai_realistic/m2_1/m2_1_b_segmentacao.png"><img src="../images/input/ai_realistic/m2_1/m2_1_b_segmentacao.png" alt="Imagem realista gerada por IA, caso B do laboratório M2.1." width="320"></a>
+<a class="pdi_gallery_link" href="../images/input/ai_realistic/m2_1/m2_1_b_segmentacao.png"><img src="../images/input/ai_realistic/m2_1/m2_1_b_segmentacao.png" alt="Imagem realista gerada por IA, caso B do laboratório M2.1." width="320"></a>
 
 - **Categoria**: imagem realista gerada por IA.
 - **Tipo editorial**: entrada.
@@ -270,7 +328,7 @@ imagens deste conjunto possuem dimensão `1200 × 896` pixels.
 
 #### `m2_2_a_componentes_conexos.png`
 
-<a href="../images/input/ai_realistic/m2_2/m2_2_a_componentes_conexos.png"><img src="../images/input/ai_realistic/m2_2/m2_2_a_componentes_conexos.png" alt="Imagem realista gerada por IA, caso A do laboratório M2.2." width="320"></a>
+<a class="pdi_gallery_link" href="../images/input/ai_realistic/m2_2/m2_2_a_componentes_conexos.png"><img src="../images/input/ai_realistic/m2_2/m2_2_a_componentes_conexos.png" alt="Imagem realista gerada por IA, caso A do laboratório M2.2." width="320"></a>
 
 - **Categoria**: imagem realista gerada por IA.
 - **Tipo editorial**: entrada.
@@ -282,7 +340,7 @@ imagens deste conjunto possuem dimensão `1200 × 896` pixels.
 
 #### `m2_2_b_componentes_conexos.png`
 
-<a href="../images/input/ai_realistic/m2_2/m2_2_b_componentes_conexos.png"><img src="../images/input/ai_realistic/m2_2/m2_2_b_componentes_conexos.png" alt="Imagem realista gerada por IA, caso B do laboratório M2.2." width="320"></a>
+<a class="pdi_gallery_link" href="../images/input/ai_realistic/m2_2/m2_2_b_componentes_conexos.png"><img src="../images/input/ai_realistic/m2_2/m2_2_b_componentes_conexos.png" alt="Imagem realista gerada por IA, caso B do laboratório M2.2." width="320"></a>
 
 - **Categoria**: imagem realista gerada por IA.
 - **Tipo editorial**: entrada.
@@ -296,7 +354,7 @@ imagens deste conjunto possuem dimensão `1200 × 896` pixels.
 
 #### `m2_3_a_morfologia.png`
 
-<a href="../images/input/ai_realistic/m2_3/m2_3_a_morfologia.png"><img src="../images/input/ai_realistic/m2_3/m2_3_a_morfologia.png" alt="Imagem realista gerada por IA, caso A do laboratório M2.3." width="320"></a>
+<a class="pdi_gallery_link" href="../images/input/ai_realistic/m2_3/m2_3_a_morfologia.png"><img src="../images/input/ai_realistic/m2_3/m2_3_a_morfologia.png" alt="Imagem realista gerada por IA, caso A do laboratório M2.3." width="320"></a>
 
 - **Categoria**: imagem realista gerada por IA.
 - **Tipo editorial**: entrada.
@@ -309,7 +367,7 @@ imagens deste conjunto possuem dimensão `1200 × 896` pixels.
 
 #### `m2_3_b_morfologia.png`
 
-<a href="../images/input/ai_realistic/m2_3/m2_3_b_morfologia.png"><img src="../images/input/ai_realistic/m2_3/m2_3_b_morfologia.png" alt="Imagem realista gerada por IA, caso B do laboratório M2.3." width="320"></a>
+<a class="pdi_gallery_link" href="../images/input/ai_realistic/m2_3/m2_3_b_morfologia.png"><img src="../images/input/ai_realistic/m2_3/m2_3_b_morfologia.png" alt="Imagem realista gerada por IA, caso B do laboratório M2.3." width="320"></a>
 
 - **Categoria**: imagem realista gerada por IA.
 - **Tipo editorial**: entrada.
