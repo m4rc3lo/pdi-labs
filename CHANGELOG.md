@@ -41,6 +41,9 @@ timeline
 
 ### Added
 
+- Galerias com resultados processados curados dos seis laboratórios, incluindo
+  comandos reais, parâmetros, métricas resumidas e casos favoráveis ou
+  desafiadores selecionados manualmente.
 - Coleção de imagens realistas geradas por IA organizada por laboratório para
   demonstrações didáticas futuras.
 - Política pública de imagens com catálogo, diretrizes editoriais e registro

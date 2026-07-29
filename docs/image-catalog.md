@@ -386,6 +386,20 @@ novas imagens sintéticas oficiais ao catálogo público.
 
 ## Resultados curados
 
-O diretório `docs/images/results/` é reservado para saídas curadas e
-selecionadas manualmente. Nesta rodada, a política documental foi estabelecida,
-mas os resultados curados ainda serão adicionados em incremento posterior.
+O diretório `docs/images/results/` contém uma seleção manual das saídas reais
+geradas pelos executáveis integrados dos seis laboratórios. A curadoria evita
+copiar integralmente `images/output/` e mantém apenas entradas sintéticas
+indispensáveis, intermediários explicativos e saídas representativas.
+
+As galerias e os comandos correspondentes estão nas páginas:
+
+- [Laboratório M1.1](labs/m1-1.md)
+- [Laboratório M1.2](labs/m1-2.md)
+- [Laboratório M1.3](labs/m1-3.md)
+- [Laboratório M2.1](labs/m2-1.md)
+- [Laboratório M2.2](labs/m2-2.md)
+- [Laboratório M2.3](labs/m2-3.md)
+
+O conjunto curado adiciona aproximadamente **7,8 MiB** distribuídos em 37
+arquivos. As imagens mantêm a resolução produzida pelos laboratórios; não foram
+criadas duplicatas redimensionadas nem foi adotado Git LFS.
