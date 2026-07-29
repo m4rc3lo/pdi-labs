@@ -34,6 +34,24 @@ dos laboratórios serão adicionados em incrementos posteriores.
 O diretório `legacy/` permanece fora da documentação gerada porque representa
 o código histórico anterior à reorganização do projeto.
 
+## Política de imagens
+
+A documentação do projeto distingue cinco categorias editoriais de
+imagens: imagem sintética computacional, fotografia própria, imagem
+realista gerada por IA, imagem de terceiro e imagem derivada ou
+resultado curado.
+
+Essa distinção é importante para fins de autoria, atribuição,
+reprodutibilidade e uso didático. Imagens realistas geradas por IA
+não são fotografias, enquanto fotografias originalmente em preto e
+branco continuam sendo fotografias próprias.
+
+Páginas relacionadas:
+
+- [Catálogo de imagens](image-catalog.md)
+- [Diretrizes de imagens](image-guidelines.md)
+- [Atribuições e licenças de imagens](image-attributions.md)
+
 ## Geração da documentação
 
 No MSYS2 UCRT64:

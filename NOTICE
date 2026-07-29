@@ -17,3 +17,8 @@ change the license of those third-party materials.
 Where required, additional third-party notices and attributions shall be
 recorded in this NOTICE file or in the documentation accompanying the
 relevant component.
+
+This project may redistribute selected sample images from the official
+OpenCV documentation for didactic purposes. Those files remain subject
+to the attribution notices and license terms documented in the
+repository documentation.
