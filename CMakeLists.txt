@@ -436,6 +436,10 @@ if(PDI_BUILD_DOCS)
             "${CMAKE_COMMAND}" -E copy_directory
             "${CMAKE_CURRENT_SOURCE_DIR}/images/input"
             "${CMAKE_CURRENT_BINARY_DIR}/docs/images/input"
+        COMMAND
+            "${CMAKE_COMMAND}" -E copy_directory
+            "${CMAKE_CURRENT_SOURCE_DIR}/docs/images/results"
+            "${CMAKE_CURRENT_BINARY_DIR}/docs/images/results"
         WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
         COMMENT "Generating pdi-labs HTML documentation with Doxygen"
         VERBATIM

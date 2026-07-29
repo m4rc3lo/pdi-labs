@@ -205,3 +205,16 @@ flowchart LR
 O Doxygen ainda apresenta blocos Mermaid como código nesta etapa. A paleta fica
 registrada para quem os renderizar; a conversão automática para SVG será
 tratada em incremento posterior.
+
+## Curadoria de resultados processados
+
+Resultados documentais devem ser escolhidos manualmente a partir de execuções
+reais. Não se copia integralmente `images/output/`, não se publica YAML volumoso
+e não se cria uma segunda versão do mesmo original apenas para formar a
+galeria. Cada página registra comando, parâmetros, origem da entrada, métricas
+curtas e limitações observadas.
+
+Os resultados versionados ficam em `docs/images/results/<laboratório>/`. Durante
+a geração Doxygen, o alvo `docs` copia essa árvore para
+`build/<configuração>/docs/images/results/`, permitindo o uso de links
+`../images/results/...` nas páginas HTML achatadas.

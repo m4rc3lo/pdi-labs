@@ -51,6 +51,7 @@ Páginas relacionadas:
 - [Catálogo de imagens](image-catalog.md)
 - [Diretrizes de imagens](image-guidelines.md)
 - [Atribuições e licenças de imagens](image-attributions.md)
+- [Resultados curados dos laboratórios](image-catalog.md#resultados-curados)
 
 A [galeria de entradas](image-catalog.md) usa miniaturas clicáveis e caminhos
 otimizados para a saída Doxygen/GitHub Pages. Os diagramas Mermaid registram a
