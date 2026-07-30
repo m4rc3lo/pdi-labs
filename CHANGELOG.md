@@ -41,6 +41,10 @@ timeline
 
 ### Added
 
+- Manifesto explícito de páginas públicas e página inicial específica para a
+  documentação didática publicada no GitHub Pages.
+- Testes unitários do preparador documental para seleção, transformação e
+  validação da fonte temporária.
 - Preparador de fontes Doxygen que preserva Mermaid em `docs/`, cria uma cópia
   temporária específica para o GitHub Pages e liga cada diagrama omitido ao
   documento Markdown original.
@@ -64,6 +68,10 @@ timeline
 
 ### Changed
 
+- Curadoria do site baseada em lista de inclusão, mantendo build, testes e
+  convenções documentais somente no repositório.
+- Títulos formados exclusivamente por nomes técnicos entre crases normalizados
+  na cópia Doxygen, evitando elementos `<tt>` em cabeçalhos públicos.
 - Recursos de imagem copiados para dentro da raiz HTML publicada, com caminhos
   de galeria adaptados somente na representação temporária usada pelo Pages.
 - Publicação Doxygen separada da fonte Markdown canônica para evitar Mermaid

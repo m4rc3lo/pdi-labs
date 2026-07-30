@@ -54,3 +54,7 @@ desktop.ini
 
 # Windows shortcuts
 *.lnk
+
+# Python cache files
+__pycache__/
+*.py[cod]

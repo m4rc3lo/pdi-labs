@@ -109,15 +109,17 @@ O job `build`:
 1. obtém o repositório com `actions/checkout`;
 2. instala CMake, Ninja, OpenCV, Doxygen e Graphviz;
 3. configura os metadados do Pages com `actions/configure-pages`;
-4. executa `scripts/prepare_doxygen_sources.py` e cria
+4. executa os testes unitários do preparador documental;
+5. lê `docs/pages-manifest.txt`, seleciona somente as páginas públicas e cria
    `build/pages-source/docs/`;
-5. confirma que `docs/` ainda contém Mermaid e que a cópia temporária não
-   contém blocos Mermaid;
-6. configura o CMake em `build/pages-docs/`, apontando
+6. confirma que `docs/` ainda contém Mermaid, que a cópia temporária não
+   contém blocos Mermaid, páginas internas ou títulos técnicos incompatíveis;
+7. configura o CMake em `build/pages-docs/`, apontando
    `PDI_DOCUMENTATION_SOURCE_DIR` para a cópia temporária;
-7. gera somente o target `docs`;
-8. verifica `index.html`, imagens publicáveis e caminhos relativos;
-9. envia `build/pages-docs/docs/html/` com
+8. gera somente o target `docs`;
+9. verifica `index.html`, imagens publicáveis, títulos e caminhos relativos;
+10. registra de forma informativa os recursos Graphviz produzidos;
+11. envia `build/pages-docs/docs/html/` com
    `actions/upload-pages-artifact`.
 
 As opções utilizadas são:
@@ -135,8 +137,8 @@ PDI_DOCUMENTATION_SOURCE_DIR=<repositório>/build/pages-source/docs
 
 `docs/` é a fonte canônica. Seus blocos Mermaid continuam versionados e são
 renderizados diretamente pelo GitHub e por visualizadores Markdown
-compatíveis. O site Doxygen usa uma representação derivada e efêmera dentro de
-`build/`:
+compatíveis. O site Doxygen usa uma seleção pública, derivada e efêmera dentro
+de `build/`:
 
 ```text
 docs/                         fonte canônica com Mermaid
@@ -144,9 +146,18 @@ build/pages-source/docs/      cópia temporária sem Mermaid cru
 build/pages-docs/docs/html/   site estático publicável
 ```
 
+O manifesto `docs/pages-manifest.txt` usa uma lista de inclusão: páginas novas
+não são publicadas automaticamente. O mapeamento
+`site/index.md -> index.md` transforma `docs/site/index.md` na página inicial
+pública, enquanto `docs/index.md`, `docs/building.md` e `docs/testing.md`
+permanecem somente no repositório.
+
 O script substitui cada bloco Mermaid por uma nota que aponta para o documento
-original no GitHub e troca somente os prefixos de galeria necessários ao
-artefato HTML. Nenhum arquivo da fonte canônica é reescrito. A variável CMake
+original no GitHub, troca somente os prefixos de galeria necessários ao
+artefato HTML e remove crases apenas de títulos formados integralmente por
+código inline. Assim, nomes como `foto_broto_planta_01.jpg` e
+`opencv_morphology_j_binary.png` permanecem legíveis sem gerar títulos `<tt>`.
+Nenhum arquivo da fonte canônica é reescrito. A variável CMake
 `PDI_DOCUMENTATION_SOURCE_DIR` permite escolher explicitamente qual conjunto de
 Markdown será processado pelo Doxygen; quando ela não é informada, o build local
 continua usando `docs/`.
@@ -157,6 +168,7 @@ Para reproduzir localmente a variante do Pages:
 python3 scripts/prepare_doxygen_sources.py \
     --source docs \
     --destination build/pages-source/docs \
+    --manifest docs/pages-manifest.txt \
     --repository-docs-url \
     https://github.com/m4rc3lo/pdi-labs/blob/main/docs
 ```

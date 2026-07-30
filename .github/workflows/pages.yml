@@ -32,28 +32,52 @@ jobs:
             ninja-build \
             libopencv-dev \
             doxygen \
-            graphviz
+            graphviz \
+            python3
 
       - name: Configurar GitHub Pages
         uses: actions/configure-pages@v5
+
+      - name: Testar preparador documental
+        run: |
+          python3 -m unittest discover \
+            -s tests/scripts \
+            -p 'test_*.py' \
+            -v
 
       - name: Preparar fonte Doxygen para o Pages
         run: |
           python3 scripts/prepare_doxygen_sources.py \
             --source docs \
             --destination build/pages-source/docs \
+            --manifest docs/pages-manifest.txt \
             --repository-docs-url \
             https://github.com/m4rc3lo/pdi-labs/blob/main/docs
 
           test -n "$(grep -RIl '```mermaid' docs)"
+          test -f build/pages-source/docs/index.md
+          test -f build/pages-source/docs/image-catalog.md
+          test -f build/pages-source/docs/labs/m1-1.md
+          test -f build/pages-source/docs/labs/m2-3.md
+          test ! -f build/pages-source/docs/building.md
+          test ! -f build/pages-source/docs/testing.md
 
           if grep -RIn '```mermaid' build/pages-source/docs; then
             echo "Bloco Mermaid permaneceu na fonte temporária."
             exit 1
           fi
 
-          if grep -RInE '(src|href)="\.\./images/' build/pages-source/docs; then
-            echo "Caminho de imagem antigo permaneceu na fonte temporária."
+          if grep -RInE \
+            '^#{1,6}[[:space:]]+`[^`]+`[[:space:]]*$' \
+            build/pages-source/docs; then
+            echo "Título formado exclusivamente por código permaneceu."
+            exit 1
+          fi
+
+          if grep -RInE \
+            '(src|href)="(\.\./|/)images/' \
+            build/pages-source/docs; then
+            echo "Caminho de imagem incompatível permaneceu na fonte temporária."
             exit 1
           fi
 
@@ -89,11 +113,23 @@ jobs:
           fi
 
           if grep -RInE \
+            '<h[1-6][^>]*>.*<tt>.*</tt>.*</h[1-6]>' \
+            build/pages-docs/docs/html; then
+            echo "Título Doxygen com elemento tt encontrado."
+            exit 1
+          fi
+
+          if grep -RInE \
             '(src|href)="(\.\./|/)images/' \
             build/pages-docs/docs/html; then
             echo "Caminho de imagem incompatível com o Pages."
             exit 1
           fi
+
+          graphviz_count="$(find build/pages-docs/docs/html -maxdepth 1 -type f \
+            \( -name '*graph*.svg' -o -name '*_incl.svg' -o -name '*_coll_graph.svg' \) \
+            | wc -l)"
+          echo "Recursos Graphviz encontrados: ${graphviz_count}"
 
       - name: Enviar artefato do GitHub Pages
         uses: actions/upload-pages-artifact@v4

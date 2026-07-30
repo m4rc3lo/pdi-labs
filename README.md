@@ -604,10 +604,18 @@ target `docs` em `build/pages-docs/` e envia diretamente
 `build/pages-docs/docs/html/`, diretório cuja raiz contém `index.html`.
 
 Os arquivos canônicos em `docs/` permanecem inalterados e conservam os
-Diagramas Mermaid renderizados pelo GitHub. Apenas a cópia temporária destinada
-ao Doxygen substitui cada bloco Mermaid por uma nota com link para o documento
-original. O mesmo preparo adapta os caminhos das galerias para que imagens de
-entrada e resultados curados fiquem dentro da raiz HTML publicada.
+diagramas Mermaid renderizados pelo GitHub. O arquivo
+`docs/pages-manifest.txt` seleciona explicitamente o conteúdo público e
+`docs/site/index.md` fornece uma página inicial específica para estudantes e
+visitantes. Apenas a cópia temporária destinada ao Doxygen substitui cada bloco
+Mermaid por uma nota com link para o documento original, adapta os caminhos das
+galerias e normaliza títulos técnicos que o Doxygen converteria em elementos
+`<tt>`. O catálogo completo de imagens permanece publicado.
+
+Páginas de manutenção, como instruções de build, testes e convenções
+documentais, continuam disponíveis no repositório, mas não integram o site
+público. Diagramas Graphviz inferidos pelo Doxygen permanecem habilitados quando
+`dot` está disponível.
 
 Após integrar o workflow ao `main`, habilite a publicação uma única vez:
 
