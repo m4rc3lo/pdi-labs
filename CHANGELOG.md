@@ -39,6 +39,18 @@ timeline
 
 ## [Unreleased]
 
+### Changed
+
+- Identificadores de páginas e seções da fonte Doxygen derivada passam a ser
+  únicos, determinísticos e hierárquicos, inclusive para títulos repetidos.
+- Notas que substituem diagramas Mermaid passam a formar blockquotes isolados e
+  válidos na documentação publicada.
+- Delimitadores matemáticos de bloco são adaptados somente na fonte derivada
+  para a sintaxe reconhecida pelo Doxygen.
+- Documentação de `SpatialConvolution::convolution` e
+  `SpatialConvolution::convolution_raw` foi reassociada às declarações corretas,
+  eliminando parâmetros duplicados no Doxygen.
+
 ## [0.8.0] - 2026-07-30
 
 ### Added
