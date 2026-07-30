@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.24)
 
 project(
     pdi_labs
-    VERSION 0.7.0
+    VERSION 0.8.0
     DESCRIPTION "Didactic Image Processing laboratory implementations"
     LANGUAGES CXX
 )

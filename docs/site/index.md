@@ -25,6 +25,11 @@ O catálogo preserva as fotografias próprias, imagens sintéticas, imagens
 realistas geradas por Inteligência Artificial (IA), imagens de terceiros e
 resultados processados selecionados para fins didáticos.
 
+## Comparação entre linguagens
+
+A [comparação entre C++, Java e Python](language-comparison.md) relaciona
+organização de projeto, tipos, pixels, OpenCV, testes, persistência e interfaces.
+
 ## Arquitetura e referência técnica
 
 A [visão de arquitetura](architecture.md) apresenta os principais componentes e

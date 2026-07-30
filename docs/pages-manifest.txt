@@ -5,6 +5,7 @@ site/index.md -> index.md
 architecture.md
 architecture/interactive-ui.md
 architecture/processing-data-storage.md
+language-comparison.md
 image-catalog.md
 image-guidelines.md
 image-attributions.md
