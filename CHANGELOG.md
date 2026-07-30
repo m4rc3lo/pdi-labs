@@ -39,8 +39,15 @@ timeline
 
 ## [Unreleased]
 
+## [0.8.0] - 2026-07-29
+
 ### Added
 
+- Comparação didática entre C++, Java e Python para os laboratórios, cobrindo
+  estrutura de projeto, tipos, saturação, acesso pixel a pixel, memória,
+  persistência, interfaces, testes, desempenho e equivalências conceituais.
+- Publicação da comparação no GitHub Pages por meio da fonte documental
+  derivada, preservando Mermaid somente nos Markdown canônicos do repositório.
 - Manifesto explícito de páginas públicas e página inicial específica para a
   documentação didática publicada no GitHub Pages.
 - Testes unitários do preparador documental para seleção, transformação e
@@ -68,6 +75,8 @@ timeline
 
 ### Changed
 
+- Versão do projeto e metadados de citação preparados para `v0.8.0`.
+- README atualizado com acesso à comparação entre linguagens.
 - Curadoria do site baseada em lista de inclusão, mantendo build, testes e
   convenções documentais somente no repositório.
 - Títulos formados exclusivamente por nomes técnicos entre crases normalizados

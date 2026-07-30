@@ -43,6 +43,11 @@ O repositório deverá permitir que o estudante:
    testável;
 7. discuta adaptações equivalentes em C++, Java e Python.
 
+Uma comparação didática detalhada entre as três linguagens está disponível em
+[docs/language-comparison.md](docs/language-comparison.md). A página cobre
+representação de imagens, acesso pixel a pixel, saturação, persistência,
+interfaces, testes, desempenho e equivalências conceituais.
+
 ## Política pública de imagens
 
 O repositório distingue explicitamente as seguintes categorias editoriais:
