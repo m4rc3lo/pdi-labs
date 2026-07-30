@@ -62,15 +62,36 @@ jobs:
           test ! -f build/pages-source/docs/building.md
           test ! -f build/pages-source/docs/testing.md
 
+          relative_markdown_links="$(
+            grep -RInE \
+            '\[[^]]+\]\([^)]*\.md([#?][^)]*)?\)' \
+            build/pages-source/docs \
+            | grep -vE '\]\(https?://' \
+            || true
+          )"
+
           if grep -RIn '```mermaid' build/pages-source/docs; then
             echo "Bloco Mermaid permaneceu na fonte temporária."
             exit 1
           fi
 
           if grep -RInE \
-            '^#{1,6}[[:space:]]+`[^`]+`[[:space:]]*$' \
+            '^#{1,6}[[:space:]].*`[^`]+`' \
             build/pages-source/docs; then
-            echo "Título formado exclusivamente por código permaneceu."
+            echo "Código inline permaneceu em título público."
+            exit 1
+          fi
+
+          #if grep -RInE \
+          #  '\[[^]]+\]\([^)]*\.md([#?][^)]*)?\)' \
+          #  build/pages-source/docs; then
+          #  echo "Link Markdown interno permaneceu na fonte temporária."
+          #  exit 1
+          #fi
+
+          if [ -n "${relative_markdown_links}" ]; then
+            echo "${relative_markdown_links}"
+            echo "ERRO: link Markdown interno permaneceu."
             exit 1
           fi
 
@@ -116,6 +137,13 @@ jobs:
             '<h[1-6][^>]*>.*<tt>.*</tt>.*</h[1-6]>' \
             build/pages-docs/docs/html; then
             echo "Título Doxygen com elemento tt encontrado."
+            exit 1
+          fi
+
+          if grep -RInE \
+            'href="[^"]+\.md([#?][^"]*)?"' \
+            build/pages-docs/docs/html; then
+            echo "Link Markdown incompatível permaneceu no HTML."
             exit 1
           fi
 

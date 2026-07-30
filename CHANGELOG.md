@@ -75,6 +75,10 @@ timeline
 
 ### Changed
 
+- Preparação documental passa a remover código inline de todos os títulos
+  públicos, evitando elementos `<tt>` na navegação e nos cabeçalhos Doxygen.
+- Links relativos entre páginas Markdown públicas passam a ser convertidos em
+  referências Doxygen estáveis, inclusive quando apontam para seções.
 - Versão do projeto e metadados de citação preparados para `v0.8.0`.
 - README atualizado com acesso à comparação entre linguagens.
 - Curadoria do site baseada em lista de inclusão, mantendo build, testes e
