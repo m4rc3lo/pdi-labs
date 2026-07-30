@@ -95,12 +95,45 @@ jobs:
             exit 1
           fi
 
-          if grep -RInE \
-            '(src|href)="(\.\./|/)images/' \
-            build/pages-source/docs; then
-            echo "Caminho de imagem incompatível permaneceu na fonte temporária."
-            exit 1
-          fi
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          import sys
+
+          pattern = re.compile(r'(?:src|href)="(?:\.\./|/)images/')
+          fence_pattern = re.compile(r"^\s*(`{3,}|~{3,})")
+          problems = []
+
+          for path in Path("build/pages-source/docs").rglob("*.md"):
+              inside_fence = False
+              fence_marker = None
+
+              for line_number, line in enumerate(
+                  path.read_text(encoding="utf-8").splitlines(),
+                  start=1,
+              ):
+                  fence_match = fence_pattern.match(line)
+                  if fence_match:
+                      marker = fence_match.group(1)[0]
+                      if not inside_fence:
+                          inside_fence = True
+                          fence_marker = marker
+                      elif marker == fence_marker:
+                          inside_fence = False
+                          fence_marker = None
+                      continue
+
+                  if not inside_fence and pattern.search(line):
+                      problems.append(f"{path}:{line_number}:{line}")
+
+          if problems:
+              print("\n".join(problems))
+              print(
+                  "Caminho de imagem incompatível permaneceu fora de "
+                  "bloco de código na fonte temporária."
+              )
+              sys.exit(1)
+          PY
 
       - name: Configurar documentação com CMake
         run: |
@@ -140,19 +173,53 @@ jobs:
             exit 1
           fi
 
-          if grep -RInE \
-            'href="[^"]+\.md([#?][^"]*)?"' \
-            build/pages-docs/docs/html; then
-            echo "Link Markdown incompatível permaneceu no HTML."
+          internal_markdown_links="$(
+            grep -RInE \
+              'href="[^"]+\.md([#?][^"]*)?"' \
+              build/pages-docs/docs/html \
+              | grep -vE 'href="https?://' \
+              || true
+          )"
+
+          if [ -n "${internal_markdown_links}" ]; then
+            echo "${internal_markdown_links}"
+            echo "Link Markdown interno incompatível permaneceu no HTML."
             exit 1
           fi
 
-          if grep -RInE \
-            '(src|href)="(\.\./|/)images/' \
-            build/pages-docs/docs/html; then
-            echo "Caminho de imagem incompatível com o Pages."
-            exit 1
-          fi
+          python3 - <<'PY'
+          from html.parser import HTMLParser
+          from pathlib import Path
+          import sys
+
+
+          class ResourcePathValidator(HTMLParser):
+              def __init__(self, path: Path) -> None:
+                  super().__init__()
+                  self.path = path
+                  self.problems: list[str] = []
+
+              def handle_starttag(self, tag, attrs) -> None:
+                  for name, value in attrs:
+                      if name not in {"src", "href"} or value is None:
+                          continue
+                      if value.startswith("../images/") or value.startswith("/images/"):
+                          self.problems.append(
+                              f"{self.path}: <{tag}> {name}={value!r}"
+                          )
+
+
+          problems = []
+          for path in Path("build/pages-docs/docs/html").rglob("*.html"):
+              parser = ResourcePathValidator(path)
+              parser.feed(path.read_text(encoding="utf-8", errors="replace"))
+              problems.extend(parser.problems)
+
+          if problems:
+              print("\n".join(problems))
+              print("Caminho de imagem incompatível encontrado no HTML.")
+              sys.exit(1)
+          PY
 
           graphviz_count="$(find build/pages-docs/docs/html -maxdepth 1 -type f \
             \( -name '*graph*.svg' -o -name '*_incl.svg' -o -name '*_coll_graph.svg' \) \
