@@ -274,5 +274,122 @@ class PrepareDoxygenSourcesTests(unittest.TestCase):
         self.assertEqual(2, totals["copied_files"])
 
 
+    def test_generates_hierarchical_ids_for_repeated_titles(self) -> None:
+        self.write(
+            "index.md",
+            "# Comparação {#language_comparison}\n\n"
+            "## Memória\n\n### C++\n\n### Java\n\n"
+            "## Pixels\n\n### C++\n\n### Java\n",
+        )
+        self.manifest.write_text("index.md\n", encoding="utf-8")
+        self.prepare()
+        output = (self.destination / "index.md").read_text(encoding="utf-8")
+        self.assertIn("### C++ {#language_comparison_memoria_c}\n", output)
+        self.assertIn("### C++ {#language_comparison_pixels_c}\n", output)
+
+    def test_suffixes_repeated_titles_under_same_parent(self) -> None:
+        self.write(
+            "index.md",
+            "# Laboratório\n\n## Resultados\n\n"
+            "### Remoção de ruído\n\n### Remoção de ruído\n",
+        )
+        self.manifest.write_text("index.md\n", encoding="utf-8")
+        self.prepare()
+        output = (self.destination / "index.md").read_text(encoding="utf-8")
+        self.assertIn(
+            "{#page_index_resultados_remocao_de_ruido}\n",
+            output,
+        )
+        self.assertIn(
+            "{#page_index_resultados_remocao_de_ruido_2}\n",
+            output,
+        )
+
+    def test_preserves_explicit_section_identifier(self) -> None:
+        self.write("index.md", "# Página\n\n## Seção {#secao_estavel}\n")
+        self.manifest.write_text("index.md\n", encoding="utf-8")
+        self.prepare()
+        output = (self.destination / "index.md").read_text(encoding="utf-8")
+        self.assertIn("## Seção {#secao_estavel}\n", output)
+
+    def test_rejects_duplicate_explicit_identifier(self) -> None:
+        self.write(
+            "index.md",
+            "# Página\n\n## A {#duplicado}\n\n## B {#duplicado}\n",
+        )
+        self.manifest.write_text("index.md\n", encoding="utf-8")
+        with self.assertRaisesRegex(ValueError, "explícito duplicado"):
+            self.prepare()
+
+    def test_generation_is_deterministic(self) -> None:
+        self.write("index.md", "# Página\n\n## Grupo\n\n### Item\n\n### Item\n")
+        self.manifest.write_text("index.md\n", encoding="utf-8")
+        self.prepare()
+        first = (self.destination / "index.md").read_text(encoding="utf-8")
+        self.prepare()
+        second = (self.destination / "index.md").read_text(encoding="utf-8")
+        self.assertEqual(first, second)
+
+    def test_rewrites_link_to_duplicate_github_anchor(self) -> None:
+        self.write("index.md", "# Início\n\n[Segundo](target.md#item-1)\n")
+        self.write("target.md", "# Alvo\n\n## Item\n\n## Item\n")
+        self.manifest.write_text("index.md\ntarget.md\n", encoding="utf-8")
+        self.prepare()
+        output = (self.destination / "index.md").read_text(encoding="utf-8")
+        self.assertIn('\\ref page_target_item_2 "Segundo"', output)
+
+    def test_generated_ids_are_unique_across_documents(self) -> None:
+        self.write("site/index.md", "# Início\n")
+        self.write("a.md", "# A\n\n## Seção\n")
+        self.write("b.md", "# B\n\n## Seção\n")
+        self.manifest.write_text(
+            "site/index.md -> index.md\na.md\nb.md\n",
+            encoding="utf-8",
+        )
+        self.prepare()
+        ids = []
+        for path in self.destination.rglob("*.md"):
+            ids.extend(
+                __import__("re").findall(
+                    r"\{#([A-Za-z_][A-Za-z0-9_:.-]*)\}",
+                    path.read_text(encoding="utf-8"),
+                )
+            )
+        self.assertEqual(len(ids), len(set(ids)))
+
+    def test_isolates_mermaid_note_between_content_blocks(self) -> None:
+        self.write(
+            "index.md",
+            "# Página\n\n- item\n\n```mermaid\nA --> B\n```\n\n> citação\n",
+        )
+        self.manifest.write_text("index.md\n", encoding="utf-8")
+        self.prepare()
+        output = (self.destination / "index.md").read_text(encoding="utf-8")
+        self.assertIn(
+            "\n> **Diagrama Mermaid disponível na versão Markdown.**\n"
+            ">\n"
+            "> Consulte [este documento no GitHub]",
+            output,
+        )
+        self.assertIn("o diagrama renderizado.\n\n\n> citação\n", output)
+
+    def test_converts_block_math_delimiters_outside_fences(self) -> None:
+        self.write(
+            "index.md",
+            "# Página\n\n\\[\n"
+            "g(x,y)=\\min(255,\\max(0,v(x,y))).\n"
+            "\\]\n\n"
+            "```text\n\\[\n\\]\n```\n",
+        )
+        self.manifest.write_text("index.md\n", encoding="utf-8")
+        self.prepare()
+        output = (self.destination / "index.md").read_text(encoding="utf-8")
+        self.assertIn(
+            "\\f[\ng(x,y)=\\min(255,\\max(0,v(x,y))).\n\\f]\n",
+            output,
+        )
+        self.assertIn("```text\n\\[\n\\]\n```\n", output)
+
+
 if __name__ == "__main__":
     unittest.main()

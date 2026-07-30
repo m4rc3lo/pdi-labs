@@ -47,6 +47,7 @@ class MarkdownDocument:
     destination: PurePosixPath
     page_id: str
     anchors: dict[str, str]
+    heading_ids: tuple[str, ...]
 
 
 def parse_arguments() -> argparse.Namespace:
@@ -117,9 +118,12 @@ def load_manifest(manifest_file: Path) -> list[ManifestEntry]:
 def mermaid_note(relative_path: PurePosixPath, repository_docs_url: str) -> list[str]:
     document_url = f"{repository_docs_url.rstrip('/')}/{relative_path.as_posix()}"
     return [
+        "\n",
         "> **Diagrama Mermaid disponível na versão Markdown.**\n",
+        ">\n",
         f"> Consulte [este documento no GitHub]({document_url}) para visualizar "
         "o diagrama renderizado.\n",
+        "\n",
     ]
 
 
@@ -177,19 +181,43 @@ def iter_manifest_files(
     return files
 
 
+def unique_generated_id(candidate: str, used_ids: set[str]) -> str:
+    """Retorna um identificador gerado único, com sufixo determinístico."""
+
+    if candidate not in used_ids:
+        used_ids.add(candidate)
+        return candidate
+
+    suffix = 2
+    while f"{candidate}_{suffix}" in used_ids:
+        suffix += 1
+    unique_id = f"{candidate}_{suffix}"
+    used_ids.add(unique_id)
+    return unique_id
+
+
+def reserve_explicit_id(explicit_id: str, used_ids: set[str]) -> str:
+    """Reserva um identificador explícito e rejeita colisões editoriais."""
+
+    if explicit_id in used_ids:
+        raise ValueError(f"Identificador Doxygen explícito duplicado: {explicit_id}")
+    used_ids.add(explicit_id)
+    return explicit_id
+
+
 def build_document_index(
     files: list[tuple[Path, PurePosixPath, PurePosixPath]]
 ) -> dict[PurePosixPath, MarkdownDocument]:
     documents: dict[PurePosixPath, MarkdownDocument] = {}
+    used_ids: set[str] = set()
 
     for source_file, canonical_path, destination_path in files:
         if source_file.suffix.lower() != ".md":
             continue
 
-        page_id = page_identifier(destination_path)
-        anchors: dict[str, str] = {}
-        first_heading_found = False
+        headings: list[tuple[int, str, str | None, str, str]] = []
         inside_fence: str | None = None
+        github_anchor_counts: dict[str, int] = {}
 
         for line in source_file.read_text(encoding="utf-8").splitlines():
             fence_match = FENCE_PATTERN.match(line)
@@ -211,29 +239,62 @@ def build_document_index(
             heading_text, explicit_id = heading_text_and_explicit_id(
                 heading_match.group(2)
             )
-            anchor = github_anchor(heading_text)
+            anchor_base = github_anchor(heading_text)
+            anchor_occurrence = github_anchor_counts.get(anchor_base, 0)
+            github_anchor_counts[anchor_base] = anchor_occurrence + 1
+            anchor = (
+                anchor_base
+                if anchor_occurrence == 0
+                else f"{anchor_base}-{anchor_occurrence}"
+            )
+            slug = identifier(anchor_base or heading_text)
+            headings.append((level, heading_text, explicit_id, anchor, slug))
 
-            if not first_heading_found and level == 1:
-                first_heading_found = True
-                if explicit_id:
-                    page_id = explicit_id
-                if anchor:
-                    anchors[anchor] = page_id
-                continue
+        generated_page_id = page_identifier(destination_path)
+        first_is_page = bool(headings and headings[0][0] == 1)
+        explicit_page_id = headings[0][2] if first_is_page else None
+        page_id = (
+            reserve_explicit_id(explicit_page_id, used_ids)
+            if explicit_page_id
+            else unique_generated_id(generated_page_id, used_ids)
+        )
 
-            section_id = explicit_id or f"{page_id}_{identifier(anchor or heading_text)}"
+        anchors: dict[str, str] = {}
+        heading_ids: list[str] = []
+        hierarchy: list[tuple[int, str]] = []
+
+        for position, (level, _heading_text, explicit_id, anchor, slug) in enumerate(headings):
+            if position == 0 and first_is_page:
+                heading_id = page_id
+                hierarchy = []
+            else:
+                while hierarchy and hierarchy[-1][0] >= level:
+                    hierarchy.pop()
+                hierarchy_slug = "_".join(
+                    [parent_slug for _parent_level, parent_slug in hierarchy]
+                    + [slug]
+                )
+                candidate = f"{page_id}_{hierarchy_slug}"
+                heading_id = (
+                    reserve_explicit_id(explicit_id, used_ids)
+                    if explicit_id
+                    else unique_generated_id(candidate, used_ids)
+                )
+                hierarchy.append((level, slug))
+
+            heading_ids.append(heading_id)
             if anchor:
-                anchors[anchor] = section_id
+                anchors[anchor] = heading_id
 
         documents[destination_path] = MarkdownDocument(
             source=canonical_path,
             destination=destination_path,
             page_id=page_id,
             anchors=anchors,
+            heading_ids=tuple(heading_ids),
         )
 
     return documents
-
 
 def resolve_document_path(
     current_destination: PurePosixPath, target: str
@@ -301,7 +362,7 @@ def transform_markdown(
     normalized_heading_count = 0
     rewritten_link_count = 0
     last_line_number = 0
-    first_heading_found = False
+    heading_id_index = 0
 
     for line_number, line in enumerate(lines, start=1):
         last_line_number = line_number
@@ -310,6 +371,8 @@ def transform_markdown(
         if not inside_mermaid and stripped == MERMAID_OPENING:
             inside_mermaid = True
             diagram_count += 1
+            if output and output[-1].strip():
+                output.append("\n")
             output.extend(mermaid_note(document.source, repository_docs_url))
             continue
 
@@ -338,23 +401,23 @@ def transform_markdown(
 
         heading_match = HEADING_PATTERN.match(transformed.rstrip("\r\n"))
         if heading_match:
-            level = len(heading_match.group(1))
-            heading_text, explicit_id = heading_text_and_explicit_id(
+            heading_text, _explicit_id = heading_text_and_explicit_id(
                 heading_match.group(2)
             )
-            anchor = github_anchor(heading_text)
-
-            if not first_heading_found and level == 1:
-                first_heading_found = True
-                heading_id = explicit_id or document.page_id
-            else:
-                heading_id = explicit_id or document.anchors.get(
-                    anchor, f"{document.page_id}_{identifier(anchor or heading_text)}"
+            if heading_id_index >= len(document.heading_ids):
+                raise ValueError(
+                    f"Índice de títulos inconsistente ao transformar {source_file}."
                 )
+            heading_id = document.heading_ids[heading_id_index]
+            heading_id_index += 1
 
             transformed = f"{heading_match.group(1)} {heading_text} {{#{heading_id}}}\n"
             if INLINE_CODE_PATTERN.search(heading_match.group(2)):
                 normalized_heading_count += 1
+        elif stripped == r"\[":
+            transformed = "\\f[\n"
+        elif stripped == r"\]":
+            transformed = "\\f]\n"
 
         transformed, rewritten = rewrite_internal_links(
             transformed, document, documents

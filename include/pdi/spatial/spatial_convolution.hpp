@@ -71,6 +71,13 @@ public:
      * the time complexity is `O(M N K^2)`. The output matrix requires
      * `O(M N)` additional space.
      */
+    [[nodiscard]] cv::Mat convolution(
+        const cv::Mat& input_image,
+        const cv::Mat& kernel,
+        bool normalize_kernel = false,
+        BorderStrategy border_strategy = BorderStrategy::CopyBorder
+    ) const;
+
 
     /**
      * @brief Applies the kernel and preserves the signed floating-point response.
@@ -92,12 +99,6 @@ public:
         BorderStrategy border_strategy = BorderStrategy::CopyBorder
     ) const;
 
-    [[nodiscard]] cv::Mat convolution(
-        const cv::Mat& input_image,
-        const cv::Mat& kernel,
-        bool normalize_kernel = false,
-        BorderStrategy border_strategy = BorderStrategy::CopyBorder
-    ) const;
 };
 
 } // namespace pdi::spatial
