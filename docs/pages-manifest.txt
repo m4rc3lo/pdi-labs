@@ -1,0 +1,20 @@
+# Página inicial pública
+site/index.md -> index.md
+
+# Conteúdo didático e técnico público
+architecture.md
+architecture/interactive-ui.md
+architecture/processing-data-storage.md
+image-catalog.md
+image-guidelines.md
+image-attributions.md
+labs/m1-1.md
+labs/m1-2.md
+labs/m1-3.md
+labs/m1-3-integration.md
+labs/m2-1.md
+labs/m2-2.md
+labs/m2-3.md
+
+# Resultados documentais usados pelas galerias
+images/results
