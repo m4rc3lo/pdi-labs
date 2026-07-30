@@ -4,22 +4,29 @@
 A fonte canônica em ``docs/`` permanece inalterada e conserva diagramas
 Mermaid e documentos internos. Um manifesto explícito seleciona os arquivos e
 diretórios públicos. Na cópia temporária, blocos Mermaid são substituídos por
-uma nota com link para o GitHub, caminhos de galerias são adaptados e títulos
-formados apenas por código inline são normalizados para o Doxygen.
+uma nota com link para o GitHub, caminhos de galerias são adaptados, títulos
+são normalizados e links Markdown internos tornam-se referências Doxygen.
 """
 
 from __future__ import annotations
 
 import argparse
+import posixpath
 import re
 import shutil
+import unicodedata
 from dataclasses import dataclass
 from pathlib import Path, PurePosixPath
+from urllib.parse import unquote
 
 
 MERMAID_OPENING = "```mermaid"
 MERMAID_CLOSING = "```"
-HEADING_CODE_PATTERN = re.compile(r"^(#{1,6})[ \t]+`([^`\r\n]+)`[ \t]*$")
+FENCE_PATTERN = re.compile(r"^[ \t]*(`{3,}|~{3,})")
+HEADING_PATTERN = re.compile(r"^(#{1,6})[ \t]+(.+?)[ \t]*$")
+EXPLICIT_ID_PATTERN = re.compile(r"[ \t]*\{#([A-Za-z_][A-Za-z0-9_:.-]*)\}[ \t]*$")
+INLINE_CODE_PATTERN = re.compile(r"`([^`\r\n]+)`")
+MARKDOWN_LINK_PATTERN = re.compile(r"(?<!!)\[([^\]\r\n]+)\]\(([^)\r\n]+)\)")
 IMAGE_PATH_REPLACEMENTS = {
     "../../images/input/": "images/input/",
     "../../images/results/": "images/results/",
@@ -32,6 +39,14 @@ IMAGE_PATH_REPLACEMENTS = {
 class ManifestEntry:
     source: PurePosixPath
     destination: PurePosixPath
+
+
+@dataclass(frozen=True)
+class MarkdownDocument:
+    source: PurePosixPath
+    destination: PurePosixPath
+    page_id: str
+    anchors: dict[str, str]
 
 
 def parse_arguments() -> argparse.Namespace:
@@ -108,18 +123,185 @@ def mermaid_note(relative_path: PurePosixPath, repository_docs_url: str) -> list
     ]
 
 
+def identifier(value: str) -> str:
+    normalized = unicodedata.normalize("NFKD", value)
+    ascii_value = normalized.encode("ascii", "ignore").decode("ascii")
+    clean = re.sub(r"[^A-Za-z0-9]+", "_", ascii_value).strip("_").lower()
+    return clean or "section"
+
+
+def page_identifier(destination: PurePosixPath) -> str:
+    without_suffix = destination.with_suffix("").as_posix()
+    return f"page_{identifier(without_suffix)}"
+
+
+def heading_text_and_explicit_id(raw_text: str) -> tuple[str, str | None]:
+    explicit_match = EXPLICIT_ID_PATTERN.search(raw_text)
+    explicit_id = explicit_match.group(1) if explicit_match else None
+    text = raw_text[: explicit_match.start()] if explicit_match else raw_text
+    text = INLINE_CODE_PATTERN.sub(r"\1", text).strip()
+    return text, explicit_id
+
+
+def github_anchor(text: str) -> str:
+    normalized = unicodedata.normalize("NFKD", text)
+    normalized = "".join(char for char in normalized if not unicodedata.combining(char))
+    normalized = normalized.lower().strip()
+    normalized = re.sub(r"[^\w\- ]", "", normalized, flags=re.UNICODE)
+    return re.sub(r"[ _]+", "-", normalized).strip("-")
+
+
+def iter_manifest_files(
+    source_root: Path, entries: list[ManifestEntry]
+) -> list[tuple[Path, PurePosixPath, PurePosixPath]]:
+    files: list[tuple[Path, PurePosixPath, PurePosixPath]] = []
+    for entry in entries:
+        source_path = source_root.joinpath(*entry.source.parts)
+        if not source_path.exists():
+            raise FileNotFoundError(f"Entrada do manifesto não encontrada: {source_path}")
+
+        if source_path.is_dir():
+            for nested_source in sorted(
+                path for path in source_path.rglob("*") if path.is_file()
+            ):
+                nested_relative = nested_source.relative_to(source_path)
+                files.append(
+                    (
+                        nested_source,
+                        PurePosixPath(*nested_source.relative_to(source_root).parts),
+                        entry.destination / PurePosixPath(*nested_relative.parts),
+                    )
+                )
+        else:
+            files.append((source_path, entry.source, entry.destination))
+    return files
+
+
+def build_document_index(
+    files: list[tuple[Path, PurePosixPath, PurePosixPath]]
+) -> dict[PurePosixPath, MarkdownDocument]:
+    documents: dict[PurePosixPath, MarkdownDocument] = {}
+
+    for source_file, canonical_path, destination_path in files:
+        if source_file.suffix.lower() != ".md":
+            continue
+
+        page_id = page_identifier(destination_path)
+        anchors: dict[str, str] = {}
+        first_heading_found = False
+        inside_fence: str | None = None
+
+        for line in source_file.read_text(encoding="utf-8").splitlines():
+            fence_match = FENCE_PATTERN.match(line)
+            if fence_match:
+                marker = fence_match.group(1)[0]
+                if inside_fence is None:
+                    inside_fence = marker
+                elif inside_fence == marker:
+                    inside_fence = None
+                continue
+            if inside_fence is not None:
+                continue
+
+            heading_match = HEADING_PATTERN.match(line)
+            if not heading_match:
+                continue
+
+            level = len(heading_match.group(1))
+            heading_text, explicit_id = heading_text_and_explicit_id(
+                heading_match.group(2)
+            )
+            anchor = github_anchor(heading_text)
+
+            if not first_heading_found and level == 1:
+                first_heading_found = True
+                if explicit_id:
+                    page_id = explicit_id
+                if anchor:
+                    anchors[anchor] = page_id
+                continue
+
+            section_id = explicit_id or f"{page_id}_{identifier(anchor or heading_text)}"
+            if anchor:
+                anchors[anchor] = section_id
+
+        documents[destination_path] = MarkdownDocument(
+            source=canonical_path,
+            destination=destination_path,
+            page_id=page_id,
+            anchors=anchors,
+        )
+
+    return documents
+
+
+def resolve_document_path(
+    current_destination: PurePosixPath, target: str
+) -> PurePosixPath | None:
+    target_path = unquote(target).replace("\\", "/")
+    if not target_path.lower().endswith(".md"):
+        return None
+
+    current_parent = current_destination.parent.as_posix()
+    combined = posixpath.normpath(posixpath.join(current_parent, target_path))
+    if combined == ".." or combined.startswith("../") or combined.startswith("/"):
+        return None
+    return PurePosixPath(combined)
+
+
+def rewrite_internal_links(
+    line: str,
+    current_document: MarkdownDocument,
+    documents: dict[PurePosixPath, MarkdownDocument],
+) -> tuple[str, int]:
+    rewritten_count = 0
+
+    def replacement(match: re.Match[str]) -> str:
+        nonlocal rewritten_count
+        label = match.group(1)
+        raw_target = match.group(2).strip()
+
+        if raw_target.startswith(("#", "http://", "https://", "mailto:")):
+            return match.group(0)
+
+        target_without_title = raw_target.split(maxsplit=1)[0]
+        path_part, separator, fragment = target_without_title.partition("#")
+        destination_path = resolve_document_path(current_document.destination, path_part)
+        if destination_path is None:
+            return match.group(0)
+
+        target_document = documents.get(destination_path)
+        if target_document is None:
+            return match.group(0)
+
+        reference_id = target_document.page_id
+        if separator and fragment:
+            reference_id = target_document.anchors.get(
+                unquote(fragment).lower(), reference_id
+            )
+
+        rewritten_count += 1
+        return f'\\ref {reference_id} "{label}"'
+
+    return MARKDOWN_LINK_PATTERN.sub(replacement, line), rewritten_count
+
+
 def transform_markdown(
     source_file: Path,
     destination_file: Path,
-    source_relative_path: PurePosixPath,
+    document: MarkdownDocument,
     repository_docs_url: str,
-) -> tuple[int, int]:
+    documents: dict[PurePosixPath, MarkdownDocument],
+) -> tuple[int, int, int]:
     lines = source_file.read_text(encoding="utf-8").splitlines(keepends=True)
     output: list[str] = []
     inside_mermaid = False
+    inside_fence: str | None = None
     diagram_count = 0
     normalized_heading_count = 0
+    rewritten_link_count = 0
     last_line_number = 0
+    first_heading_found = False
 
     for line_number, line in enumerate(lines, start=1):
         last_line_number = line_number
@@ -128,7 +310,7 @@ def transform_markdown(
         if not inside_mermaid and stripped == MERMAID_OPENING:
             inside_mermaid = True
             diagram_count += 1
-            output.extend(mermaid_note(source_relative_path, repository_docs_url))
+            output.extend(mermaid_note(document.source, repository_docs_url))
             continue
 
         if inside_mermaid:
@@ -136,15 +318,48 @@ def transform_markdown(
                 inside_mermaid = False
             continue
 
+        fence_match = FENCE_PATTERN.match(line)
+        if fence_match:
+            marker = fence_match.group(1)[0]
+            if inside_fence is None:
+                inside_fence = marker
+            elif inside_fence == marker:
+                inside_fence = None
+            output.append(line)
+            continue
+
+        if inside_fence is not None:
+            output.append(line)
+            continue
+
         transformed = line
         for original, replacement in IMAGE_PATH_REPLACEMENTS.items():
             transformed = transformed.replace(original, replacement)
 
-        heading_match = HEADING_CODE_PATTERN.match(transformed.rstrip("\r\n"))
+        heading_match = HEADING_PATTERN.match(transformed.rstrip("\r\n"))
         if heading_match:
-            transformed = f"{heading_match.group(1)} {heading_match.group(2)}\n"
-            normalized_heading_count += 1
+            level = len(heading_match.group(1))
+            heading_text, explicit_id = heading_text_and_explicit_id(
+                heading_match.group(2)
+            )
+            anchor = github_anchor(heading_text)
 
+            if not first_heading_found and level == 1:
+                first_heading_found = True
+                heading_id = explicit_id or document.page_id
+            else:
+                heading_id = explicit_id or document.anchors.get(
+                    anchor, f"{document.page_id}_{identifier(anchor or heading_text)}"
+                )
+
+            transformed = f"{heading_match.group(1)} {heading_text} {{#{heading_id}}}\n"
+            if INLINE_CODE_PATTERN.search(heading_match.group(2)):
+                normalized_heading_count += 1
+
+        transformed, rewritten = rewrite_internal_links(
+            transformed, document, documents
+        )
+        rewritten_link_count += rewritten
         output.append(transformed)
 
     if inside_mermaid:
@@ -155,65 +370,7 @@ def transform_markdown(
 
     destination_file.parent.mkdir(parents=True, exist_ok=True)
     destination_file.write_text("".join(output), encoding="utf-8", newline="\n")
-    return diagram_count, normalized_heading_count
-
-
-def copy_manifest_entry(
-    source_root: Path,
-    destination_root: Path,
-    entry: ManifestEntry,
-    repository_docs_url: str,
-) -> tuple[int, int, int, int]:
-    source_path = source_root.joinpath(*entry.source.parts)
-    destination_path = destination_root.joinpath(*entry.destination.parts)
-
-    if not source_path.exists():
-        raise FileNotFoundError(f"Entrada do manifesto não encontrada: {source_path}")
-
-    markdown_count = 0
-    diagram_count = 0
-    heading_count = 0
-    copied_count = 0
-
-    if source_path.is_dir():
-        files = sorted(path for path in source_path.rglob("*") if path.is_file())
-        for nested_source in files:
-            nested_relative = nested_source.relative_to(source_path)
-            nested_destination = destination_path / nested_relative
-            canonical_relative = PurePosixPath(
-                *nested_source.relative_to(source_root).parts
-            )
-            if nested_source.suffix.lower() == ".md":
-                diagrams, headings = transform_markdown(
-                    nested_source,
-                    nested_destination,
-                    canonical_relative,
-                    repository_docs_url,
-                )
-                markdown_count += 1
-                diagram_count += diagrams
-                heading_count += headings
-            else:
-                nested_destination.parent.mkdir(parents=True, exist_ok=True)
-                shutil.copy2(nested_source, nested_destination)
-            copied_count += 1
-    elif source_path.suffix.lower() == ".md":
-        diagrams, headings = transform_markdown(
-            source_path,
-            destination_path,
-            entry.source,
-            repository_docs_url,
-        )
-        markdown_count = 1
-        diagram_count = diagrams
-        heading_count = headings
-        copied_count = 1
-    else:
-        destination_path.parent.mkdir(parents=True, exist_ok=True)
-        shutil.copy2(source_path, destination_path)
-        copied_count = 1
-
-    return markdown_count, diagram_count, heading_count, copied_count
+    return diagram_count, normalized_heading_count, rewritten_link_count
 
 
 def prepare_sources(
@@ -234,6 +391,9 @@ def prepare_sources(
         raise ValueError("O destino não pode ser igual ou interno ao diretório-fonte.")
 
     entries = load_manifest(manifest)
+    files = iter_manifest_files(source, entries)
+    documents = build_document_index(files)
+
     if destination.exists():
         shutil.rmtree(destination)
     destination.mkdir(parents=True)
@@ -243,16 +403,29 @@ def prepare_sources(
         "markdown_files": 0,
         "diagrams": 0,
         "headings": 0,
+        "links": 0,
         "copied_files": 0,
     }
-    for entry in entries:
-        markdown, diagrams, headings, copied = copy_manifest_entry(
-            source, destination, entry, repository_docs_url
-        )
-        totals["markdown_files"] += markdown
-        totals["diagrams"] += diagrams
-        totals["headings"] += headings
-        totals["copied_files"] += copied
+
+    for source_file, _canonical_path, destination_path in files:
+        output_path = destination.joinpath(*destination_path.parts)
+        if source_file.suffix.lower() == ".md":
+            document = documents[destination_path]
+            diagrams, headings, links = transform_markdown(
+                source_file,
+                output_path,
+                document,
+                repository_docs_url,
+                documents,
+            )
+            totals["markdown_files"] += 1
+            totals["diagrams"] += diagrams
+            totals["headings"] += headings
+            totals["links"] += links
+        else:
+            output_path.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(source_file, output_path)
+        totals["copied_files"] += 1
 
     if not (destination / "index.md").is_file():
         raise ValueError("O manifesto público deve produzir index.md no destino.")
@@ -271,6 +444,7 @@ def main() -> int:
     print(f"Arquivos Markdown processados: {totals['markdown_files']}")
     print(f"Diagramas Mermaid substituídos: {totals['diagrams']}")
     print(f"Títulos normalizados: {totals['headings']}")
+    print(f"Links internos reescritos: {totals['links']}")
     print(f"Arquivos copiados: {totals['copied_files']}")
     print(f"Fonte temporária: {arguments.destination.resolve()}")
     return 0

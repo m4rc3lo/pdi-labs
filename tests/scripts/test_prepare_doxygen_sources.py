@@ -50,8 +50,10 @@ class PrepareDoxygenSourcesTests(unittest.TestCase):
             "# comentário\n\nsite/index.md -> index.md\n", encoding="utf-8"
         )
         totals = self.prepare()
-        #self.assertEqual("# Página\n", (self.destination / "index.md").read_text(encoding="utf-8"))
-        self.assertEqual("# Página\n", (self.destination / "index.md").read_text(encoding="utf-8"),)
+        self.assertEqual(
+            "# Página {#page_index}\n",
+            (self.destination / "index.md").read_text(encoding="utf-8"),
+        )
         self.assertEqual(1, totals["manifest_entries"])
 
 
@@ -141,21 +143,113 @@ class PrepareDoxygenSourcesTests(unittest.TestCase):
         self.manifest.write_text("index.md\n", encoding="utf-8")
         totals = self.prepare()
         self.assertEqual(
-            "### opencv_morphology_j_binary.png\n",
+            "### opencv_morphology_j_binary.png "
+            "{#page_index_opencv_morphology_j_binarypng}\n",
             (self.destination / "index.md").read_text(encoding="utf-8"),
         )
         self.assertEqual(1, totals["headings"])
 
-    def test_preserves_inline_code_in_paragraph_and_mixed_heading(self) -> None:
-        content = (
-            "### Resultado `binary.png` após limiarização\n\n"
-            "O arquivo `binary.png` representa a imagem.\n"
+    def test_normalizes_inline_code_in_mixed_heading_only(self) -> None:
+        self.write(
+            "index.md",
+            "# Página\n\n"
+            "### C++: `cv::Mat`\n\n"
+            "O tipo usado é `cv::Mat`.\n",
         )
-        self.write("index.md", content)
+        self.manifest.write_text("index.md\n", encoding="utf-8")
+        totals = self.prepare()
+        output = (self.destination / "index.md").read_text(encoding="utf-8")
+        self.assertIn("### C++: cv::Mat {#page_index_c_cvmat}\n", output)
+        self.assertIn("O tipo usado é `cv::Mat`.\n", output)
+        self.assertEqual(1, totals["headings"])
+
+    def test_rewrites_internal_markdown_page_link(self) -> None:
+        self.write(
+            "index.md",
+            "# Início\n\n[Catálogo](image-catalog.md)\n",
+        )
+        self.write("image-catalog.md", "# Catálogo de imagens\n")
+        self.manifest.write_text(
+            "index.md\nimage-catalog.md\n", encoding="utf-8"
+        )
+        totals = self.prepare()
+        output = (self.destination / "index.md").read_text(encoding="utf-8")
+        self.assertIn('\\ref page_image_catalog "Catálogo"', output)
+        self.assertNotIn("image-catalog.md", output)
+        self.assertEqual(1, totals["links"])
+
+    def test_rewrites_internal_markdown_section_link(self) -> None:
+        self.write(
+            "index.md",
+            "# Início\n\n[Resultados](image-catalog.md#resultados-curados)\n",
+        )
+        self.write(
+            "image-catalog.md",
+            "# Catálogo de imagens\n\n## Resultados curados\n",
+        )
+        self.manifest.write_text(
+            "index.md\nimage-catalog.md\n", encoding="utf-8"
+        )
+        self.prepare()
+        output = (self.destination / "index.md").read_text(encoding="utf-8")
+        self.assertIn(
+            '\\ref page_image_catalog_resultados_curados "Resultados"',
+            output,
+        )
+        catalog = (self.destination / "image-catalog.md").read_text(
+            encoding="utf-8"
+        )
+        self.assertIn(
+            "## Resultados curados "
+            "{#page_image_catalog_resultados_curados}\n",
+            catalog,
+        )
+
+    def test_resolves_relative_link_between_nested_documents(self) -> None:
+        self.write(
+            "labs/m1-1.md",
+            "# Laboratório\n\n[Arquitetura](../architecture.md)\n",
+        )
+        self.write("architecture.md", "# Arquitetura\n")
+        self.write("site/index.md", "# Início\n")
+        self.manifest.write_text(
+            "site/index.md -> index.md\n"
+            "labs/m1-1.md\n"
+            "architecture.md\n",
+            encoding="utf-8",
+        )
+        self.prepare()
+        output = (self.destination / "labs/m1-1.md").read_text(
+            encoding="utf-8"
+        )
+        self.assertIn('\\ref page_architecture "Arquitetura"', output)
+
+    def test_preserves_external_links_and_image_links(self) -> None:
+        self.write(
+            "index.md",
+            "# Página\n\n"
+            "[OpenCV](https://opencv.org/)\n"
+            "![Imagem](images/input/example.png)\n",
+        )
         self.manifest.write_text("index.md\n", encoding="utf-8")
         self.prepare()
-        self.assertEqual(
-            content, (self.destination / "index.md").read_text(encoding="utf-8")
+        output = (self.destination / "index.md").read_text(encoding="utf-8")
+        self.assertIn("[OpenCV](https://opencv.org/)", output)
+        self.assertIn("![Imagem](images/input/example.png)", output)
+
+    def test_preserves_existing_explicit_page_identifier(self) -> None:
+        self.write(
+            "index.md",
+            "# Comparação {#language_comparison}\n\n"
+            "## Tipos numéricos\n",
+        )
+        self.manifest.write_text("index.md\n", encoding="utf-8")
+        self.prepare()
+        output = (self.destination / "index.md").read_text(encoding="utf-8")
+        self.assertIn("# Comparação {#language_comparison}\n", output)
+        self.assertIn(
+            "## Tipos numéricos {#language_comparison_tipos_numericos}\n",
+            output,
         )
 
     def test_copies_only_manifest_entries_and_cleans_destination(self) -> None:
